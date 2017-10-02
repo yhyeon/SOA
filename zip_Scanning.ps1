@@ -6,5 +6,5 @@ $env:hostMAC = (Get-NetAdapter | where-object -FilterScript {$_.Name -eq "이더
 get-psdrive | select root `
 |% {foreach($sourceFile in (Get-ChildItem $_.Root -recurse -file -Filter '*.zip'))
 {
-[IO.Compression.ZipFile]::OpenRead($sourceFile.FullName).Entries | %{$env:username + " : " + $env:userdomain + " : " + $env:COMPUTERNAME + " : " + $env:hostIP + " : " + $env:hostMAC + " : " + $sourcefile.CreationTime + " : " + $sourcefile.LastAccessTime + “ : “ + $sourcefile.lastwritetime + " : " + "{0:N2}" -f ($_.Length/1kb) + " : "  + $sourcefile.directoryName + " : " + "$sourcefile`: $($_.FullName): $($_.Length)";} | Out-File C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhhmm).txt -Append
+[IO.Compression.ZipFile]::OpenRead($sourceFile.FullName).Entries | %{$env:username + " : " + $env:userdomain + " : " + $env:COMPUTERNAME + " : " + $env:hostIP + " : " + $env:hostMAC + " : " + $sourcefile.CreationTime + " : " + $sourcefile.LastAccessTime + “ : “ + $sourcefile.lastwritetime + " : " + "{0:N2}" -f ($_.Length/1kb) + " : "  + $sourcefile.directoryName + " : " + "$sourcefile`: $($_.FullName): $($_.Length)";} | Out-File C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhhmm)_zip.txt -Append
 }}
