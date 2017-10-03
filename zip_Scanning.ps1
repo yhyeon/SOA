@@ -2,7 +2,7 @@
 
 [Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem')
 $env:hostIP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress
-$env:hostMAC = (Get-NetAdapter | where-object -FilterScript {$_.Name -eq "이더넷"}).MacAddress
+$env:hostMAC = (Get-NetAdapter | where-object -FilterScript {$_.Name -eq "이더넷" -or $_.Name -eq “Ethernet” -or $_.Name -eq “WI-FI”}).MacAddress
 get-psdrive | select root `
 |% {foreach($sourceFile in (Get-ChildItem $_.Root -recurse -file -Filter '*.zip'))
 {
