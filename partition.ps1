@@ -1,10 +1,6 @@
-﻿$lognumber = get-winevent -FilterHashtable @{logname = 'Microsoft-Windows-Partition/Diagnostic'} | select recordid
-$lognumber = $lognumber.recordid
-$logcount = [int]($lognumber.count)
-$i = 0
-do
+$events = get-winevent -FilterHashtable @{logname = 'Microsoft-Windows-Partition/Diagnostic'} | foreach {$_.toxml()}
+foreach ($partition in $events)
 {
-$partition = get-winevent -FilterHashtable @{logname = 'Microsoft-Windows-Partition/Diagnostic'} | Where-Object {$_.recordid -eq $lognumber[$i]} | foreach {$_.toxml()}
 $partition = $partition.split("<")
 $eventrecordid = $partition | select-string -pattern 'EventRecordID>'
 $eventrecordid = $eventrecordid.line.trim("/*")
@@ -38,4 +34,4 @@ $diskid = $diskid.line.Split("=").Split(">").Split("'").split("{").split("}")[5]
 $registryid = $partition | select-string -Pattern 'RegistryId'
 $registryid = $registryid.line.Split("=").Split(">").Split("'").split("{").split("}")[5]
 $eventid + " : " + $time + " : " + $computer + " : " + $sid + " : " + $disknumber + " : " + $characteristics + " : " + $busType + " : " + $manufacturer + " : " + $model + " : " + $revision + " : " + $serialnumber + " : " + $parentid + " : " + $diskid + " : " + $registryid | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhhmm)_partition.txt -Append
-$i++} while ($i -lt $logcount)
+}
