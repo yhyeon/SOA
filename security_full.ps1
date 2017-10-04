@@ -5,8 +5,6 @@ $objectserver = $security | select-string -Pattern 'ObjectServer'
 $objectserver = $objectserver.line.Split("=").split(">")[2]
 if ($objectserver -eq "Security")
 {
-$eventrecordid = $security | select-string -pattern 'EventRecordID>'
-$eventrecordid = $eventrecordid.line.trim("/*")
 $eventid = $security | select-string -pattern 'EventID'
 $eventid = $eventid.line.split(">")[1]
 $time = $security | select-string -pattern 'TimeCreated'
