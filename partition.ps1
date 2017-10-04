@@ -2,8 +2,6 @@ $events = get-winevent -FilterHashtable @{logname = 'Microsoft-Windows-Partition
 foreach ($partition in $events)
 {
 $partition = $partition.split("<")
-$eventrecordid = $partition | select-string -pattern 'EventRecordID>'
-$eventrecordid = $eventrecordid.line.trim("/*")
 $eventid = $partition | select-string -pattern 'EventID'
 $eventid = $eventid.line.split(">")[1]
 $time = $partition | select-string -pattern 'TimeCreated'
