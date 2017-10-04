@@ -1,11 +1,6 @@
-﻿$lognumber = get-winevent -FilterHashtable @{logname = 'Security'} | select recordid
-$lognumber = $lognumber.recordid
-$logcount = [int]($lognumber.count)
-$i = 0
-do
-{
-$security = get-winevent -FilterHashtable @{logname = 'Security'} | Where-Object {$_.recordid -eq $lognumber[$i]} | foreach {$_.toxml()}
-$security = $security.split("<")
+get-winevent -FilterHashtable @{logname='security'; ID = 4663,4662,4656} -oldest| foreach {$_.toxml()}
+foreach ($security in $events)
+{$security = $security.split("<")
 $objectserver = $security | select-string -Pattern 'ObjectServer'
 $objectserver = $objectserver.line.Split("=").split(">")[2]
 if ($objectserver -eq "Security")
@@ -39,7 +34,7 @@ $processid = $security | select-string -pattern 'ProcessId'
 $processid = $processid.line.Split("=").split(">")[6]
 $processname = $security | select-string -pattern 'ProcessName'
 $processname = $processname.line.Split("=").split(">")[2]
-$eventid + " : " + $time + " : " + $computer + " : " + $sid + " : " + $username + " : " + $domainname + " : " + $objectserver + " : " + $objecttype + " : " + $objectname + " : " + $handleid + " : " + $accesslist + " : " + $accessmask + " : " + $processid + " : " + $processname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhhmm)_security.txt -Append}
+$eventid + " : " + $time + " : " + $computer + " : " + $sid + " : " + $username + " : " + $domainname + " : " + $objectserver + " : " + $objecttype + " : " + $objectname + " : " + $handleid + " : " + $accesslist + " : " + $accessmask + " : " + $processid + " : " + $processname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhhmm)_security.txt -Append }
 elseif ($objectserver -match "MTP")
 {
 $eventrecordid = $security | select-string -pattern 'EventRecordID>'
@@ -81,4 +76,4 @@ $additionalinfo = $additionalinfo.line.split("-").split(">")[1]
 $additionalinfo2 = $security | select-string -Pattern 'AdditionalInfo2'
 $additionalinfo2 = $additionalinfo2.line.split("-").split(">")[1]
 $eventid + " : " + $time + " : " + $computer + " : " + $sid + " : " + $username + " : " + $domainname + " : " + $objectserver + " : " + $objecttype + " : " + $operationtype + " : " + $handleid + " : " + $accesslist + " : " + $accessmask + " : " + $additionalinfo + " : " + $additionalinfo2 | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhhmm)_security.txt -Append}
-$i++} while ($i -lt $logcount)
+}
