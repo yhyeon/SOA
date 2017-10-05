@@ -90,7 +90,7 @@ $additionalinfo2 = $security | select-string -Pattern 'AdditionalInfo2'
 $additionalinfo2 = $additionalinfo2.line.split("-").split(">")[1]
 if($accessmask -eq "0x120116")
 {
-$accessmaskt.replace("0x120116","Write") + " : " + $eventid + " : " + $time + " : " + $computer + " : " + $sid + " : " + $username + " : " + $logonid + " : " + $domainname + " : " + $objectserver + " : " + $objecttype + " : " + $operationtype + " : " + $additionalinfo2  | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_security_mtp.txt -Append
+$accessmask.replace("0x120116","Write") + " : " + $eventid + " : " + $time + " : " + $computer + " : " + $sid + " : " + $username + " : " + $logonid + " : " + $domainname + " : " + $objectserver + " : " + $objecttype + " : " + $operationtype + " : " + $additionalinfo2  | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_security_mtp.txt -Append
 }
 if($accessmask -eq "0x120089")
 {
