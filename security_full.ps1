@@ -88,11 +88,11 @@ $additionalinfo2 = $security | select-string -Pattern 'AdditionalInfo2'
 $additionalinfo2 = $additionalinfo2.line.split("-").split(">")[1]
 if($accessmask -eq "0x120116")
 {
-$accessmask.replace("0x120116","Write") + " : " + $eventid + " : " + $time + " : " + $computer + " : " + $sid + " : " + $username + " : " + $logonid + " : " + $domainname + " : " + $objectserver + " : " + $additionalinfo2  | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_security_mtp.txt -Append
+$accessmask.replace("0x120116","Write") + " : " + $eventid + " : " + $time + " : " + $computer + " : " + $sid + " : " + $username + " : " + $logonid + " : " + $domainname + " : " + $objectserver + " : " + $objectname + " : " + $additionalinfo2  | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_security_mtp.txt -Append
 }
 if($accessmask -eq "0x120089")
 {
-$accessmask.replace("0x120089","READ") + " : " + $eventid + " : " + $time + " : " + $computer + " : " + $sid + " : " + $username + " : " + $logonid + " : " + $domainname + " : " + $objectserver + " : " + $additionalinfo2  | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_security_mtp.txt -Append
+$accessmask.replace("0x120089","READ") + " : " + $eventid + " : " + $time + " : " + $computer + " : " + $sid + " : " + $username + " : " + $logonid + " : " + $domainname + " : " + $objectserver + " : " + $objectname + " : " +  $additionalinfo2  | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_security_mtp.txt -Append
 }
 }
 }
