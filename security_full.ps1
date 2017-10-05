@@ -96,7 +96,6 @@ if($accessmask -eq "0x120089")
 {
 $accessmask.replace("0x120089","READ") + " : " + $eventid + " : " + $time + " : " + $computer + " : " + $sid + " : " + $username + " : " + $logonid + " : " + $domainname + " : " + $objectserver + " : " + $objecttype + " : " + $operationtype + " : " + $additionalinfo2  | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_security_mtp.txt -Append
 }
-$eventid + " : " + $time + " : " + $computer + " : " + $sid + " : " + $username + " : " + $logonid + " : " + $domainname + " : " + $objectserver + " : " + $objecttype + " : " + $operationtype + " : " + $handleid + " : " + $additionalinfo2 + " : " + $accessmask | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_security_mtp.txt -Append
 }
 }
 }
