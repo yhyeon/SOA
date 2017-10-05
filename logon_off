@@ -1,4 +1,4 @@
-$events = get-winevent -FilterHashtable @{logname='security'; ID = 512, 4608, 513, 4609, 528, 4624, 538, 4634, 4648, 551, 4647, 4778, 4779, 4800, 4801, 4802, 4803, 4672, 4798, 4799, 5140} -oldest | foreach {$_.toxml()}
+$events = get-winevent -FilterHashtable @{logname='security'; ID = 512, 4608, 513, 4609, 528, 4624, 538, 4634, 4648, 551, 4647, 4778, 4779, 4800, 4801, 4802, 4803, 4672, 4798, 4799} -oldest | foreach {$_.toxml()}
 foreach ($logon in $events)
 {$logon = $logon.split("<")
 $task = $logon | select-string -pattern 'Task'
@@ -26,22 +26,82 @@ $task.replace("12544","로그온") + " : " + $eventid + " : " + $time + " : " + 
 }
 elseif ($task -eq "12545")
 {
+$eventid = $logon | select-string -pattern 'EventID'
+$eventid = $eventid.line.split(">")[1]
+$time = $logon | select-string -Pattern 'TimeCreated SystemTime'
+$time = [datetime]($time.line.split("=").split("/>").split("'")[2])
+$computer = $logon | select-string -pattern 'Computer'
+$computer = $computer.line.split(">")[1]
+$targetuname = $logon | select-string -Pattern 'TargetUserName'
+$targetuname = $targetuname.line.Split(">")[1]
+$targetdname = $logon | select-string -Pattern 'TargetDomainName'
+$targetdname = $targetdname.line.Split(">")[1]
 $task.replace("12545","로그오프") + " : " + $eventid + " : " + $time + " : " + $computer + " : " + $targetuname + " : " + $targetdname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhhmm)_logon.txt -Append
 }
 elseif ($task -eq "12288")
 {
-$task.replace("12288","윈도우 시작") + " : " + $eventid + " : " + $time + " : " + $computer
+$eventid = $logon | select-string -pattern 'EventID'
+$eventid = $eventid.line.split(">")[1]
+$time = $logon | select-string -Pattern 'TimeCreated SystemTime'
+$time = [datetime]($time.line.split("=").split("/>").split("'")[2])
+$computer = $logon | select-string -pattern 'Computer'
+$computer = $computer.line.split(">")[1]
+$task.replace("12288","윈도우 시작") + " : " + $eventid + " : " + $time + " : " + $computer| out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhhmm)_logon.txt -Append
 }
 elseif ($task -eq "13826")
 {
+$eventid = $logon | select-string -pattern 'EventID'
+$eventid = $eventid.line.split(">")[1]
+$time = $logon | select-string -Pattern 'TimeCreated SystemTime'
+$time = [datetime]($time.line.split("=").split("/>").split("'")[2])
+$computer = $logon | select-string -pattern 'Computer'
+$computer = $computer.line.split(">")[1]
+$subjectsid = $logon | select-string -Pattern 'SubjectUserSid'
+$subjectsid = $subjectsid.line.Split(">")[1]
+$subjectuname = $logon | select-string -Pattern 'SubjectUserName'
+$subjectuname = $subjectuname.line.Split(">")[1]
+$subjectdname = $logon | select-string -Pattern 'SubjectDomainName'
+$subjectdname = $subjectdname.Line.Split(">")[1]
+$targetuname = $logon | select-string -Pattern 'TargetUserName'
+$targetuname = $targetuname.line.Split(">")[1]
+$targetdname = $logon | select-string -Pattern 'TargetDomainName'
+$targetdname = $targetdname.line.Split(">")[1]
 $task.replace("13826","보안 그룹 관리") + " : " + $eventid + " : " + $time + " : " + $computer + " : " + $subjectsid + " : " + $subjectuname + " : " + $subjectdname + " : " + $targetuname + " : " + $targetdname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhhmm)_logon.txt -Append
 }
 elseif ($task -eq "13824")
 {
+$eventid = $logon | select-string -pattern 'EventID'
+$eventid = $eventid.line.split(">")[1]
+$time = $logon | select-string -Pattern 'TimeCreated SystemTime'
+$time = [datetime]($time.line.split("=").split("/>").split("'")[2])
+$computer = $logon | select-string -pattern 'Computer'
+$computer = $computer.line.split(">")[1]
+$subjectsid = $logon | select-string -Pattern 'SubjectUserSid'
+$subjectsid = $subjectsid.line.Split(">")[1]
+$subjectuname = $logon | select-string -Pattern 'SubjectUserName'
+$subjectuname = $subjectuname.line.Split(">")[1]
+$subjectdname = $logon | select-string -Pattern 'SubjectDomainName'
+$subjectdname = $subjectdname.Line.Split(">")[1]
+$targetuname = $logon | select-string -Pattern 'TargetUserName'
+$targetuname = $targetuname.line.Split(">")[1]
+$targetdname = $logon | select-string -Pattern 'TargetDomainName'
+$targetdname = $targetdname.line.Split(">")[1]
 $task.replace("13824","사용자 계정 관리") + " : " + $eventid + " : " + $time + " : " + $computer + " : " + $subjectsid + " : " + $subjectuname + " : " + $subjectdname + " : " + $targetuname + " : " + $targetdname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhhmm)_logon.txt -Append
 }
 elseif ($task -eq "12548")
 {
+$eventid = $logon | select-string -pattern 'EventID'
+$eventid = $eventid.line.split(">")[1]
+$time = $logon | select-string -Pattern 'TimeCreated SystemTime'
+$time = [datetime]($time.line.split("=").split("/>").split("'")[2])
+$computer = $logon | select-string -pattern 'Computer'
+$computer = $computer.line.split(">")[1]
+$subjectsid = $logon | select-string -Pattern 'SubjectUserSid'
+$subjectsid = $subjectsid.line.Split(">")[1]
+$subjectuname = $logon | select-string -Pattern 'SubjectUserName'
+$subjectuname = $subjectuname.line.Split(">")[1]
+$subjectdname = $logon | select-string -Pattern 'SubjectDomainName'
+$subjectdname = $subjectdname.Line.Split(">")[1]
 $privilegelist = $logon | select-string -Pattern 'PrivilegeList'
 $privilegelist = $privilegelist.Line.Split(">").split("
 			")
