@@ -55,7 +55,7 @@ $accessmask.replace("0x100","WriteAttributes") + " : " + $eventid + " : " + $tim
 }
 if($accessmask -eq "0x10000")
 {
-$accessmaskt.replace("%%1537","DELETE") + " : " + $eventid + " : " + $time + " : " + $computer + " : " + $sid + " : " + $username + " : " + $logonid + " : " + $domainname + " : " + $objectserver + " : " + $objectname + " : " + $processname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_security.txt -Append
+$accessmask.replace("0x10000","DELETE") + " : " + $eventid + " : " + $time + " : " + $computer + " : " + $sid + " : " + $username + " : " + $logonid + " : " + $domainname + " : " + $objectserver + " : " + $objectname + " : " + $processname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_security.txt -Append
 }
 if($accessmask -eq "0x20000")
 {
