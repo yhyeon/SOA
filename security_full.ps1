@@ -82,19 +82,17 @@ $domainname = $security | select-string -pattern 'SubjectDomainName'
 $domainname = $domainname.line.Split("=").split(">")[2]
 $objectname = $security | select-string -pattern 'ObjectName'
 $objectname = $objectname.line.Split("=").split(">")[2]
-$operationtype = $security | select-string -pattern 'OperationType'
-$operationtype = $operationtype.line.Split("=").split(">")[2]
 $accessmask = $security | select-string -pattern 'AccessMask'
 $accessmask = $accessmask.line.Split("=").split(">")[2]
 $additionalinfo2 = $security | select-string -Pattern 'AdditionalInfo2'
 $additionalinfo2 = $additionalinfo2.line.split("-").split(">")[1]
 if($accessmask -eq "0x120116")
 {
-$accessmask.replace("0x120116","Write") + " : " + $eventid + " : " + $time + " : " + $computer + " : " + $sid + " : " + $username + " : " + $logonid + " : " + $domainname + " : " + $objectserver + " : " + $operationtype + " : " + $additionalinfo2  | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_security_mtp.txt -Append
+$accessmask.replace("0x120116","Write") + " : " + $eventid + " : " + $time + " : " + $computer + " : " + $sid + " : " + $username + " : " + $logonid + " : " + $domainname + " : " + $objectserver + " : " + $additionalinfo2  | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_security_mtp.txt -Append
 }
 if($accessmask -eq "0x120089")
 {
-$accessmask.replace("0x120089","READ") + " : " + $eventid + " : " + $time + " : " + $computer + " : " + $sid + " : " + $username + " : " + $logonid + " : " + $domainname + " : " + $objectserver + " : " + $operationtype + " : " + $additionalinfo2  | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_security_mtp.txt -Append
+$accessmask.replace("0x120089","READ") + " : " + $eventid + " : " + $time + " : " + $computer + " : " + $sid + " : " + $username + " : " + $logonid + " : " + $domainname + " : " + $objectserver + " : " + $additionalinfo2  | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_security_mtp.txt -Append
 }
 }
 }
