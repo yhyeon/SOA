@@ -1,4 +1,4 @@
-$events = get-winevent -FilterHashtable @{logname='security'; ID = 512, 4608, 513, 4609, 528, 4624, 538, 4634, 4648, 551, 4647, 4778, 4779, 4800, 4801, 4802, 4803, 4672, 4798, 4799, 5140} -oldest -maxevents 100| foreach {$_.toxml()}
+$events = get-winevent -FilterHashtable @{logname='security'; ID = 512, 4608, 513, 4609, 528, 4624, 538, 4634, 4648, 551, 4647, 4778, 4779, 4800, 4801, 4802, 4803, 4672, 4798, 4799, 5140} -oldest | foreach {$_.toxml()}
 foreach ($logon in $events)
 {$logon = $logon.split("<")
 $task = $logon | select-string -pattern 'Task'
