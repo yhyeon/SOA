@@ -174,7 +174,7 @@ $log + " : " + $eventid + " : " + $time + " : " + $computer + " : " + $subjectsi
 }
 elseif($failurestatus -eq '0xC0000133')
 {
-$failurecode = '도메인 컨트롤러와 컴퓨터 시간 차이가 너무 니다'
+$failurecode = '도메인 컨트롤러와 컴퓨터 시간 차이가 너무 큽니다'
 $log + " : " + $eventid + " : " + $time + " : " + $computer + " : " + $subjectsid + " : " + $subjectuname + " : " + $subjectdname + " : " + $subjectlogonid + " : " + $targetsid + " : " + $targetuname + " : " + $targetdname + " : " + $null + " : " + $failuecode  | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_logonoff.txt -Append
 }
 elseif($failurestatus -eq '0xC000015B')
