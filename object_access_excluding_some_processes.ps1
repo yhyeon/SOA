@@ -1,4 +1,4 @@
-﻿$events = get-winevent -FilterHashtable @{logname='security'; ID = 4663,4662,4656} -maxevents 40000 | foreach {$_.toxml()}
+﻿$events = get-winevent -FilterHashtable @{logname='security'; ID = 4663,4662,4656} | foreach {$_.toxml()}
 $eprocess = "mmc.exe|svchost.exe|GoogleUpdate.exe|nosstarter.npe|MaWebDRMAgent.exe|NvTmMon.exe|RtWLan.exe|Wd Discovery.exe|WdDriveService.exe|wpmsvc.exe|NVDisplay.Container.exe|nvtray.exe|HxTsr.exe|conhost.exe|consent.exe|csrss.exe|DeviceCensus.exe|dllhost.exe|fontdrvhost.exe|ChsIME.exe|Iass.exe|mmc.exe|msfeedssync.exe|reg.exe|SearchFilterHost.exe|SearchIndexcer.exe|Services.exe|sihost.exe|smartscreen.exe|sppExtComObj.Exe|sppsvc.exe|svchost.exe|taskhostw.exe|WMIC.exe|WmiPrvSE.exe|SearchUI.exe|ShellExperienceHost.exe"
 foreach ($security in $events)
 {$security = $security.split("<")
