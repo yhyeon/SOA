@@ -1,9 +1,9 @@
 ﻿$osversion = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName).ProductName
 if($osversion -match "Windows 7") # if the Microsoft-Windows-DriverFrameworks-UserMode/Operational log is to be parsed on the client side
 {
+$events = get-winevent -FilterHashtable @{logname = 'Microsoft-Windows-DriverFrameworks-UserMode/Operational'; ID = 1003, 1008} | foreach {$_.toxml()}
 foreach ($driver in $events)
 {
-$events = get-winevent -FilterHashtable @{logname = 'Microsoft-Windows-DriverFrameworks-UserMode/Operational'; ID = 1003, 1008} | foreach {$_.toxml()}
 $driver = $driver.split("<")
 $eventid = $driver | select-string -pattern 'EventID' | out-string
 $eventid = $eventid.split(">")[1]
