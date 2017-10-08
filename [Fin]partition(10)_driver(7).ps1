@@ -1,4 +1,4 @@
-﻿$osversion = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName).ProductName
+$osversion = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName).ProductName
 if($osversion -match "Windows 7") # if the Client is Windows 7
 {
 $events = get-winevent -FilterHashtable @{logname = 'Microsoft-Windows-DriverFrameworks-UserMode/Operational'; ID = 1003, 1008} | foreach {$_.toxml()}
@@ -20,6 +20,8 @@ $time = $datetime.Split("@")[1]
 $computer = $driver | select-string -pattern 'Computer' | Out-String
 $computer = $computer.split(">")[1]
 $computer = $computer.split("/")[0]
+$computer = $computer.split("
+")[0]
 $sid = $driver | select-string -pattern 'Security UserID' | out-string
 $sid = $sid.split("=")[1]
 $sid = $sid.split("'")[1]
@@ -31,7 +33,9 @@ $hostguid = $hostguid.split("{")[1]
 $hostguid = $hostguid.Split("}")[0]
 $device = $driver | select-string -pattern 'DeviceInstanceId' | Out-String
 $device = $device.split(">")[1]
-$env:userdomain + " : " + $computer + " : " + $env:username + " : " + $sid + " : " +  " : " + " : " + $date + " : " + $time + " : " + $eventid + " : " + $slifetime + " : " + $hostguid + " : " + $device + " : " + 'USB 연결' | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_Win7Driver.txt -Append -Encoding utf8
+$device = $device.split("
+")[0]
+$computer + " : " + $sid + " : " + $date + " : " + $time + " : " + $eventid + " : " + $slifetime + " : " + $hostguid + " : " + $device + " : " + 'USB 연결' | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_Win7Driver.txt -Append -Encoding utf8
 }
 else
 {
@@ -44,13 +48,15 @@ $time = $datetime.Split("@")[1]
 $computer = $driver | select-string -pattern 'Computer' | Out-String
 $computer = $computer.split(">")[1]
 $computer = $computer.split("/")[0]
+$computer = $computer.split("
+")[0]
 $sid = $driver | select-string -pattern 'Security UserID' | out-string
 $sid = $sid.split("=")[1]
 $sid = $sid.split("'")[1]
 $elifetime = $driver | select-string -pattern 'UMDFDriverManagerHostShutdown lifetime' | out-string
 $elifetime = $elifetime.split("{")[1]
 $elifetime = $elifetime.Split("}")[0]
-$env:userdomain + " : " + $computer + " : " + $env:username + " : " + $sid + " : " +  " : " + " : " + $date + " : " + $time + " : " + $eventid + " : " + $elifetime + " : " + " : " + " : " + 'USB 해제' | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_Win7Driver.txt -Append -Encoding utf8
+$computer + " : " + $sid + " : " + $date + " : " + $time + " : " + $eventid + " : " + $elifetime + " : " + " : " + " : " + 'USB 해제' | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_Win7Driver.txt -Append -Encoding utf8
 }
 }
 }
@@ -64,7 +70,7 @@ $eventrecordid = $partition | select-string -pattern 'EventRecordID>'
 $eventrecordid = $eventrecordid.line.trim("/*")
 $eventid = $partition | select-string -pattern 'EventID'
 $eventid = $eventid.line.split(">")[1]
-$datetime = $driver | select-string -pattern 'TimeCreated'
+$datetime = $partition | select-string -pattern 'TimeCreated'
 $datetime = [datetime]($datetime.line.split("=").split("/>").split("'")[2])
 $datetime = get-date $datetime -format yyyy-MM-dd@hh:mm:ss
 $date = $datetime.Split("@")[0]
@@ -94,6 +100,6 @@ $diskid = $partition | select-string -Pattern 'DiskId'
 $diskid = $diskid.line.Split("=").Split(">").Split("'").split("{").split("}")[5]
 $registryid = $partition | select-string -Pattern 'RegistryId'
 $registryid = $registryid.line.Split("=").Split(">").Split("'").split("{").split("}")[5]
-$eventid + " : " + $date + " : " + $time + " : " + $computer + " : " + $sid + " : " + $disknumber + " : " + $characteristics + " : " + $busType + " : " + $manufacturer + " : " + $model + " : " + $revision + " : " + $serialnumber + " : " + $parentid + " : " + $diskid + " : " + $registryid | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_partition.txt -Append -Encoding utf8
+$computer + " : " + $sid + " : " + $date + " : " + $time + " : " + $eventid + " : " + $disknumber + " : " + $characteristics + " : " + $busType + " : " + $manufacturer + " : " + $model + " : " + $revision + " : " + $serialnumber + " : " + $parentid + " : " + $diskid + " : " + $registryid | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_partition.txt -Append -Encoding utf8
 }
 }
