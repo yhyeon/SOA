@@ -7,7 +7,7 @@ $eventid = $eventid.line.split(">")[1]
 if (($eventid -eq "4624") -or ($eventid -eq "528") -or ($eventid -eq "540"))
 {
 $log = 'An account was successfully logged on'
-$datetime = $driver | select-string -pattern 'TimeCreated'
+$datetime = $logon | select-string -pattern 'TimeCreated'
 $datetime = [datetime]($datetime.line.split("=").split("/>").split("'")[2])
 $datetime = get-date $datetime -format yyyy-MM-dd@hh:mm:ss
 $date = $datetime.Split("@")[0]
@@ -31,7 +31,7 @@ $log + " : " + $eventid + " : " + $date + " : " + $time + " : " + $computer + " 
 elseif (($eventid -eq "4648") -or ($eventid -eq "552"))
 {
 $log = 'A logon was attempted using explicit credentials'
-$datetime = $driver | select-string -pattern 'TimeCreated'
+$datetime = $logon | select-string -pattern 'TimeCreated'
 $datetime = [datetime]($datetime.line.split("=").split("/>").split("'")[2])
 $datetime = get-date $datetime -format yyyy-MM-dd@hh:mm:ss
 $date = $datetime.Split("@")[0]
@@ -55,7 +55,7 @@ $log + " : " + $eventid + " : " + $date + " : " + $time + " : " + $computer + " 
 elseif (($eventid -eq "4634") -or ($eventid -eq "538"))
 {
 $log = 'An account was logged off'
-$datetime = $driver | select-string -pattern 'TimeCreated'
+$datetime = $logon | select-string -pattern 'TimeCreated'
 $datetime = [datetime]($datetime.line.split("=").split("/>").split("'")[2])
 $datetime = get-date $datetime -format yyyy-MM-dd@hh:mm:ss
 $date = $datetime.Split("@")[0]
@@ -75,7 +75,7 @@ $log + " : " + $eventid + " : " + $date + " : " + $time + " : " + $computer + " 
 elseif (($eventid -eq "4647") -or ($eventid -eq "551"))
 {
 $log = 'User initiated logoff'
-$datetime = $driver | select-string -pattern 'TimeCreated'
+$datetime = $logon | select-string -pattern 'TimeCreated'
 $datetime = [datetime]($datetime.line.split("=").split("/>").split("'")[2])
 $datetime = get-date $datetime -format yyyy-MM-dd@hh:mm:ss
 $date = $datetime.Split("@")[0]
@@ -93,7 +93,7 @@ $log + " : " + $eventid + " : " + $date + " : " + $time + " : " + $computer + " 
 elseif (($eventid -eq "4608") -or ($eventid -eq "512"))
 {
 $log = 'Windows is starting up'
-$datetime = $driver | select-string -pattern 'TimeCreated'
+$datetime = $logon | select-string -pattern 'TimeCreated'
 $datetime = [datetime]($datetime.line.split("=").split("/>").split("'")[2])
 $datetime = get-date $datetime -format yyyy-MM-dd@hh:mm:ss
 $date = $datetime.Split("@")[0]
@@ -111,7 +111,7 @@ $log + " : " + $eventid + " : " + $date + " : " + $time + " : " + $computer + " 
 elseif (($eventid -eq "4625") -or ($eventid -eq "529") -or ($eventid -eq "530") -or ($eventid -eq "531") -or ($eventid -eq "532") -or ($eventid -eq "533") -or ($eventid -eq "534") -or ($eventid -eq "535") -or ($eventid -eq "536") -or ($eventid -eq "537") -or ($eventid -eq "539"))
 {
 $log = 'An account failed to log on'
-$datetime = $driver | select-string -pattern 'TimeCreated'
+$datetime = $logon | select-string -pattern 'TimeCreated'
 $datetime = [datetime]($datetime.line.split("=").split("/>").split("'")[2])
 $datetime = get-date $datetime -format yyyy-MM-dd@hh:mm:ss
 $date = $datetime.Split("@")[0]
