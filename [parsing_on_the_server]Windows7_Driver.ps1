@@ -56,7 +56,7 @@ $computer + " : " + $sid + " : " + $date + " : " + $time + " : " + $eventid + " 
 }
 else # if the client's log is to be sent to the server and parsed there
 {
-$events = get-winevent -FilterHashtable @{path = 'D:\Hyeon\바탕화면\BOB\프젝_automation\powershell\collected_logs\windows7_microsoft-windows-driverframeworks-usermode_operational.evtx'; ID = 1003, 1008} | foreach {$_.toxml()} #path should be designated correctly.
+$events = get-winevent -FilterHashtable @{path = ''; ID = 1003, 1008} | foreach {$_.toxml()} #path should be designated correctly.
 foreach ($driver in $events)
 {
 $driver = $driver.split("<")
