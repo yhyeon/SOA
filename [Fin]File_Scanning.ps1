@@ -1,4 +1,4 @@
-﻿$ErrorActionPreference = 'silentlycontinue'
+$ErrorActionPreference = 'silentlycontinue'
 $env:hostIP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress
 $env:hostMAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"}).MacAddress
 $aroot = (get-psdrive | select root).root
@@ -7,12 +7,8 @@ foreach ($root in $aroot)
 $child = Get-ChildItem $root -file -recurse
 foreach ($file in $child)
 {
-$bname = ($file | select Basename).Basename
-$fname = ($file | select Name).Name
-$size = ($file | select Length).Length
 $dname = ($file | select DirectoryName).DirectoryName
-$root = $dname.Split(":")[0]
-$ext = ($file | select Extension).Extension
+$rootd = $dname.Split(":")[0]
 $cdatetime = ($file | select CreationTime).CreationTime
 $cdatetime = get-date $cdatetime -format yyyy-MM-dd@hh:mm:ss
 $cdate = $cdatetime.split("@")[0]
@@ -25,7 +21,7 @@ $mdatetime = ($file | select LastWriteTime).LastWriteTime
 $mdatetime = get-date $mdatetime -format yyyy-MM-dd@hh:mm:ss
 $mdate = $mdatetime.split("@")[0]
 $mtime = $mdatetime.split("@")[1]
-$attr = ($file | select Attributes).Attributes
-$env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $env:hostIP + ":::;" + $env:hostMAC + ":::;" + $env:username + ":::;" +  $cdate + ":::;" + $ctime + “ :“ + $adate + ":::;" + $atime + “ :“ + $mdate + “ :“ + $mtime + “ :“ + "{0:N2}" -f ($size/1kb) + ":::;" + $root + ":::;" + $dname + ":::;" + $fname + ":::;" + $bname + ":::;" + $ext + ":::;" + $attr | Out-File  C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh).txt -Append 
+$env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $env:hostIP + ":::;" + $env:hostMAC + ":::;" + $env:username + ":::;" +  $cdate + ":::;" + $ctime + “ :“ + $adate + ":::;" + $atime + “ :“ + $mdate + “ :“ + $mtime + “ :“ + "{0:N2}" -f ($file.length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname + ":::;" + $file.name + ":::;" + $file.basename + ":::;" + $file.extension + ":::;" + $file.attributes
+$env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $env:hostIP + ":::;" + $env:hostMAC + ":::;" + $env:username + ":::;" +  $cdate + ":::;" + $ctime + “ :“ + $adate + ":::;" + $atime + “ :“ + $mdate + “ :“ + $mtime + “ :“ + "{0:N2}" -f ($file.length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname + ":::;" + $file.name + ":::;" + $file.basename + ":::;" + $file.extension + ":::;" + $file.attributes
 }
 }
