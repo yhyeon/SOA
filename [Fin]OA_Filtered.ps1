@@ -24,7 +24,7 @@ $eventid = $security | select-string -pattern 'EventID'
 $eventid = $eventid.line.split(">")[1]
 $datetime = $security | select-string -pattern 'TimeCreated'
 $datetime = [datetime]($datetime.line.split("=").split("/>").split("'")[2])
-$datetime = get-date $datetime -format yyyy-MM-dd@hh:mm:ss
+$datetime = get-date $datetime -format yyyy-MM-dd@HH:mm:ss
 $date = $datetime.Split("@")[0]
 $time = $datetime.Split("@")[1]
 $computer = $security | select-string -pattern 'Computer'
@@ -41,35 +41,35 @@ $accessmask = $security | select-string -pattern 'AccessMask'
 $accessmask = $accessmask.line.Split("=").split(">")[2]
 if($accessmask -eq "0x1")
 {
-$accessmask.replace("0x1","ReadData (or ListDirectory)") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_oa.txt -Append -Encoding utf8
+$accessmask.replace("0x1","ReadData (or ListDirectory)") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_oa.txt -Append -Encoding utf8
 }
 if($accessmask -eq "0x2")
 {
-$accessmask.replace("0x2","WriteData (or AddFile)") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname| out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_oa.txt -Append -Encoding utf8
+$accessmask.replace("0x2","WriteData (or AddFile)") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname| out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_oa.txt -Append -Encoding utf8
 }
 if($accessmask -eq "0x4")
 {
-$accessmask.replace("0x4","AppendData (or AddSubdirectory or CreatePipeInstance)") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_oa.txt -Append -Encoding utf8
+$accessmask.replace("0x4","AppendData (or AddSubdirectory or CreatePipeInstance)") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_oa.txt -Append -Encoding utf8
 }
 if($accessmask -eq "0x40")
 {
-$accessmask.replace("0x40","DeleteChild") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_oa.txt -Append -Encoding utf8
+$accessmask.replace("0x40","DeleteChild") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_oa.txt -Append -Encoding utf8
 }
 if($accessmask -eq "0x80")
 {
-$accessmask.replace("0x80","ReadAttributes") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_oa.txt -Append -Encoding utf8
+$accessmask.replace("0x80","ReadAttributes") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_oa.txt -Append -Encoding utf8
 }
 if($accessmask -eq "0x100")
 {
-$accessmask.replace("0x100","WriteAttributes") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_oa.txt -Append -Encoding utf8
+$accessmask.replace("0x100","WriteAttributes") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_oa.txt -Append -Encoding utf8
 }
 if($accessmask -eq "0x10000")
 {
-$accessmask.replace("0x10000","DELETE") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_oa.txt -Append -Encoding utf8
+$accessmask.replace("0x10000","DELETE") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_oa.txt -Append -Encoding utf8
 }
 if($accessmask -eq "0x20000")
 {
-$accessmask.replace("0x20000","READ_CONTROL") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_oa.txt -Append -Encoding utf8
+$accessmask.replace("0x20000","READ_CONTROL") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_oa.txt -Append -Encoding utf8
 }
 }
 elseif ($objectserver -match "MTP")
@@ -80,7 +80,7 @@ $eventid = $security | select-string -pattern 'EventID'
 $eventid = $eventid.line.split(">")[1]
 $datetime = $security | select-string -pattern 'TimeCreated'
 $datetime = [datetime]($datetime.line.split("=").split("/>").split("'")[2])
-$datetime = get-date $datetime -format yyyy-MM-dd@hh:mm:ss
+$datetime = get-date $datetime -format yyyy-MM-dd@HH:mm:ss
 $date = $datetime.Split("@")[0]
 $time = $datetime.Split("@")[1]
 $computer = $security | select-string -pattern 'Computer'
@@ -99,11 +99,11 @@ $additionalinfo2 = $security | select-string -Pattern 'AdditionalInfo2'
 $additionalinfo2 = $additionalinfo2.line.split("-").split(">")[1]
 if($accessmask -eq "0x120116")
 {
-$accessmask.replace("0x120116","Write") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $additionalinfo2  | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_security_mtp.txt -Append -Encoding utf8
+$accessmask.replace("0x120116","Write") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $additionalinfo2  | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_security_mtp.txt -Append -Encoding utf8
 }
 if($accessmask -eq "0x120089")
 {
-$accessmask.replace("0x120089","READ") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $additionalinfo2  | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_security_mtp.txt -Append -Encoding utf8
+$accessmask.replace("0x120089","READ") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $additionalinfo2  | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_security_mtp.txt -Append -Encoding utf8
 }
 }
 }
