@@ -4,8 +4,7 @@ $env:hostMAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterfac
 $aroot = (get-psdrive | select root).root
 foreach ($root in $aroot)
 {
-$child = Get-ChildItem $root -file -recurse
-foreach ($file in $child)
+foreach ($file in (Get-ChildItem $root -file -recurse))
 {
 $dname = ($file | select DirectoryName).DirectoryName
 $rootd = $dname.Split(":")[0]
