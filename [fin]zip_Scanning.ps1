@@ -20,6 +20,6 @@ $mdatetime = ($file | select LastWriteTime).LastWriteTime
 $mdatetime = get-date $mdatetime -format yyyy-MM-dd@hh:mm:ss
 $mdate = $mdatetime.split("@")[0]
 $mtime = $mdatetime.split("@")[1]
-[IO.Compression.ZipFile]::OpenRead($source.FullName).Entries | %{$env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $env:username + ":::;" +  $env:hostIP + ":::;" + $env:hostMAC + ":::;" + $cdate + ":::;" + $ctime + “ :“ + $adate + ":::;" + $atime + “ :“ + $mdate + “ :“ + $mtime + “ :“ + "{0:N2}" -f ($source.Length/1kb) + ":::;" + $rootd + ":::;" + $source.DirectoryName + ":::;" + $source.Name + ":::;" + $source.BaseName + ":::;" + $source.Extension + ":::;" + $source.Attributes+ ":::;" + "$source`: $($_.FullName):::;$($_.fullname.split(".")[-1]):::;$($_.Length/1kb)" }
+[IO.Compression.ZipFile]::OpenRead($source.FullName).Entries | %{$env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $env:username + ":::;" +  $env:hostIP + ":::;" + $env:hostMAC + ":::;" + $cdate + ":::;" + $ctime + “ :“ + $adate + ":::;" + $atime + “ :“ + $mdate + “ :“ + $mtime + “ :“ + "{0:N2}" -f ($source.Length/1kb) + ":::;" + $rootd + ":::;" + $source.DirectoryName + ":::;" + $source.Name + ":::;" + $source.BaseName + ":::;" + $source.Extension + ":::;" + $source.Attributes+ ":::;" + "$source`: $($_.FullName):::;$($_.fullname.split(".")[-1]):::;$($_.Length/1kb)" } | Out-File  C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_zip.txt -Append 
 }
 }
