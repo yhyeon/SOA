@@ -7,7 +7,6 @@ foreach ($root in $aroot)
 foreach($source in (Get-ChildItem $root -file -recurse -filter '*.zip'))
 {
 $rootd = ($source.directoryname.Split(":"))[0]
-$ext = ($file | select Extension).Extension
 $cdatetime = ($file | select CreationTime).CreationTime
 $cdatetime = get-date $cdatetime -format yyyy-MM-dd@hh:mm:ss
 $cdate = $cdatetime.split("@")[0]
