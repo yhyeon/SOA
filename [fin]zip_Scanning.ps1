@@ -8,17 +8,17 @@ foreach($source in (Get-ChildItem $root -file -recurse -filter '*.zip'))
 {
 $rootd = ($source.directoryname.Split(":"))[0]
 $cdatetime = ($file | select CreationTime).CreationTime
-$cdatetime = get-date $cdatetime -format yyyy-MM-dd@hh:mm:ss
+$cdatetime = get-date $cdatetime -format yyyy-MM-dd@HH:mm:ss
 $cdate = $cdatetime.split("@")[0]
 $ctime = $cdatetime.split("@")[1]
 $adatetime = ($file | select LastAccessTime).LastAccessTime
-$adatetime = get-date $adatetime -format yyyy-MM-dd@hh:mm:ss
+$adatetime = get-date $adatetime -format yyyy-MM-dd@HH:mm:ss
 $adate = $cdatetime.split("@")[0]
 $atime = $cdatetime.split("@")[1]
 $mdatetime = ($file | select LastWriteTime).LastWriteTime
-$mdatetime = get-date $mdatetime -format yyyy-MM-dd@hh:mm:ss
+$mdatetime = get-date $mdatetime -format yyyy-MM-dd@HH:mm:ss
 $mdate = $mdatetime.split("@")[0]
 $mtime = $mdatetime.split("@")[1]
-[IO.Compression.ZipFile]::OpenRead($source.FullName).Entries | %{$env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $env:username + ":::;" +  $env:hostIP + ":::;" + $env:hostMAC + ":::;" + $cdate + ":::;" + $ctime + “ :“ + $adate + ":::;" + $atime + “ :“ + $mdate + “ :“ + $mtime + “ :“ + "{0:N2}" -f ($source.Length/1kb) + ":::;" + $rootd + ":::;" + $source.DirectoryName + ":::;" + $source.Name + ":::;" + $source.BaseName + ":::;" + $source.Extension + ":::;" + $source.Attributes+ ":::;" + "$source`: $($_.FullName):::;$($_.fullname.split(".")[-1]):::;$($_.Length/1kb)" } | Out-File  C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_zip.txt -Append 
+[IO.Compression.ZipFile]::OpenRead($source.FullName).Entries | %{$env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $env:username + ":::;" +  $env:hostIP + ":::;" + $env:hostMAC + ":::;" + $cdate + ":::;" + $ctime + “ :“ + $adate + ":::;" + $atime + “ :“ + $mdate + “ :“ + $mtime + “ :“ + "{0:N2}" -f ($source.Length/1kb) + ":::;" + $rootd + ":::;" + $source.DirectoryName + ":::;" + $source.Name + ":::;" + $source.BaseName + ":::;" + $source.Extension + ":::;" + $source.Attributes+ ":::;" + "$source`: $($_.FullName):::;$($_.fullname.split(".")[-1]):::;$($_.Length/1kb)" } | Out-File  C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_zip.txt -Append 
 }
 }
