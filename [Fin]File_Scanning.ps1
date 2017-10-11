@@ -6,8 +6,7 @@ foreach ($root in $aroot)
 {
 foreach ($file in (Get-ChildItem $root -file -recurse))
 {
-$dname = ($file | select DirectoryName).DirectoryName
-$rootd = $dname.Split(":")[0]
+$rootd = ($file.directoryname.Split(":"))[0]
 $cdatetime = ($file | select CreationTime).CreationTime
 $cdatetime = get-date $cdatetime -format yyyy-MM-dd@hh:mm:ss
 $cdate = $cdatetime.split("@")[0]
