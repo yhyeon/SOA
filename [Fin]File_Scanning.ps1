@@ -8,17 +8,17 @@ foreach ($file in (Get-ChildItem $root -file -recurse))
 {
 $rootd = ($file.directoryname.Split(":"))[0]
 $cdatetime = ($file | select CreationTime).CreationTime
-$cdatetime = get-date $cdatetime -format yyyy-MM-dd@hh:mm:ss
+$cdatetime = get-date $cdatetime -format yyyy-MM-dd@HH:mm:ss
 $cdate = $cdatetime.split("@")[0]
 $ctime = $cdatetime.split("@")[1]
 $adatetime = ($file | select LastAccessTime).LastAccessTime
-$adatetime = get-date $adatetime -format yyyy-MM-dd@hh:mm:ss
+$adatetime = get-date $adatetime -format yyyy-MM-dd@HH:mm:ss
 $adate = $cdatetime.split("@")[0]
 $atime = $cdatetime.split("@")[1]
 $mdatetime = ($file | select LastWriteTime).LastWriteTime
-$mdatetime = get-date $mdatetime -format yyyy-MM-dd@hh:mm:ss
+$mdatetime = get-date $mdatetime -format yyyy-MM-dd@HH:mm:ss
 $mdate = $mdatetime.split("@")[0]
 $mtime = $mdatetime.split("@")[1]
-$env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $env:hostIP + ":::;" + $env:hostMAC + ":::;" + $env:username + ":::;" +  $cdate + ":::;" + $ctime + “ :“ + $adate + ":::;" + $atime + “ :“ + $mdate + “ :“ + $mtime + “ :“ + "{0:N2}" -f ($file.length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname + ":::;" + $file.name + ":::;" + $file.basename + ":::;" + $file.extension + ":::;" + $file.attributes | Out-File  C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_localfiles.txt -Append 
+$env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $env:hostIP + ":::;" + $env:hostMAC + ":::;" + $env:username + ":::;" +  $cdate + ":::;" + $ctime + “ :“ + $adate + ":::;" + $atime + “ :“ + $mdate + “ :“ + $mtime + “ :“ + "{0:N2}" -f ($file.length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname + ":::;" + $file.name + ":::;" + $file.basename + ":::;" + $file.extension + ":::;" + $file.attributes | Out-File  C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_localfiles.txt -Append 
 }
 }
