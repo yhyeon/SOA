@@ -14,7 +14,7 @@ if($eventid -eq 1003)
 $datetime = $driver | select-string -pattern 'TimeCreated' | Out-String
 $datetime = $datetime.split("=")[1]
 $datetime = [datetime]($datetime.split("'")[1])
-$datetime = get-date $datetime -format yyyy-MM-dd@hh:mm:ss
+$datetime = get-date $datetime -format yyyy-MM-dd@HH:mm:ss
 $date = $datetime.split("@")[0]
 $time = $datetime.Split("@")[1]
 $computer = $driver | select-string -pattern 'Computer' | Out-String
@@ -35,14 +35,14 @@ $device = $driver | select-string -pattern 'DeviceInstanceId' | Out-String
 $device = $device.split(">")[1]
 $device = $device.split("
 ")[0]
-$computer + " : " + $sid + " : " + $date + " : " + $time + " : " + $eventid + " : " + $slifetime + " : " + $hostguid + " : " + $device + " : " + 'USB 연결' | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_Win7Driver.txt -Append -Encoding utf8
+$computer + " : " + $sid + " : " + $date + " : " + $time + " : " + $eventid + " : " + $slifetime + " : " + $hostguid + " : " + $device + " : " + 'USB 연결' | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_Win7Driver.txt -Append -Encoding utf8
 }
 else
 {
 $datetime = $driver | select-string -pattern 'TimeCreated' | Out-String
 $datetime = $datetime.split("=")[1]
 $datetime = [datetime]($datetime.split("'")[1])
-$datetime = get-date $datetime -format yyyy-MM-dd@hh:mm:ss
+$datetime = get-date $datetime -format yyyy-MM-dd@HH:mm:ss
 $date = $datetime.split("@")[0]
 $time = $datetime.Split("@")[1]
 $computer = $driver | select-string -pattern 'Computer' | Out-String
@@ -56,7 +56,7 @@ $sid = $sid.split("'")[1]
 $elifetime = $driver | select-string -pattern 'UMDFDriverManagerHostShutdown lifetime' | out-string
 $elifetime = $elifetime.split("{")[1]
 $elifetime = $elifetime.Split("}")[0]
-$computer + " : " + $sid + " : " + $date + " : " + $time + " : " + $eventid + " : " + $elifetime + " : " + " : " + " : " + 'USB 해제' | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_Win7Driver.txt -Append -Encoding utf8
+$computer + " : " + $sid + " : " + $date + " : " + $time + " : " + $eventid + " : " + $elifetime + " : " + " : " + " : " + 'USB 해제' | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_Win7Driver.txt -Append -Encoding utf8
 }
 }
 }
@@ -72,7 +72,7 @@ $eventid = $partition | select-string -pattern 'EventID'
 $eventid = $eventid.line.split(">")[1]
 $datetime = $partition | select-string -pattern 'TimeCreated'
 $datetime = [datetime]($datetime.line.split("=").split("/>").split("'")[2])
-$datetime = get-date $datetime -format yyyy-MM-dd@hh:mm:ss
+$datetime = get-date $datetime -format yyyy-MM-dd@HH:mm:ss
 $date = $datetime.Split("@")[0]
 $time = $datetime.Split("@")[1]
 $computer = $partition | select-string -pattern 'Computer'
@@ -100,6 +100,6 @@ $diskid = $partition | select-string -Pattern 'DiskId'
 $diskid = $diskid.line.Split("=").Split(">").Split("'").split("{").split("}")[5]
 $registryid = $partition | select-string -Pattern 'RegistryId'
 $registryid = $registryid.line.Split("=").Split(">").Split("'").split("{").split("}")[5]
-$computer + " : " + $sid + " : " + $date + " : " + $time + " : " + $eventid + " : " + $disknumber + " : " + $characteristics + " : " + $busType + " : " + $manufacturer + " : " + $model + " : " + $revision + " : " + $serialnumber + " : " + $parentid + " : " + $diskid + " : " + $registryid | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhh)_partition.txt -Append -Encoding utf8
+$computer + " : " + $sid + " : " + $date + " : " + $time + " : " + $eventid + " : " + $disknumber + " : " + $characteristics + " : " + $busType + " : " + $manufacturer + " : " + $model + " : " + $revision + " : " + $serialnumber + " : " + $parentid + " : " + $diskid + " : " + $registryid | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_partition.txt -Append -Encoding utf8
 }
 }
