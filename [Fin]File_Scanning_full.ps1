@@ -1,7 +1,7 @@
 $ErrorActionPreference = 'silentlycontinue'
 $env:hostIP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress
 $env:hostMAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"}).MacAddress
-$aroot = (get-psdrive | select root).root
+$aroot = (get-psdrive | where-object { $_.Provider.Name -eq "FileSystem" } | select root).root
 foreach ($root in $aroot)
 {
 foreach ($file in (Get-ChildItem $root -file -recurse))
