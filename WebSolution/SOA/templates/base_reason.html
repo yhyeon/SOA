@@ -1,0 +1,93 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/employee_reason.css' %}">
+    {% block js %}{% endblock %}
+
+    <title>외부 데이터 반출 사유서 작성</title>
+</head>
+<body>
+    <div class="content-header">
+        <h1>외부 데이터 반출 사유서</h1>
+        <h3>작성 날짜 : {{ nowdate }}</h3>
+    </div>
+    <hr class="style2">
+    <form name="contentform" method="post" action="{% url 'success' %}" enctype="multipart/form-data"> {% csrf_token %}
+        <div class="content-wrapper">
+            <div class="writer-info">
+                <ul>
+                    <h1>작성자 정보</h1>
+                    <center>
+                        <li><label for="belong">소속</label><input type="text" name="belong" value="{{ employee.team }}" maxlength="100" readonly/></li>
+                        <li><label for="name">이름</label><input type="text" name="name" value="{{ employee.ename }}" maxlength="100" readonly/></li>
+                        <li><label for="enum">사번</label><input type="text" name="enum" value="{{ employee.e_num }}" maxlength="100" readonly/></li>
+                        <li><label for="ip">IP</label><input type="text" name="ip" value="{{ employee.ip }}" maxlength="100" readonly/></li>
+                        <li><label for="mac">MAC</label><input type="text" name="mac" value="{{ employee.mac }}" maxlength="100" readonly/></li>
+                        <li></li>
+                    </center>
+                </ul>
+            </div>
+            <hr class="style3">
+            {% block infringement %}
+            <div class="infringement">
+                <ul>
+                    <h1>위반 행위</h1>
+                    <center>
+                        <li>
+                            <label for="site">접속 사이트</label>
+                            <input type="text" name="site" value="{{ site.url }}" maxlength="100" readonly/>
+                            <span>위 사이트에 대해 위반 행위가 탐지되었습니다.</span>
+                        </li>
+                    </center>
+                </ul>
+            </div>
+            {% endblock %}
+            <hr class="style3">
+            <div class="write-reason">
+                <ul>
+                    <h1>사유 작성</h1>
+                    <center>
+                        <li>
+                            <label for="reason">반출 사유</label>
+                            <select name="reason">
+                                <option value="">반출 사유를 선택해주세요.</option>
+                                <option value="업무 자료 백업">업무 자료 백업</option>
+                                <option value="출장">출장</option>
+                                <option value="개인 자료(비업무자료)">개인 자료(비업무자료)</option>
+                                <option value="기타">기타</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="detail">상세 사유</label>
+                            <textarea name="detail" onkeyup="adjust_textarea(this)"></textarea>
+                            <span>반출 사유에 대해 상세히 작성하여 주세요.</span>
+                        </li>
+                        <li>
+                            <label>반출 파일</label>
+                            <div class="filebox">
+                                <input class="upload-name" id="fileName" value="파일선택" disabled="disabled">
+                                <label for="file-upload">업로드</label>
+                                <input type="file" name="file" id="file-upload" class="upload-hidden" onchange="javascript: document.getElementById('fileName').value = this.value" /><br>
+                                <span>반출 파일이 존재하시면 업로드해주세요.</span>
+                            </div>
+                        </li>
+                    </center>
+                </ul>
+            </div>
+            <hr class="style3">
+            <div class="confirm">
+                <ul>
+                    <center>
+                        <li>
+                            위의 내용을 충분히 작성하셨습니까?&nbsp;<input type="checkbox" name="req" onClick="chk()">
+                        </li>
+                        <li><input type="submit" value="전송" name="submitBtn" disabled ></li>
+                    </center>
+                </ul>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{% extends "base_reason.html" %}
+{% load staticfiles %}
+
+{% block js %}
+    <script type="text/javascript">
+    //auto expand textarea
+    function adjust_textarea(h) {
+        h.style.height = "20px";
+        h.style.height = (h.scrollHeight)+"px";
+    }
+    function chk() {
+        theForm = document.contentform;
+
+        if(theForm.reason.value == "" || theForm.detail.value == "" || theForm.owner.value == "" || theForm.source.value == ""){
+            theForm.req.checked = false;
+            alert("항목을 모두 작성하여주세요.");
+        } else {
+            if(theForm.submitBtn.disabled == true){;
+                theForm.submitBtn.disabled = false;
+            } else {
+                theForm.submitBtn.disabled = true;
+            }
+        }
+    }
+    </script>
+{% endblock %}
+
+{% block infringement %}
+    <div class="infringement">
+        <ul>
+            <h1>위반 행위</h1>
+            <center>
+                <li>
+                    <label for="outflow_file">반출 파일</label>
+                    <input type="text" name="outflow_file" value="반출 파일" maxlength="100" readonly/>
+                    <span>위 파일에 대해 위반 행위가 탐지되었습니다.</span>
+                </li>
+                <li>
+                    <label for="model">모델</label>
+                    <input type="text" name="model" value="모델" maxlength="100" readonly/>
+                    <span>위 모델에 대해 위반 행위가 탐지되었습니다.</span>
+                </li>
+                <li>
+                    <label for="owner">소유자</label>
+                    <input type="text" name="owner" maxlength="100" />
+                    <span>위 모델의 소유자를 작성해주세요.</span>
+                </li>
+                <li>
+                    <label for="source">반출처</label>
+                    <input type="text" name="source" maxlength="100" />
+                    <span>반출파일이 반출된 곳을 작성해주세요.</span>
+                </li>
+            </center>
+        </ul>
+    </div>
+{% endblock %}

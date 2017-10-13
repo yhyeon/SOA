@@ -1,0 +1,127 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+	<link rel="stylesheet" href="{% static 'css/reset.css' %}"> <!-- CSS reset -->
+	<link rel="stylesheet" href="{% static 'css/style.css' %}"> <!-- Resource style -->
+	<script src="{% static 'js/modernizr.js' %}"></script> <!-- Modernizr -->
+    <title>{% block title %}{% endblock %}</title>
+    {% block css %}{% endblock %}
+    {% block js %}{% endblock %}
+</head>
+<body>
+    <header class="main-header">
+		<a href="{% url 'home' %}" class="logo"><img src="{% static 'img/logo_1.png' %}" alt="Logo"></a>
+
+        <!--
+		<div class="cd-search is-hidden">
+			<form action="#0">
+				<input type="search" placeholder="Search...">
+			</form>
+		</div>
+        --><!-- cd-search -->
+
+		<a href="{% url 'home' %}" class="nav-trigger">Menu<span></span></a>
+
+		<nav class="nav">
+			<ul class="top-nav">
+				<li><a href="{% url 'support' %}">Support</a></li>
+				<li class="has-children account">
+					<a href="#">
+						<img src="{% static 'img/bob.png' %}" alt="avatar">
+						{{ username }}
+					</a>
+
+					<ul>
+						<li><a href="{% url 'setting_account' %}">계정 관리</a></li>
+						<li><a href="{% url 'setting_solution' %}">솔루션 설정</a></li>
+						<li><a href="{% url 'logout' %}">로그아웃</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</header> <!-- main-header END -->
+
+	<main class="main-content">
+		<nav class="side-nav">
+			<ul>
+				<li class="label">Main</li>
+
+				<li class="has-children dashboard">
+					<a href="{% url 'home' %}">대시보드</a>
+				</li>
+            </ul>
+
+            <ul>
+                <li class="label">Function</li>
+
+				<li class="has-children logs">
+					<a href="{% url 'logs_beginning' %}">로그</a>
+
+					<ul>
+						<li><a href="{% url 'logs_beginning' %}">원시 로그</a></li>
+						<li><a href="{% url 'logs_outflowsign' %}">유출 징후</a></li>
+						<li><a href="{% url 'logs_outflowaction' %}">유출 행위</a></li>
+                        <li><a href="{% url 'logs_leavesign' %}">퇴사 징후</a></li>
+					</ul>
+				</li>
+
+				<li class="has-children reason">
+					<a href="{% url 'reason_waiting' %}">사유서</a>
+
+					<ul>
+						<li><a href="{% url 'reason_waiting' %}">진행 사유서</a></li>
+						<li><a href="{% url 'reason_process' %}">처리 사유서</a></li>
+						<li><a href="{% url 'reason_complete' %}">완료 사유서</a></li>
+					</ul>
+				</li>
+
+				<li class="has-children report">
+					<a href="{% url 'report' %}">보고서</a>
+				</li>
+            </ul>
+
+            <ul>
+                <li class="label">Reference</li>
+
+				<li class="has-children guideline">
+					<a href="{% url 'guideline_statute' %}">가이드 라인</a>
+
+					<ul>
+						<li><a href="{% url 'guideline_statute' %}">법령</a></li>
+						<li><a href="{% url 'guideline_case' %}">사례</a></li>
+                        <li><a href="{% url 'guideline_preventive' %}">예방법</a></li>
+                        <li><a href="{% url 'guideline_communication' %}">연락망</a></li>
+					</ul>
+				</li>
+
+			    <li class="has-children employee">
+					<a href="{% url 'employee' %}">사원 정보</a>
+				</li>
+			</ul>
+            <!--
+			<ul>
+				<li class="label">Action</li>
+				<li class="action-btn"><a href="#0">+ Button</a></li>
+			</ul>
+			-->
+		</nav>
+
+		<div class="content-wrapper">
+			{% block content %}
+			{% endblock %}
+		</div> <!-- content-wrapper END -->
+
+	</main> <!-- main-content END -->
+
+<!-- Resource jQuery -->
+<script src="{% static 'js/jquery-2.1.4.js' %}"></script>
+<script src="{% static 'js/jquery.menu-aim.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>

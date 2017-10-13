@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/tablestyle.css' %}">{% endblock %}
+
+{% block content %}
+    <div class="table-title">
+        <h3>Data Table</h3>
+    </div>
+
+    <div class="cd-search is-hidden">
+        <form id="search-form" method="post" action=".">{% csrf_token %}
+            {% if search_data %}
+                <input type="search" name="search_data" placeholder="{{ search_data }}" />
+            {% else %}
+                <input type="search" name="search_data" placeholder="Search..." />
+            {% endif %}
+        </form>
+    </div> <!-- Search From END -->
+
+    <div>
+        <table class="table-fill">
+            <thead>
+                <tr>
+                    <th class="text-left">No</th>
+                    <th class="text-left">소속</th>
+                    <th class="text-left">이름</th>
+                    <th class="text-left">사번</th>
+                    <th class="text-left">위반 유형</th>
+                    <th class="text-left">로그 번호</th>
+                    <th class="text-left">작성일</th>
+                    <th class="text-left"></th>
+                </tr>
+            </thead>
+
+            <tbody class="table-hover">
+                {% if dataList %}
+                    {% for dataRow in dataList %}
+                        <tr>
+                            <td class="text-left">{{ dataRow.id }}</td>
+                            <td class="text-left">{{ dataRow.center_team }}</td>
+                            <td class="text-left">{{ dataRow.empname }}</td>
+                            <td class="text-left">{{ dataRow.empnum }}</td>
+                            {% ifequal '1' dataRow.log_table %}
+                                <td class="text-left">USB</td>
+                            {% endifequal %}
+                            {% ifequal '2' dataRow.log_table %}
+                                <td class="text-left">WEB</td>
+                            {% endifequal %}
+                            {% ifequal 'obj_access' dataRow.log_table %}
+                                <td class="text-left">APPLICATION</td>
+                            {% endifequal %}
+                            <td class="text-left">{{ dataRow.log_id }}</td>
+                            <td class="text-left">{{ dataRow.wdate }}</td>
+                            <td class="text-center"><input type="button" name="process" value="보기" onclick="location.href='{% url 'reason_check' dataRow.id %}'" /></td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table> <!-- Content Table END -->
+
+        <hr class="style3">
+
+        <div class="table-number-cover">
+            <span>
+                {% ifequal 1 prev %}
+                    <form class="table-number" method="post" action="./">{% csrf_token %}
+                        {% if search_data %}
+                            <input type="hidden" name="search_data" value={{ search_data }} />
+                            <input type="hidden" name="prev" value={{ currentPage }} />
+                            <input type="submit" value="<" />
+                        {% else %}
+                            <input type="hidden" name="prev" value={{ currentPage }} />
+                            <input type="submit" value="<" />
+                        {% endif %}
+                    </form>
+                {% endifequal %}
+                {% for page in totalPageList %}
+                    <form class="table-number" method="post" action="./">{% csrf_token %}
+                        {% if search_data %}
+                            <input type="hidden" name="search_data" value={{ search_data }} />
+                            <input type="hidden" name="page" value={{ page }} />
+                            <input type="submit" value="[{{ page }}]" />
+                        {% else %}
+                            <input type="hidden" name="page" value={{ page }} />
+                            <input type="submit" value="[{{ page }}]" />
+                        {% endif %}
+                    </form>
+                {% endfor %}
+                {% ifequal 1 next %}
+                    <form class="table-number" method="post" action="./">{% csrf_token %}
+                        {% if search_data %}
+                            <input type="hidden" name="search_data" value={{ search_data }} />
+                            <input type="hidden" name="next" value={{ currentPage }} />
+                            <input type="submit" value=">" />
+                        {% else %}
+                            <input type="hidden" name="next" value={{ currentPage }} />
+                            <input type="submit" value=">" />
+                        {% endif %}
+                    </form>
+                {% endifequal %}
+            </span>
+        </div><!-- Table Number END -->
+    </div>
+{% endblock %}

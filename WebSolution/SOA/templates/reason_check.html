@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/tablestyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/employee_reason.css' %}">
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+    function chk() {
+        if(document.contentform.violation[0].checked == true){
+            document.contentform.severity[0].disabled = false;
+            document.contentform.severity[1].disabled = false;
+            document.contentform.severity[2].disabled = false;
+        } else {
+            document.contentform.severity[0].disabled = true;
+            document.contentform.severity[1].disabled = true;
+            document.contentform.severity[2].disabled = true;
+            document.contentform.severity[0].checked = false;
+            document.contentform.severity[1].checked = false;
+            document.contentform.severity[2].checked = false;
+        }
+    }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="content-header">
+        <h1>외부 데이터 반출 사유서</h1>
+        <h3>작성 날짜 : {{ reasonData.wdate }}</h3>
+    </div>
+    <hr class="style2">
+    <form name="contentform" method="post" action="{% url 'reason_process' %}"> {% csrf_token %}
+        <input type="hidden" name="id" value={{ reasonData.id }} />
+        <div class="content-form-wrapper">
+            <div class="writer-info">
+                <ul>
+                    <h1>작성자 정보</h1>
+                    <center>
+                        <li><label for="belong">소속</label><input type="text" name="belong" value="{{ reasonData.center_team }}" maxlength="100" readonly/></li>
+                        <li><label for="name">이름</label><input type="text" name="name" value="{{ reasonData.empname }}" maxlength="100" readonly/></li>
+                        <li><label for="enum">사번</label><input type="text" name="enum" value="{{ reasonData.empnum }}" maxlength="100" readonly/></li>
+                        <li><label for="ip">IP</label><input type="text" name="ip" value="{{ reasonData.ip }}" maxlength="100" readonly/></li>
+                        <li><label for="mac">MAC</label><input type="text" name="mac" value="{{ reasonData.mac }}" maxlength="100" readonly/></li>
+                        <li></li>
+                    </center>
+                </ul>
+            </div>
+            <hr class="style3">
+            <div class="infringement">
+                <ul>
+                    <h1>위반 행위</h1>
+                    <center>
+                        {% if reasonData.site %}
+                            <li>
+                                <label for="outflow_file">반출 파일</label>
+                                <input type="text" name="outflow_file" value="{{ reasonData.outflow_file }}" maxlength="100" readonly/>
+                                <span>위 파일에 대해 위반 행위가 탐지되었습니다.</span>
+                            </li>
+                            <li>
+                                <label for="site">접속 사이트</label>
+                                <input type="text" name="site" value="{{ reasonData.site }}" maxlength="100" readonly/>
+                            </li>
+                        {% endif %}
+                        {% if reasonData.model %}
+                        {% endif %}
+                        {% if reasonData.application %}
+                            <li>
+                                <label for="outflow_file">반출 파일</label>
+                                <input type="text" name="outflow_file" value="{{ reasonData.outflow_file }}" maxlength="100" readonly/>
+                                <span>위 파일에 대해 위반 행위가 탐지되었습니다.</span>
+                            </li>
+                            <li>
+                                <label for="application">이용 프로그램</label>
+                                <input type="text" name="application" value="{{ reasonData.application }}" maxlength="100" readonly/>
+                                <span>위 프로그램에 대해 위반 행위가 탐지되었습니다.</span>
+                            </li>
+                            <li>
+                                <label for="receiver">수신자</label>
+                                <input type="text" name="receiver" value="{{ reasonData.receiver }}" maxlength="100" readonly/>
+                                <span>파일을 받은 수신자를 작성해주세요.</span>
+                            </li>
+                        {% endif %}
+                    </center>
+                </ul>
+            </div>
+            <hr class="style3">
+            <div class="write-reason">
+                <ul>
+                    <h1>사유 작성</h1>
+                    <center>
+                        <li>
+                            <label for="reason">반출 사유</label>
+                            <input type="text" name="reason" value="{{ reasonData.rf_outflow_file }}" maxlength="100" readonly/>
+                        </li>
+                        <li>
+                            <label for="detail">상세 사유</label>
+                            <textarea name="detail" readonly>{{ reasonData.rf_outflow_file_detail }}</textarea>
+                        </li>
+                        <li>
+                            <label>반출 파일</label>
+                            <input type="text" name="file" value="{{ reasonData.upfilename }}" maxlength="100" readonly/>
+                        </li>
+                    </center>
+                </ul>
+            </div>
+            <hr class="style4">
+            <div class="judgment">
+                <ul>
+                    <center>
+                        <li>
+                            <label for="violation">위반 여부 평가</label>
+                            위반&nbsp;<input type="radio" id="violation" name="violation" value="위반" onClick="chk();" />
+                            업무&nbsp;<input type="radio" id="violation" name="violation" value="업무" onClick="chk();" />
+                        </li>
+                        <li>
+                            <label for="severity">심각도 평가</label>
+                            상&nbsp;<input type="radio" id="severity" name="severity" value="상" disabled />
+                            중&nbsp;<input type="radio" id="severity" name="severity" value="중" disabled />
+                            하&nbsp;<input type="radio" id="severity" name="severity" value="하" disabled />
+                        </li>
+                        <li><input type="submit" value="전송" name="submitBtn" /></li>
+                    </center>
+                </ul>
+            </div>
+        </div>
+    </form>
+{% endblock %}
