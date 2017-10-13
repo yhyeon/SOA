@@ -16,7 +16,7 @@ def getFiletime(dtms):
 	else:
 		seconds, micros = divmod(dtms, 1000000)
 		days, seconds = divmod(seconds, 86400)
-		return str(datetime.datetime(1601, 1, 1) + (datetime.timedelta(days, seconds, micros, hours =+ 9)))
+		return str(datetime.datetime(1601, 1, 1) + (datetime.timedelta(days, seconds, hours =+ 9)))
 
 def State(state):
 	if(state == 0):
