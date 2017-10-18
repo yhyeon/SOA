@@ -9,7 +9,5 @@ $driver = ($usb | ForEach-Object {Get-ItemProperty $_.pspath} | select driver).d
 $mfg = ($usb | ForEach-Object {Get-ItemProperty $_.pspath} | select mfg).mfg
 $service = ($usb | ForEach-Object {Get-ItemProperty $_.pspath} | select service).service
 $friendlyname = ($usb | ForEach-Object {Get-ItemProperty $_.pspath} | select friendlyname).friendlyname
-$label = ($usb | ForEach-Object {Get-ItemProperty $_.pspath} | select label).label
-$lifetiemid = ($usb | ForEach-Object {Get-ItemProperty $_.pspath} | select lifetimeid).lifetimeid
 $devicedesc + ":::;" + $hardwareid + ":::;" + $compatibleids + ":::;" + $driver + ":::;" + $mfg + ":::;" + $service + ":::;" + $friendlyname | Out-File  C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_reg.txt -Append 
 }
