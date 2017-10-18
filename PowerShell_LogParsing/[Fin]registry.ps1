@@ -1,4 +1,5 @@
-﻿$usbpath = 'Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\enum\usb\*\*', 'Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\enum\usbstor\*\*'
+$ErrorActionPreference = 'silentlycontinue'
+$usbpath = 'Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\enum\usb\*\*', 'Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\enum\usbstor\*\*'
 $reg = get-childitem $usbpath
 foreach($usb in $reg)
 {
