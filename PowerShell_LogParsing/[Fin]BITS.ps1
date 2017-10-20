@@ -1,5 +1,5 @@
 ﻿Import-Module bitstransfer
-$enc = Get-Content C:\Windows\enp.txt | ConvertTo-SecureString # specify the directory where encrypted password file is located
+$enc = Get-Content C:\Windows\enp.txt | ConvertTo-SecureString # specify the directory where the encrypted password file is located
 $user = "Administrator" # server ID
 $cred = New-Object System.Management.Automation.PSCredential($user,$enc)
 $src = "C:\Users\Public\Documents\" # directory in which files to be sent
