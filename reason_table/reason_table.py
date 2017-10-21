@@ -3,6 +3,7 @@ import pymysql
 import getpass
 import matplotlib.pylab as plt
 from pylab import figure, axes, pie, title, savefig
+import operator
 
 con = pymysql.connect(host = 'localhost', user = 'root', password = getpass.getpass("Password: "), db = 'reason', charset = 'utf8')
 cur = con.cursor()
@@ -33,26 +34,29 @@ fig.savefig("count.png")
 plt.show()
 # -------------------------------------------------------------------------------------------------
 medias = list(set(DF["media"]))
+seriouses = list(set(DF["serious"]))
 PT_media = DF.pivot_table(columns = "media", values = "serious", aggfunc = "count")
 PT_serious = pandas.pivot_table(DF, columns = "serious", values = "media", aggfunc = "count")
 print(PT_media)
-print(PT_serious)
-# -------------------------------------------------------------------------------------------------
-PT = DF.pivot_table(index = "department", values = "serious", aggfunc = "sum")
+for media in medias:
+    print("media(%s) - " %media, end = "")
+    print(PT_media[media][0])
+for serious in seriouses:
+    print("serious(%s) - " %serious, end = "")
+    print(PT_serious[serious][0])
+# -------------------------------------------------------------------------------------------------     top5
+parts = list(set(DF["department"]))
+part_top = {}
+PT = DF.pivot_table(columns = "department", values = "serious", aggfunc = "sum")
 print(PT)
-PT = PT.sort_values("serious")
-print(PT["index"])
-"""
-medias = list(set(DF["media"]))
-print(medias)
-name_top = {}
-for i in range(len(medias)):
-    media_top[medias[i]] = []
-    PT = DF.pivot_table(index = "media", values = "")
-    only = 0
-    for TOP in PT[names[i]]:
-        name_top[names[i]].append(TOP)
-        if(only >= 5):
-            break
-print(name_top)
-"""
+for i in range(len(parts)):
+    part_top[parts[i]] = []
+    part_top[parts[i]].append(PT[parts[i]][0])
+
+part_top = sorted(part_top.items(), key = operator.itemgetter(1), reverse = True)
+
+top5 = []
+for mem in part_top:
+    top5.append(mem[0])
+print(top5)
+# -------------------------------------------------------------------------------------------------
