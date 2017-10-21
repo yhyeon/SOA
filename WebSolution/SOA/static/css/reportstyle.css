@@ -1,0 +1,105 @@
+.title {
+    width: 100%;
+    height: 60px;
+}
+
+.title input[type="submit"],
+.title input[type="button"]{
+    background: #162b40;
+    border: none;
+    padding: 10px 20px 10px 20px;
+    margin-top: 10px;
+    margin-right: 7px;
+    border-bottom: 3px solid #17364c;
+    border-radius: 3px;
+    color: #D2E2FF;
+    float:right;
+}
+
+.title h1 {
+    color: #111;
+    padding: 10px 10px !important;
+    font-size: 4rem !important;
+    font-weight: 600 !important;
+    float: left;
+}
+
+.summary h2 {
+    color: #111;
+    font-size: 2rem;
+    font-weight: 300;
+}
+
+.sub-title h2 {
+    color: #111;
+    font-weight: 600;
+    margin: 20px 0 0 0;
+    padding-left: 15px;
+}
+
+.writer h2 {
+    color: #111;
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 7px 0 0 0;
+    padding-left: 15px;
+}
+
+hr.style3{
+    margin: 10px 10px;
+	border-top: 2px solid #111;
+    margin-bottom: 20px;
+}
+
+ul.disc {
+    list-style: disc;
+    list-style-position: outside;
+}
+
+ul.disc > li {
+    margin-bottom: 10px;
+}
+
+ul.dashed {
+    list-style-type: none;
+}
+
+ul.dashed > li {
+    text-indent: -5px;
+    margin-bottom: 13px;
+}
+
+ul.dashed > li:before {
+    content: "-  ";
+    text-indent: -5px;
+    margin-bottom: 13px;
+}
+
+.singularity {
+    width: 100%;
+    height: 100px;
+    padding: 10px 40px !important;
+}
+
+.main-violator {
+    width: 100%;
+    height: 170px;
+    padding: 10px 40px !important;
+}
+
+.measure {
+    width: 100%;
+    height: 160px;
+    padding: 10px 40px !important;
+}
+
+.graph {
+    position: absolute;
+    top: 320px;
+    left: 750px;
+}
+
+.graph img {
+    width: 520px;
+    height: 340px;
+}

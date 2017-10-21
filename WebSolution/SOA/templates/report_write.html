@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/reportstyle.css' %}">{% endblock %}
+
+{% block content %}
+    <div class="title">
+        <h1>[업무 파일 반출] ()월 ()주차 주간 보고서</h1>
+        <input type="button" name="submit" value="작성" onclick="">
+        <input type="button" name="back" value="취소" onclick="">
+    </div>
+    <hr class="style3">
+    <div class="summary">
+        <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- ○○/○○(○) ~ ○○/○○(○) 총 ○개 사유서 발송 중 ○개 회신 (위반 ○개, 업무 ○개)</h2>
+    </div>
+    <div class="sub-title">
+        <h2>[특이사항]</h2>
+    </div>
+    <div class="singularity">
+        <ul class="disc">
+            <li>유형별 반출 통계 : USB (5) > APP (3) > WEB (2)</li>
+            <li>반출 심각도 통계 : [上] 5 , [中] 3 , [下] 2</li>
+            <li>보안 위반자 소속 TOP 5 : 사원1, 사원2, 사원3, 사원4, 사원5</li>
+        </ul>
+    </div>
+    <div class="sub-title">
+        <h2>[주요 위반자]</h2>
+    </div>
+    <div class="main-violator">
+        <ul class="disc">
+            <li>서울본부 마케팅팀 김가영 대리 포함 3명</li>
+            <li style="list-style-type: none">
+                <ul class="dashed">
+                    <li>WEB 반출 파일 : 파일1, 파일2</li>
+                    <li>USB 반출 파일 : 파일1, 파일2</li>
+                    <li>APP 반출 파일 : 파일1, 파일2</li>
+                    <li>반출 사유 : 반출 사유 ...</li>
+                    <li>총 누적 위반 횟수 : 2</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="sub-title">
+        <h2>[조치사항]</h2>
+    </div>
+    <div class="measure">
+        <ul class="disc">
+            <li>
+                이렇게 저렇게 조치하였다.
+            </li>
+        </ul>
+    </div>
+    <hr class="style3">
+    <div class="writer">
+        <h2>경영지원본부 보안팀</h2>
+    </div>
+
+    <div class="graph">
+        <img src="{% static 'graph/test1.png' %}">
+    </div>
+{% endblock %}
