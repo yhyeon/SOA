@@ -6,6 +6,6 @@ $cred = New-Object System.Management.Automation.PSCredential($user,$enc)
 $src = "C:\Users\Public\Documents\" # directory in which files to be sent
 Get-ChildItem -path $src |
 foreach {
-$dst = "http://192.168.1.50/transfer/$($_.basename).txt" # server directory with write permissions
+$dst = "http://192.168.1.50/transfer/$($_.name)" # server directory with write permissions
 Start-BitsTransfer -source $($_.FullName) -Destination $dst -Credential $cred -TransferType Upload -Asynchronous
 }
