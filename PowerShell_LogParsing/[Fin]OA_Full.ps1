@@ -1,6 +1,6 @@
 $IP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress
 $MAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"}).MacAddress
-$events = get-winevent -FilterHashtable @{logname='security'; ID = 4663,4662,4656} -MaxEvents 10000 | foreach {$_.toxml()}
+$events = get-winevent -FilterHashtable @{logname='security'; ID = 4663,4662,4656} | foreach {$_.toxml()}
 foreach ($security in $events)
 {
 $security = $security.split("<")
