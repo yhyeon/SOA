@@ -2,7 +2,8 @@ $IP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -
 $MAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"}).MacAddress
 $events = get-winevent -FilterHashtable @{logname='security'; ID = 4663,4662,4656} | foreach {$_.toxml()}
 foreach ($security in $events)
-{$security = $security.split("<")
+{
+$security = $security.split("<")
 $objecttype = $security | select-string -pattern 'ObjectType'
 $objecttype = $objecttype.line.Split("=").split(">")[2]
 if ($objecttype -eq "File")
@@ -36,27 +37,27 @@ $processname = $security | select-string -pattern 'ProcessName'
 $processname = $processname.line.Split("=").split(">")[2]
 if($accessmask -eq "0x1")
 {
-$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x1","ReadData (or ListDirectory)") + ":::;" + $eventid + ":::;" + $computer + ":::;" + $username + ":::;" + $date + ":::;" + $time + ":::;" + $sid + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${MAC}_$(get-date -f yyyyMMddHH)_security.txt -Append -encoding utf8
+$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x1","ReadData (or ListDirectory)") + ":::;" + $eventid + ":::;" + $computer + ":::;" + $username + ":::;" + $date + ":::;" + $time + ":::;" + $sid + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${MAC}_$(get-date -f yyyyMMddHH)_oa_full.txt -Append -encoding utf8
 }
 if($accessmask -eq "0x2")
 {
-$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x2","WriteData (or AddFile)") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname| out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_security.txt -Append -encoding utf8
+$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x2","WriteData (or AddFile)") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname| out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_oa_full.txt -Append -encoding utf8
 }
 if($accessmask -eq "0x4")
 {
-$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x4","AppendData (or AddSubdirectory or CreatePipeInstance)") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_security.txt -Append -encoding utf8
+$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x4","AppendData (or AddSubdirectory or CreatePipeInstance)") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_oa_full.txt -Append -encoding utf8
 }
 if($accessmask -eq "0x40")
 {
-$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x40","DeleteChild") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_security.txt -Append -encoding utf8
+$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x40","DeleteChild") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_oa_full.txt -Append -encoding utf8
 }
 if($accessmask -eq "0x80")
 {
-$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x80","ReadAttributes") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_security.txt -Append -encoding utf8
+$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x80","ReadAttributes") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_oa_full.txt -Append -encoding utf8
 }
 if($accessmask -eq "0x100")
 {
-$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x100","WriteAttributes") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_security.txt -Append -encoding utf8
+$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x100","WriteAttributes") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_oa_full.txt -Append -encoding utf8
 }
 if($accessmask -eq "0x10000")
 {
@@ -135,35 +136,35 @@ $processname = $security | select-string -pattern 'ProcessName'
 $processname = $processname.line.Split("=").split(">")[2]
 if($accessmask -eq "0x1")
 {
-$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x1","ReadData (or ListDirectory)") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_security.txt -Append -encoding utf8
+$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x1","ReadData (or ListDirectory)") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_oa_full.txt -Append -encoding utf8
 }
 if($accessmask -eq "0x2")
 {
-$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x2","WriteData (or AddFile)") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname| out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_security.txt -Append -encoding utf8
+$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x2","WriteData (or AddFile)") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname| out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_oa_full.txt -Append -encoding utf8
 }
 if($accessmask -eq "0x4")
 {
-$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x4","AppendData (or AddSubdirectory or CreatePipeInstance)") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_security.txt -Append -encoding utf8
+$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x4","AppendData (or AddSubdirectory or CreatePipeInstance)") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_oa_full.txt -Append -encoding utf8
 }
 if($accessmask -eq "0x40")
 {
-$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x40","DeleteChild") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_security.txt -Append -encoding utf8
+$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x40","DeleteChild") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_oa_full.txt -Append -encoding utf8
 }
 if($accessmask -eq "0x80")
 {
-$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x80","ReadAttributes") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_security.txt -Append -encoding utf8
+$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x80","ReadAttributes") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_oa_full.txt -Append -encoding utf8
 }
 if($accessmask -eq "0x100")
 {
-$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x100","WriteAttributes") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_security.txt -Append -encoding utf8
+$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x100","WriteAttributes") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_oa_full.txt -Append -encoding utf8
 }
 if($accessmask -eq "0x10000")
 {
-$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x10000","DELETE") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_security.txt -Append -encoding utf8
+$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x10000","DELETE") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_oa_full.txt -Append -encoding utf8
 }
 if($accessmask -eq "0x20000")
 {
-$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x20000","READ_CONTROL") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_security.txt -Append -encoding utf8
+$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x20000","READ_CONTROL") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $processname | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_oa_full.txt -Append -encoding utf8
 }
 }
 elseif ($objectserver -match "MTP")
@@ -195,11 +196,11 @@ $additionalinfo2 = $security | select-string -Pattern 'AdditionalInfo2'
 $additionalinfo2 = $additionalinfo2.line.split("-").split(">")[1]
 if($accessmask -eq "0x120116")
 {
-$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x120116","Write") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $additionalinfo2  | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_security_mtp.txt -Append -encoding utf8
+$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x120116","Write") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" + $additionalinfo2  | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_oa_mtp.txt -Append -encoding utf8
 }
 if($accessmask -eq "0x120089")
 {
-$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x120089","READ") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" +  $additionalinfo2  | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_security_mtp.txt -Append -encoding utf8
+$ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x120089","READ") + ":::;" + $eventid + ":::;" + $date + ":::;" + $time + ":::;" + $computer + ":::;" + $mac + ":::;" + $sid + ":::;" + $username + ":::;" + $logonid + ":::;" + $domainname + ":::;" + $objectserver + ":::;" + $objectname + ":::;" +  $additionalinfo2  | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_oa_mtp.txt -Append -encoding utf8
 }
 }
 }
