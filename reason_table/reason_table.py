@@ -32,6 +32,7 @@ PT = pandas.pivot_table(DF, index = "department", columns = ["media"], values = 
 
 PT.plot(kind = 'Bar')
 plt.ylabel("Count")
+plt.xticks(rotation = 45)
 
 fig = plt.gcf()
 fig.savefig("count.png")
