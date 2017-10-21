@@ -275,7 +275,7 @@ def reason_view(request, reason_id):
 
 # Report tab
 def report(request):
-    pass
+    return render(request, 'report_write.html', {'username': request.session['username']})
 
 # Guideline tab
 def statute(request):
