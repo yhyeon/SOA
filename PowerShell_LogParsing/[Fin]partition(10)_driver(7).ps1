@@ -37,7 +37,7 @@ $device = $driver | select-string -pattern 'DeviceInstanceId' | Out-String
 $device = $device.split(">")[1]
 $device = $device.split("
 ")[0]
-$ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $date + ":::;" + $time + ":::;" + $eventid + ":::;" + $slifetime + ":::;" + $hostguid + ":::;" + $device + ":::;" + 'USB 연결' | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_Win7Driver.txt -Append -Encoding utf8
+$ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $date + ":::;" + $time + ":::;" + $eventid + ":::;" + $slifetime + ":::;" + $hostguid + ":::;" + $device + ":::;" + 'USB 연결' | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_Win7Driver.txt -Append -Encoding utf8
 }
 else
 {
@@ -58,7 +58,7 @@ $sid = $sid.split("'")[1]
 $elifetime = $driver | select-string -pattern 'UMDFDriverManagerHostShutdown lifetime' | out-string
 $elifetime = $elifetime.split("{")[1]
 $elifetime = $elifetime.Split("}")[0]
-$ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $date + ":::;" + $time + ":::;" + $eventid + ":::;" + $elifetime + ":::;" + ":::;" + ":::;" + 'USB 해제' | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_Win7Driver.txt -Append -Encoding utf8
+$ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $date + ":::;" + $time + ":::;" + $eventid + ":::;" + $elifetime + ":::;" + ":::;" + ":::;" + 'USB 해제' | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_Win7Driver.txt -Append -Encoding utf8
 }
 }
 }
@@ -104,6 +104,6 @@ $diskid = $partition | select-string -Pattern 'DiskId'
 $diskid = $diskid.line.Split("=").Split(">").Split("'").split("{").split("}")[5]
 $registryid = $partition | select-string -Pattern 'RegistryId'
 $registryid = $registryid.line.Split("=").Split(">").Split("'").split("{").split("}")[5]
-$ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $date + ":::;" + $time + ":::;" + $eventid + ":::;" + $disknumber + ":::;" + $diskid + ":::;" + $characteristics + ":::;" + $busType + ":::;" + $manufacturer + ":::;" + $model + ":::;" + $revision + ":::;" + $serialnumber + ":::;" + $parentid + ":::;" + $registryid | out-file C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_partition.txt -Append -Encoding utf8
+$ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $date + ":::;" + $time + ":::;" + $eventid + ":::;" + $disknumber + ":::;" + $diskid + ":::;" + $characteristics + ":::;" + $busType + ":::;" + $manufacturer + ":::;" + $model + ":::;" + $revision + ":::;" + $serialnumber + ":::;" + $parentid + ":::;" + $registryid | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_partition.txt -Append -Encoding utf8
 }
 }
