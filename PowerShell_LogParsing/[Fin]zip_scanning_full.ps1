@@ -1,7 +1,8 @@
 $ErrorActionPreference = 'silentlycontinue'
-$env:hostIP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress
-$env:hostMAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"}).MacAddress
+$IP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress
+$MAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"}).MacAddress
 $aroot = (get-psdrive | where-object { $_.Provider.Name -eq "FileSystem" } | select root).root
+[Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem')
 foreach ($root in $aroot)
 {
 foreach($source in (Get-ChildItem $root -file -recurse -filter '*.zip'))
@@ -19,6 +20,6 @@ $mdatetime = ($file | select LastWriteTime).LastWriteTime
 $mdatetime = get-date $mdatetime -format yyyy-MM-dd@HH:mm:ss
 $mdate = $mdatetime.split("@")[0]
 $mtime = $mdatetime.split("@")[1]
-[IO.Compression.ZipFile]::OpenRead($source.FullName).Entries | %{$env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $env:username + ":::;" +  $env:hostIP + ":::;" + $env:hostMAC + ":::;" + $cdate + ":::;" + $ctime + “ :“ + $adate + ":::;" + $atime + “ :“ + $mdate + “ :“ + $mtime + “ :“ + "{0:N2}" -f ($source.Length/1kb) + ":::;" + $rootd + ":::;" + $source.DirectoryName + ":::;" + $source.Name + ":::;" + $source.BaseName + ":::;" + $source.Extension + ":::;" + $source.Attributes+ ":::;" + "$source`: $($_.FullName):::;$($_.fullname.split(".")[-1]):::;$($_.Length/1kb)" } | Out-File  C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_zip.txt -Append 
+[IO.Compression.ZipFile]::OpenRead($source.FullName).Entries | %{$env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdate + ":::;" + $ctime + “ :“ + $adate + ":::;" + $atime + “ :“ + $mdate + “ :“ + $mtime + “ :“ + "{0:N2}" -f ($source.Length/1kb) + ":::;" + $rootd + ":::;" + $source.DirectoryName + ":::;" + $source.Name + ":::;" + $source.BaseName + ":::;" + $source.Extension + ":::;" + $source.Attributes+ ":::;" + "$($_.FullName):::;$($_.fullname.split(".")[-1]):::;$($_.Length/1kb)" } | Out-File  C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_zip.txt -Append 
 }
 }
