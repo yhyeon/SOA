@@ -263,7 +263,7 @@ Switch($job.jobstate)
 }
 $taskname = "file_noc parsing"
 $action = New-ScheduledTaskAction -execute "powershell.exe" -Argument '-File "C:\Windows\soa\file_noc.ps1"'
-$trigger = New-ScheduledTaskTrigger -Daily -At "16:00" # Specify the time
+$trigger = New-ScheduledTaskTrigger -AtStartup -RandomDelay 00:00:30 # Specify the time
 $settings = New-ScheduledTaskSettingsSet -DontStopOnIdleEnd -ExecutionTimeLimit ([TimeSpan]::Zero)
 
 $principal = New-ScheduledTaskPrincipal -userID SYSTEM -LogonType ServiceAccount -RunLevel Highest
@@ -275,7 +275,7 @@ if($filenocpath -like "True")
 {
 $taskname = "file_noc parsing"
 $action = New-ScheduledTaskAction -execute "powershell.exe" -Argument '-File "C:\Windows\soa\file_noc.ps1"'
-$trigger = New-ScheduledTaskTrigger -Daily -At "16:00" # Specify the time
+$trigger = New-ScheduledTaskTrigger -AtStartup -RandomDelay 00:00:30 # Specify the time
 $settings = New-ScheduledTaskSettingsSet -DontStopOnIdleEnd -ExecutionTimeLimit ([TimeSpan]::Zero)
 
 $principal = New-ScheduledTaskPrincipal -userID SYSTEM -LogonType ServiceAccount -RunLevel Highest
