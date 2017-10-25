@@ -1,6 +1,6 @@
 $ErrorActionPreference = 'silentlycontinue'
-$env:hostIP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress
-$env:hostMAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"}).MacAddress
+$IP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress
+$MAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"}).MacAddress
 $aroot = (get-psdrive | where-object { $_.Provider.Name -eq "FileSystem" } | select root).root
 foreach ($root in $aroot)
 {
@@ -19,6 +19,6 @@ $mdatetime = ($file | select LastWriteTime).LastWriteTime
 $mdatetime = get-date $mdatetime -format yyyy-MM-dd@HH:mm:ss
 $mdate = $mdatetime.split("@")[0]
 $mtime = $mdatetime.split("@")[1]
-$env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $env:hostIP + ":::;" + $env:hostMAC + ":::;" + $env:username + ":::;" +  $cdate + ":::;" + $ctime + “ :“ + $adate + ":::;" + $atime + “ :“ + $mdate + “ :“ + $mtime + “ :“ + "{0:N2}" -f ($file.length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname + ":::;" + $file.name + ":::;" + $file.basename + ":::;" + $file.extension + ":::;" + $file.attributes | Out-File  C:\Users\Public\Documents\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_localfiles.txt -Append 
+$env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdate + ":::;" + $ctime + “ :“ + $adate + ":::;" + $atime + “ :“ + $mdate + “ :“ + $mtime + “ :“ + "{0:N2}" -f ($file.length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname + ":::;" + $file.name + ":::;" + $file.basename + ":::;" + $file.extension + ":::;" + $file.attributes | Out-File  C:\Users\Public\Documents\${MAC}_$(get-date -f yyyyMMddHH)_localfiles_full.txt -Append -Encoding utf8
 }
 }
