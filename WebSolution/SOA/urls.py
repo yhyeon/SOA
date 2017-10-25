@@ -16,8 +16,10 @@ urlpatterns = [
     url(r'^reason/process/(?P<reason_id>\w+)/', views.reason_check, name='reason_check'),
     url(r'^reason/complete/$', views.complete, name='reason_complete'),
     url(r'^reason/complete/(?P<reason_id>\w+)/', views.reason_view, name='reason_view'),
-    url(r'^report/', views.report, name='report'),
-
+    url(r'^report/$', views.report, name='report'),
+    url(r'^report/pop/', views.report_pop, name='report_pop'),
+    url(r'^report/new/', views.report_new, name='report_new'),
+    url(r'^report/write/', views.report_process, name='report_write'),
     url(r'^guideline/statute/', views.statute, name='guideline_statute'),
     url(r'^guideline/case/', views.case, name='guideline_case'),
     url(r'^guideline/preventive/', views.preventive, name='guideline_preventive'),

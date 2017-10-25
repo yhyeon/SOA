@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/tablestyle.css' %}">{% endblock %}
+{% block js %}
+    <script type="text/javascript" language="JavaScript">
+    function test() {
+        var popUrl = "{% url 'report_pop' %}";
+        var popOption = "width=370, height=360, resizable=no, scrollbars=no, status=no, directories=no, menubar=no, toolbar=no, location=no;";
+
+        window.open(popUrl,"",popOption);
+    }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="table-title">
+        <h3>보고서 목록</h3>
+    </div>
+
+    <div class="cd-search is-hidden">
+        <form id="search-form" method="post" action=".">{% csrf_token %}
+            {% if search_data %}
+                <input type="search" name="search_data" placeholder="{{ search_data }}" />
+            {% else %}
+                <input type="search" name="search_data" placeholder="Search..." />
+            {% endif %}
+        </form>
+    </div> <!-- Search From END -->
+
+    <div>
+        <table class="table-fill">
+            <thead>
+                <tr>
+                    <th class="text-left">No</th>
+                    <th class="text-left">제목</th>
+                    <th class="text-left">작성일</th>
+                    <th class="text-left">작성자</th>
+                    <th class="text-left"></th>
+                </tr>
+            </thead>
+
+            <tbody class="table-hover">
+                {% if dataList %}
+                    {% for dataRow in dataList %}
+                        <tr>
+                            <td class="text-left">{{ dataRow.id }}</td>
+                            <td class="text-left">{{ dataRow.e_num.empnum}}</td>
+                            <td class="text-left">{{ dataRow.e_num.empname }}</td>
+                            <td class="text-left">{{ dataRow.e_num.ip }}</td>
+                            <td class="text-left">{{ dataRow.log_num }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table> <!-- Content Table END -->
+
+        <hr class="style3">
+
+        <div class="table-number-cover">
+            <span>
+                {% ifequal 1 prev %}
+                    <form class="table-number" method="post" action="./">{% csrf_token %}
+                        {% if search_data %}
+                            <input type="hidden" name="search_data" value={{ search_data }} />
+                            <input type="hidden" name="prev" value={{ currentPage }} />
+                            <input type="submit" value="<" />
+                        {% else %}
+                            <input type="hidden" name="prev" value={{ currentPage }} />
+                            <input type="submit" value="<" />
+                        {% endif %}
+                    </form>
+                {% endifequal %}
+                {% for page in totalPageList %}
+                    <form class="table-number" method="post" action="./">{% csrf_token %}
+                        {% if search_data %}
+                            <input type="hidden" name="search_data" value={{ search_data }} />
+                            <input type="hidden" name="page" value={{ page }} />
+                            <input type="submit" value="[{{ page }}]" />
+                        {% else %}
+                            <input type="hidden" name="page" value={{ page }} />
+                            <input type="submit" value="[{{ page }}]" />
+                        {% endif %}
+                    </form>
+                {% endfor %}
+                {% ifequal 1 next %}
+                    <form class="table-number" method="post" action="./">{% csrf_token %}
+                        {% if search_data %}
+                            <input type="hidden" name="search_data" value={{ search_data }} />
+                            <input type="hidden" name="next" value={{ currentPage }} />
+                            <input type="submit" value=">" />
+                        {% else %}
+                            <input type="hidden" name="next" value={{ currentPage }} />
+                            <input type="submit" value=">" />
+                        {% endif %}
+                    </form>
+                {% endifequal %}
+            </span>
+            <input type="button" name="new" value="새로만들기" onclick="location.href='{% url 'report_new' %}'">
+        </div><!-- Table Number END -->
+
+    </div>
+{% endblock %}

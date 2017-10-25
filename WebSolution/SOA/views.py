@@ -275,7 +275,29 @@ def reason_view(request, reason_id):
 
 # Report tab
 def report(request):
-    return render(request, 'report_write.html', {'username': request.session['username']})
+    return render(request, 'report.html', {'username': request.session['username']})
+
+def report_pop(request):
+    return render(request, 'report_pop.html', {})
+
+def report_new(request):
+    return render(request, 'report_new.html', {'username': request.session['username']})
+
+def report_process(request):
+    t = ['월', '화', '수', '목', '금', '토', '일']
+    prevdate = datetime(int(request.POST.get('pdate').split('/')[0]), int(request.POST.get('pdate').split('/')[1]), int(request.POST.get('pdate').split('/')[2]))
+    nextdate = datetime(int(request.POST.get('ndate').split('/')[0]), int(request.POST.get('ndate').split('/')[1]), int(request.POST.get('ndate').split('/')[2]))
+
+    print(str(prevdate.date()))
+    print(nextdate.date())
+
+    reason_totalCnt = UactivReports.objects.filter(wdate=prevdate.date()).count()
+    vioCnt = UactivReports.objects.filter(wdate=prevdate.date(),violation='위반').count()
+    bisCnt = UactivReports.objects.filter(wdate=prevdate.date(), violation='업무').count()
+    replyCnt = vioCnt + bisCnt
+
+    return render(request, 'report_write.html', {'username': request.session['username'], 'rMonth': request.POST.get('rMonth'), 'rWeek': request.POST.get('rWeek'), 'pMonth': prevdate.month, 'pDay': prevdate.day, 'pDow': t[prevdate.weekday()],
+                                                 'nMonth': nextdate.month, 'nDay': nextdate.day, 'nDow': t[nextdate.weekday()], 'reason_totalCnt': reason_totalCnt, 'vioCnt': vioCnt, 'bisCnt': bisCnt, 'replyCnt': replyCnt})
 
 # Guideline tab
 def statute(request):

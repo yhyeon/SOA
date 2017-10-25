@@ -170,3 +170,15 @@ hr.style3{
     margin-top: 15px;
     margin-bottom: 5px;
 }
+
+.table-number-cover input[type="button"]{
+    background: #162b40;
+    border: none;
+    padding: 10px 20px 10px 20px;
+    margin-top: 5px;
+    margin-right: 20px;
+    border-bottom: 3px solid #17364c;
+    border-radius: 3px;
+    color: #D2E2FF;
+    float:right;
+}
