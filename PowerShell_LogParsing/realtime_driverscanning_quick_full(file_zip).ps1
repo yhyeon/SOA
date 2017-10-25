@@ -1,4 +1,4 @@
-﻿$sw = [System.Diagnostics.Stopwatch]::startnew()
+$sw = [System.Diagnostics.Stopwatch]::startnew()
 $drive = ((Get-PSDrive -PSProvider FileSystem | Where-Object name -ne "C" | select root).root).count
 do {
 if (((Get-PSDrive -PSProvider FileSystem | Where-Object name -ne "C" | select root).root).count -ne $drive)
@@ -118,10 +118,10 @@ $mdatetime = ($file | select LastWriteTime).LastWriteTime
 $mdatetime = get-date $mdatetime -format yyyy-MM-dd@HH:mm:ss
 $mdate = $mdatetime.split("@")[0]
 $mtime = $mdatetime.split("@")[1]
-$env:userdomain + ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdate + ":::;" + $ctime + “ :“ + $adate + ":::;" + $atime + “ :“ + $mdate + “ :“ + $mtime + “ :“ + "{0:N2}" -f ($file.length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname + ":::;" + $file.name + ":::;" + $file.basename + ":::;" + $file.extension + ":::;" + $file.attributes | Out-File C:\Users\Public\Documents\${MAC}_$(get-date -f yyyyMMddHH)_${roon}_files.txt -Append -Encoding utf8
+$env:userdomain + ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdate + ":::;" + $ctime + “ :“ + $adate + ":::;" + $atime + “ :“ + $mdate + “ :“ + $mtime + “ :“ + "{0:N2}" -f ($file.length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname + ":::;" + $file.name + ":::;" + $file.basename + ":::;" + $file.extension + ":::;" + $file.attributes | Out-File C:\Users\Public\Documents\${MAC}_$(get-date -f yyyyMMddHH)_${rood}_files.txt -Append -Encoding utf8
 if ($file -like "*.zip")
 {
-[IO.Compression.ZipFile]::OpenRead($file.FullName).Entries | %{$env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdate + ":::;" + $ctime + “ :“ + $adate + ":::;" + $atime + “ :“ + $mdate + “ :“ + $mtime + “ :“ + "{0:N2}" -f ($file.Length/1kb) + ":::;" + $rootd + ":::;" + $file.DirectoryName + ":::;" + $file.Name + ":::;" + $file.BaseName + ":::;" + $file.Extension + ":::;" + $file.Attributes+ ":::;" + "$($_.FullName):::;$($_.fullname.split(".")[-1]):::;$($_.Length/1kb)" } | Out-File  C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_${roon}_zip.txt -Append 
+[IO.Compression.ZipFile]::OpenRead($file.FullName).Entries | %{$env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdate + ":::;" + $ctime + “ :“ + $adate + ":::;" + $atime + “ :“ + $mdate + “ :“ + $mtime + “ :“ + "{0:N2}" -f ($file.Length/1kb) + ":::;" + $rootd + ":::;" + $file.DirectoryName + ":::;" + $file.Name + ":::;" + $file.BaseName + ":::;" + $file.Extension + ":::;" + $file.Attributes+ ":::;" + "$($_.FullName):::;$($_.fullname.split(".")[-1]):::;$($_.Length/1kb)" } | Out-File  C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHH)_${rood}_zip.txt -Append 
 }
 }
 }
