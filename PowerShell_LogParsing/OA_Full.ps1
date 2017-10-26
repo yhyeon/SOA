@@ -1,3 +1,4 @@
+$sw = [System.Diagnostics.Stopwatch]::startnew()
 $IP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress
 $MAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"}).MacAddress
 $events = get-winevent -FilterHashtable @{logname='security'; ID = 4663,4662,4656} -MaxEvents 3000 -Oldest | foreach {$_.toxml()}
@@ -205,3 +206,5 @@ $ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x120089","READ") + ":::;" +
 }
 }
 }
+$sw.stop()
+$sw.Elapsed.tostring('dd\.hh\"mm\:ss\.fff')
