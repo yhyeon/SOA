@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/reportstyle.css' %}">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        function Check(){
+            var form = document.dateform;
+
+            if (form.rMonth.value == ""){
+                alert("보고서 제목을 설정해주세요.");
+                form.rMonth.select();
+                return;
+            }
+
+            if (form.rMonth.value < "1" || form.rMonth.value > "12" ){
+                alert("잘못된 범위입니다.");
+                form.rMonth.select();
+                return;
+            }
+
+            if (form.rWeek.value == ""){
+                alert("보고서 제목을 설정해주세요.");
+                form.rWeek.select();
+                return;
+            }
+
+            if (form.rWeek.value < "1" || form.rWeek.value > "5" || form.rWeek.value.length > 1){
+                alert("잘못된 범위입니다.");
+                form.rWeek.select();
+                return;
+            }
+
+            if (form.pdate.value == ""){
+                alert("날자를 선택하세요.");
+                form.pdate.select();
+                return;
+            }
+
+            if (form.ndate.value == ""){
+                alert("날자를 선택하세요.");
+                form.ndate.select();
+                return;
+            }
+
+            form.submit();
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="new_title">
+        <h1>보고서 새로 만들기</h1>
+        <hr class="style3">
+    </div>
+
+    <div class="new_content">
+    <center>
+        <form name="dateform" method="post" action="{% url 'report_write' %}">{% csrf_token %}
+            <div class="sub_title">
+                <h2>
+                    <input type="text" id="reportMonth" name="rMonth">월
+                    <input type="text" id="reportWeek" name="rWeek">주차 보고서
+                </h2>
+            </div>
+            <div class="dateselected">
+                <input type="text" id="prevdate" name="pdate"> ~
+                <input type="text" id="nextdate" name="ndate"><br>
+                <input type="button" name="back" value="취소" onclick="history.back();">
+                <input type="button" value="다음" onclick="Check();">
+            </div>
+        </form>
+    </center>
+    </div>
+{% endblock %}
+
+{% block jq %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+    <script>
+        $(function() {
+            $( "#prevdate" ).datepicker({
+                dateFormat: "yy/mm/dd",
+                nextText: '다음 달',
+                prevText: '이전 달',
+                dayNames: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
+                dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+                monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                monthNamesShort: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+                minDate: "-1m",
+                maxDate: 0,
+                showOtherMonths: true,
+                onClose: function (selectedDate) {
+                    $("#nextdate").datepicker("option", "minDate", selectedDate);
+                }
+            });
+
+            $( "#nextdate" ).datepicker({
+                dateFormat: "yy/mm/dd",
+                nextText: '다음 달',
+                prevText: '이전 달',
+                dayNames: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
+                dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+                monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                monthNamesShort: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+                minDate: "-1m",
+                maxDate: 0,
+                showOtherMonths: true
+            });
+        });
+    </script>
+{% endblock %}

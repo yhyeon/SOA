@@ -3,12 +3,23 @@
     height: 60px;
 }
 
+.title input[type="text"] {
+    box-sizing: border-box;
+    width: 800px;
+    border: none;
+    height: 55px;
+    font-size: 35px;
+    font-weight: 600;
+    text-align: left;
+    float: left;
+}
+
 .title input[type="submit"],
 .title input[type="button"]{
     background: #162b40;
     border: none;
     padding: 10px 20px 10px 20px;
-    margin-top: 10px;
+    margin-top: 5px;
     margin-right: 7px;
     border-bottom: 3px solid #17364c;
     border-radius: 3px;
@@ -17,6 +28,7 @@
 }
 
 .title h1 {
+    width: 100%;
     color: #111;
     padding: 10px 10px !important;
     font-size: 4rem !important;
@@ -28,6 +40,16 @@
     color: #111;
     font-size: 2rem;
     font-weight: 300;
+}
+
+.summary input[type="text"] {
+    box-sizing: border-box;
+    width: 900px;
+    border: none;
+    height: 35px;
+    font-size: 20px;
+    font-weight: 400;
+    text-align: left;
 }
 
 .sub-title h2 {
@@ -46,7 +68,7 @@
 }
 
 hr.style3{
-    margin: 10px 10px;
+    margin: 15px 10px 0 10px;
 	border-top: 2px solid #111;
     margin-bottom: 20px;
 }
@@ -66,13 +88,13 @@ ul.dashed {
 
 ul.dashed > li {
     text-indent: -5px;
-    margin-bottom: 13px;
+    margin-bottom: 10px;
 }
 
 ul.dashed > li:before {
     content: "-  ";
     text-indent: -5px;
-    margin-bottom: 13px;
+    margin-bottom: 10px;
 }
 
 .singularity {
@@ -81,11 +103,82 @@ ul.dashed > li:before {
     padding: 10px 40px !important;
 }
 
+.typeRank input[type="text"] {
+    box-sizing: border-box;
+    width: 300px;
+    border: none;
+    height: 25px;
+    font-size: 15px;
+    font-weight: 400;
+    text-align: left;
+}
+
+.severityCnt input[type="text"] {
+    box-sizing: border-box;
+    width: 300px;
+    border: none;
+    height: 25px;
+    font-size: 15px;
+    font-weight: 400;
+    text-align: left;
+}
+
+.top5 input[type="text"] {
+    box-sizing: border-box;
+    width: 300px;
+    border: none;
+    height: 25px;
+    font-size: 15px;
+    font-weight: 400;
+    text-align: left;
+}
+
 .main-violator {
     width: 100%;
-    height: 170px;
+    height: 205px;
     padding: 10px 40px !important;
 }
+
+.violator input[type="text"] {
+    box-sizing: border-box;
+    width: 350px;
+    border: none;
+    height: 25px;
+    font-size: 15px;
+    font-weight: 400;
+    text-align: left;
+}
+
+.outflowFile input[type="text"] {
+    box-sizing: border-box;
+    width: 250px;
+    border: none;
+    height: 25px;
+    font-size: 15px;
+    font-weight: 400;
+    text-align: left;
+}
+
+.outreason input[type="text"] {
+    box-sizing: border-box;
+    width: 300px;
+    border: none;
+    height: 25px;
+    font-size: 15px;
+    font-weight: 400;
+    text-align: left;
+}
+
+.accumulateCnt input[type="text"] {
+    box-sizing: border-box;
+    width: 30px;
+    border: none;
+    height: 25px;
+    font-size: 15px;
+    font-weight: 400;
+    text-align: center;
+}
+
 
 .measure {
     width: 100%;
@@ -93,13 +186,86 @@ ul.dashed > li:before {
     padding: 10px 40px !important;
 }
 
+.measure textarea {
+    box-sizing: border-box;
+    border: solid;
+    resize: none;
+    font-size: 15px;
+    font-weight: 400;
+}
+
 .graph {
     position: absolute;
     top: 320px;
-    left: 750px;
+    left: 800px;
 }
 
 .graph img {
     width: 520px;
     height: 340px;
+}
+
+.new_title {
+    padding-top: 100px;
+    width: 100%;
+    height: 250px;
+}
+
+.new_title h1 {
+    width: 100%;
+    color: #111;
+    padding: 10px 10px !important;
+    font-size: 4rem !important;
+    font-weight: 600 !important;
+
+}
+
+.new_content {
+    width: 100%;
+}
+
+.new_content h2 {
+    color: #111;
+    font-size: 2rem !important;
+    font-weight: 500 !important;
+}
+
+.sub_title input[type="text"] {
+    box-sizing: border-box;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border:1px solid #111;
+    width: 30px;
+    height: 25px;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.dateselected input[type="text"] {
+    box-sizing: border-box;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border:1px solid #111;
+    width: 100px;
+    height: 25px;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.dateselected input[type="submit"],
+.dateselected input[type="button"]{
+    background: #162b40;
+    border: none;
+    padding: 10px 20px 10px 20px;
+    margin-top: 5px;
+    margin-right: 7px;
+    border-bottom: 3px solid #17364c;
+    border-radius: 3px;
+    color: #D2E2FF;
 }
