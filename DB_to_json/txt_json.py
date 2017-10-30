@@ -1,11 +1,12 @@
 import datetime
 
-logs = open("F8-63-3F-09-0D-62_2017102801_oa_filtered_ANSI.txt", "r")
-json = open(str(datetime.date.today())+".json", "w")
+name = "SJ_partition"
+logs = open( name + ".txt", "r")
+json = open( name + ".json", "w")
 
-titles = ['ID', 'IP', 'MAC', 'accessmask', 'eventID', 'Cname', 'Uname', 'date', 'time', 'SID', 'logonID', 'Dname', 'objserver', 'root', 'directory', 'file', 'ext', 'PSname']
+columns = ['ID', 'IP', 'MAC', 'Cname', 'SID', 'date', 'time', 'EventID', 'diskNum', 'diskID', 'characteristics', 'bustype', 'manufacturer', 'model', 'modelversion', 'SerialNum', 'parentID', 'registryID']
 
-i = 0
+i = 1390
 for line in logs:
     json.write('{ "index" : {"_id" : "%d"} }\n' %i)
     line = line.strip('\n')
@@ -13,7 +14,7 @@ for line in logs:
 
     contents = '{"ID":%d'%i
     for k in range(len(values)):
-        contents = contents + ', "' + titles[k + 1] + '":' + '"' + values[k] + '"'
+        contents = contents + ', "' + columns[k + 1] + '":' + '"' + values[k] + '"'
     contents += '}\n'
     json.write(contents)
     i += 1
