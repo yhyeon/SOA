@@ -4,7 +4,7 @@
     $env:hostMAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"} | Where-Object {$_.InterfaceDescription -notmatch "TEST"}).MacAddress
     $env:USERNAME
 
-    Copy-Item 'C:\Users\*\AppData\Local\Google\Chrome\User Data\Default\History' -Destination C:\ProgramData\soalog\${env:COMPUTERNAME}_${env:USERNAME}_${env:hostIP}_${env:hostMAC}_$(get-date -f yyyyMMddHH)_Chrome_History
+    Copy-Item 'C:\Users\*\AppData\Local\Google\Chrome\User Data\Default\History' -Destination C:\ProgramData\soalog\${env:COMPUTERNAME}_${env:USERNAME}_${env:hostIP}_${env:hostMAC}_$(get-date -f yyyyMMddHH)_ChromeHistory
 
     if($?)
     {
