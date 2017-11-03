@@ -10,6 +10,8 @@ from subprocess import check_output
 from xml.etree.ElementTree import fromstring
 from urllib.parse import urlparse
 import fnmatch
+import shutil
+import time
 
 def getFiletime(dtms):
 	if(dtms == 0):
@@ -196,7 +198,7 @@ def Interrupt_Reason(reason):
 
 
 data_path = os.path.expanduser('~') + "\\Desktop\\history_test"
-# data_path = "C:\\soa\\upload"
+#data_path = "C:\\soa\\upload"
 
 for path, dir, files in os.walk(data_path):
 	for filename in files:
@@ -208,8 +210,8 @@ for path, dir, files in os.walk(data_path):
 			IP = tmp[2]
 			MAC = tmp[3]
 			if(tmp[-1] == 'ChromeHistory'):
-				f = open("C:\\Users\\Public\\Documents\\" + tmp[3] + '_'+ tmp[4] + '_ChromeHistory'+'.txt', 'w+', encoding='utf8')
-				f2 = open("C:\\Users\\Public\\Documents\\" + tmp[3] + '_'+ tmp[4] + '_ChromeDownloads'+'.txt', 'w+', encoding='utf8')
+				f = open("C:\\Users\\Public\\Documents\\" + tmp[3] + '_'+ tmp[4] + '_ChromeHistoryb'+'.txt', 'w+', encoding='utf8')
+				f2 = open("C:\\Users\\Public\\Documents\\" + tmp[3] + '_'+ tmp[4] + '_ChromeDownloadsb'+'.txt', 'w+', encoding='utf8')
 
 				history_db = os.path.join(data_path, filename)
 				conn = sql.connect(history_db)
@@ -274,9 +276,43 @@ for path, dir, files in os.walk(data_path):
 					 + ':::;' + str(Interrupt_Reason((row3[9]))) + ':::;' + (row3[15]) + ':::;' + (uri) + ':::;' + str(row3[24]) + ':::;' + (file_name) + ':::;' + '.'+(extent) + ':::;')
 					f2.write('\n')
 
-			conn.close()
-			f.close()
-			f2.close()
+				conn.close()
+				f.close()
+				f2.close()
+				time.sleep(5)
+				os.rename("C:\\Users\\Public\\Documents\\" + tmp[3] + '_'+ tmp[4] + '_ChromeHistoryb'+'.txt', "C:\\Users\\Public\\Documents\\" + tmp[3] + '_'+ tmp[4] + '_ChromeHistory'+'.txt')
+				os.rename("C:\\Users\\Public\\Documents\\" + tmp[3] + '_'+ tmp[4] + '_ChromeDownloadsb'+'.txt', "C:\\Users\\Public\\Documents\\" + tmp[3] + '_'+ tmp[4] + '_ChromeDownloads'+'.txt')
+				time.sleep(3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # f = open("C:\\Users\\Public\\Documents\\" + computer_N + '_'+ curr_time + '_ChromeHistory'+'.txt', 'w+', encoding='utf8')
