@@ -197,8 +197,8 @@ def Interrupt_Reason(reason):
 		return msg
 
 
-data_path = os.path.expanduser('~') + "\\Desktop\\history_test"
-#data_path = "C:\\soa\\upload"
+#data_path = os.path.expanduser('~') + "\\Desktop\\history_test"
+data_path = "C:\\soa\\upload"
 
 for path, dir, files in os.walk(data_path):
 	for filename in files:
@@ -210,8 +210,8 @@ for path, dir, files in os.walk(data_path):
 			IP = tmp[2]
 			MAC = tmp[3]
 			if(tmp[-1] == 'ChromeHistory'):
-				f = open("C:\\Users\\Public\\Documents\\" + tmp[3] + '_'+ tmp[4] + '_ChromeHistoryb'+'.txt', 'w+', encoding='utf8')
-				f2 = open("C:\\Users\\Public\\Documents\\" + tmp[3] + '_'+ tmp[4] + '_ChromeDownloadsb'+'.txt', 'w+', encoding='utf8')
+				f = open("C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeHistoryb'+'.txt', 'w+', encoding='utf8')
+				f2 = open("C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeDownloadsb'+'.txt', 'w+', encoding='utf8')
 
 				history_db = os.path.join(data_path, filename)
 				conn = sql.connect(history_db)
@@ -273,16 +273,26 @@ for path, dir, files in os.walk(data_path):
 
 					f2.write(Cname + ':::;' + Uname + ':::;' + str(IP) + ':::;' + (MAC) + ':::;' + (row3[1]) + ':::;' + (row3[2])
 					 + ':::;' + (row3[3]) + ':::;' + (getFiletime((row3[4])).replace(" ", "T"))+ '+09:00' + ':::;' + str(row3[5]) + ':::;' + str(row3[6]) + ':::;' + State((row3[7])) + ':::;' + Danger_Type(row3[8])
-					 + ':::;' + str(Interrupt_Reason((row3[9]))) + ':::;' + (row3[15]) + ':::;' + (uri) + ':::;' + str(row3[24]) + ':::;' + (file_name) + ':::;' + '.'+(extent) + ':::;')
+					 + ':::;' + str(Interrupt_Reason((row3[9]))) + ':::;' + (uri) + ':::;' + (row3[15])  + ':::;' + (file_name) + ':::;' + '.'+(extent) + ':::;')
 					f2.write('\n')
 
 				conn.close()
 				f.close()
 				f2.close()
 				time.sleep(5)
-				os.rename("C:\\Users\\Public\\Documents\\" + tmp[3] + '_'+ tmp[4] + '_ChromeHistoryb'+'.txt', "C:\\Users\\Public\\Documents\\" + tmp[3] + '_'+ tmp[4] + '_ChromeHistory'+'.txt')
-				os.rename("C:\\Users\\Public\\Documents\\" + tmp[3] + '_'+ tmp[4] + '_ChromeDownloadsb'+'.txt', "C:\\Users\\Public\\Documents\\" + tmp[3] + '_'+ tmp[4] + '_ChromeDownloads'+'.txt')
+				os.rename("C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeHistoryb'+'.txt', "C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeHistory'+'.txt')
+				os.rename("C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeDownloadsb'+'.txt', "C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeDownloads'+'.txt')
 				time.sleep(3)
+
+				if os.path.exists("C:\\backlog\\C_History"):
+					os.rename("C:\\soa\\upload\\" + filename, "C:\\backlog\\C_History\\" + filename)
+
+				if not os.path.exists("C:\\backlog"):
+					os.makedirs("C:\\backlog")
+					time.sleep(2)
+					os.makedirs("C:\\backlog\\C_History")
+					time.sleep(2)
+					os.rename("C:\\soa\\upload\\" + filename, "C:\\backlog\\C_History\\" + filename)
 
 
 
