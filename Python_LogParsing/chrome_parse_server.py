@@ -280,8 +280,8 @@ for path, dir, files in os.walk(data_path):
 				f.close()
 				f2.close()
 				time.sleep(5)
-				os.rename("C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeHistoryb'+'.txt', "C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeHistory'+'.txt')
-				os.rename("C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeDownloadsb'+'.txt', "C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeDownloads'+'.txt')
+				os.rename("C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeHistoryb'+'.txt', "C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeHistoryc'+'.txt')
+				os.rename("C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeDownloadsb'+'.txt', "C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeDownloadc'+'.txt')
 				time.sleep(3)
 
 				if os.path.exists("C:\\backlog"):
