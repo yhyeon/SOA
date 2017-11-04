@@ -284,8 +284,13 @@ for path, dir, files in os.walk(data_path):
 				os.rename("C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeDownloadsb'+'.txt', "C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeDownloads'+'.txt')
 				time.sleep(3)
 
-				if os.path.exists("C:\\backlog\\C_History"):
-					os.rename("C:\\soa\\upload\\" + filename, "C:\\backlog\\C_History\\" + filename)
+				if os.path.exists("C:\\backlog"):
+					if os.path.exists("C:\\backlog\\C_History"):
+						os.rename("C:\\soa\\upload\\" + filename, "C:\\backlog\\C_History\\" + filename)
+					if not os.path.exists("C:\\backlog\\C_History"):
+						os.makedirs("C:\\backlog\\C_History")
+						os.rename("C:\\soa\\upload\\" + filename, "C:\\backlog\\C_History\\" + filename)
+					
 
 				if not os.path.exists("C:\\backlog"):
 					os.makedirs("C:\\backlog")
