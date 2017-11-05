@@ -5,5 +5,5 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput, label='password')
 
 class ELoginForm(forms.Form):
-    e_num = forms.CharField(label='e_num')
-    log_num = forms.CharField(label='e_num')
+    empnum = forms.CharField(label='empnum')
+    lognum = forms.CharField(label='lognum')

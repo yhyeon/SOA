@@ -103,11 +103,6 @@ hr.style4 {
     margin-bottom: 30px;
     border-radius: 3px;
 }
-.writer-info li:last-child{
-    border:none;
-    margin-bottom: 0px;
-    text-align: center;
-}
 .writer-info li > label{
     display: block;
     float: left;

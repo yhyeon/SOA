@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="table-title">
-        <h3>사유서 미제출자 목록</h3>
+        <h3>진행 사유서 목록</h3>
     </div>
 
     <div class="cd-search is-hidden">
@@ -19,7 +19,7 @@
         </form>
     </div> <!-- Search From END -->
 
-    <div>
+    <div class="table-wrapper">
         <table class="table-fill">
             <thead>
                 <tr>
@@ -37,21 +37,15 @@
                     {% for dataRow in dataList %}
                         <tr>
                             <td class="text-left">{{ dataRow.id }}</td>
-                            <td class="text-left">{{ dataRow.e_num.empnum}}</td>
-                            <td class="text-left">{{ dataRow.e_num.empname }}</td>
-                            <td class="text-left">{{ dataRow.e_num.ip }}</td>
-                            <td class="text-left">{{ dataRow.log_num }}</td>
-                            {% ifequal '1' dataRow.reason_num %}
-                                <td class="text-left">USB</td>
-                            {% endifequal %}
-                            {% ifequal '2' dataRow.reason_num %}
-                                <td class="text-left">WEB</td>
-                            {% endifequal %}
-                            {% ifequal 'obj_access' dataRow.reason_num %}
-                                <td class="text-left">APPLICATION</td>
-                            {% endifequal %}
+                            <td class="text-left">{{ dataRow.empnum.empnum}}</td>
+                            <td class="text-left">{{ dataRow.empnum.empname }}</td>
+                            <td class="text-left">{{ dataRow.empnum.ip }}</td>
+                            <td class="text-left">{{ dataRow.lognum }}</td>
+                            <td class="text-left">{{ dataRow.reasontype }}</td>
                         </tr>
                     {% endfor %}
+                {% else %}
+                    <td class="text-center" colspan="6" width="1300">No Data</td>
                 {% endif %}
             </tbody>
         </table> <!-- Content Table END -->

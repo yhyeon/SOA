@@ -6,8 +6,25 @@
 
 {% block content %}
     <div class="table-title">
-        <h3>보고서 목록</h3>
+        <h3>History IE Data Table (Current Page : {{ currentPage }})</h3>
     </div>
+
+    <nav class="table-menu">
+        <ul>
+            <li><a href="{% url 'b_file_log' %}">File Scan</a></li>
+            <li><a href="{% url 'b_driver' %}">Driver Win7</a></li>
+            <li><a href="{% url 'b_download_chrome' %}">Download Chrom</a></li>
+            <li><a href="{% url 'b_history_chrome' %}">History Chrom</a></li>
+            <li><a href="{% url 'b_history_ie' %}">History IE</a></li>
+            <li><a href="{% url 'b_log_on_off' %}">Log On/Off</a></li>
+            <li><a href="{% url 'b_oa_file' %}">Oa File</a></li>
+            <li><a href="{% url 'b_oa_mtp' %}">Oa Mtp</a></li>
+            <li><a href="{% url 'b_partition_win10' %}">Partition Win10</a></li>
+            <li><a href="{% url 'b_quick_scan' %}">Quick Scan</a></li>
+            <li><a href="{% url 'b_registry' %}">Registry</a></li>
+            <li><a href="{% url 'b_zip_scan' %}">Zip Scan</a></li>
+        </ul>
+    </nav>
 
     <div class="cd-search is-hidden">
         <form id="search-form" method="post" action=".">{% csrf_token %}
@@ -20,34 +37,43 @@
     </div> <!-- Search From END -->
 
     <div class="table-wrapper">
-        <table class="table-fill">
-            <thead>
-                <tr>
-                    <th class="text-left">No</th>
-                    <th class="text-left">제목</th>
-                    <th class="text-left">요약</th>
-                    <th class="text-left">작성일</th>
-                    <th class="text-left"></th>
-                </tr>
-            </thead>
+        <div class="table-content">
+            <table class="table-fill">
+                <thead>
+                    <tr>
+                        <th class="text-left">No</th>
+                        <th class="text-left">Computer Name</th>
+                        <th class="text-left">User Name</th>
+                        <th class="text-left">IP</th>
+                        <th class="text-left">MAC</th>
+                        <th class="text-left">Visit Date Time</th>
+                        <th class="text-left">URI</th>
+                        <th class="text-left">URL</th>
+                        <th class="text-left">Subject Name</th>
+                    </tr>
+                </thead>
 
-            <tbody class="table-hover">
-                {% if dataList %}
-                    {% for dataRow in dataList %}
-                        <tr>
-                            <td class="text-left">{{ dataRow.id }}</td>
-                            <td class="text-left">{{ dataRow.title}}</td>
-                            <td class="text-left">{{ dataRow.summary }}</td>
-                            <td class="text-left">{{ dataRow.wdatetime }}</td>
-                            <td class="text-center"><input type="button" name="process" value="보기" onclick="location.href='{% url 'report_view' dataRow.id %}'"></td>
-                        </tr>
-                    {% endfor %}
-                {% else %}
-                    <td class="text-center" colspan="5" width="1300">No Data</td>
-                {% endif %}
-            </tbody>
-        </table> <!-- Content Table END -->
-
+                <tbody class="table-hover">
+                    {% if dataList %}
+                        {% for dataRow in dataList %}
+                            <tr>
+                                <td class="text-left">{{ dataRow.pk }}</td>
+                                <td class="text-left">{{ dataRow.cname }}</td>
+                                <td class="text-left">{{ dataRow.uname }}</td>
+                                <td class="text-left">{{ dataRow.ip }}</td>
+                                <td class="text-left">{{ dataRow.mac }}</td>
+                                <td class="text-left">{{ dataRow.datetime }}</td>
+                                <td class="text-left">{{ dataRow.uri }}</td>
+                                <td class="text-left">{{ dataRow.url }}</td>
+                                <td class="text-left">{{ dataRow.sname }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <td class="text-center" colspan="9" width="1300">No Data</td>
+                    {% endif %}
+                </tbody>
+            </table> <!-- Content Table END -->
+        </div>
         <hr class="style3">
 
         <div class="table-number-cover">
@@ -89,8 +115,6 @@
                     </form>
                 {% endifequal %}
             </span>
-            <input type="button" name="new" value="새로만들기" onclick="location.href='{% url 'report_new' %}'">
         </div><!-- Table Number END -->
-
     </div>
 {% endblock %}

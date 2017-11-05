@@ -125,7 +125,7 @@ ul.dashed > li:before {
 
 .top5 input[type="text"] {
     box-sizing: border-box;
-    width: 300px;
+    width: 800px;
     border: none;
     height: 25px;
     font-size: 15px;
@@ -151,7 +151,7 @@ ul.dashed > li:before {
 
 .outflowFile input[type="text"] {
     box-sizing: border-box;
-    width: 250px;
+    width: 380px;
     border: none;
     height: 25px;
     font-size: 15px;
@@ -196,7 +196,7 @@ ul.dashed > li:before {
 
 .graph {
     position: absolute;
-    top: 320px;
+    top: 340px;
     left: 800px;
 }
 

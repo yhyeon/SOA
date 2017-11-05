@@ -1,0 +1,22 @@
+h1 {
+    color: #111;
+    font-size: 4rem !important;
+    font-weight: 600 !important;
+}
+
+h2 {
+    color: #111;
+    font-size: 3rem !important;
+    font-weight: 600 !important;
+}
+
+input[type="button"]{
+    background: #162b40;
+    border: none;
+    padding: 10px 20px 10px 20px;
+    margin-top: 5px;
+    margin-right: 20px;
+    border-bottom: 3px solid #17364c;
+    border-radius: 3px;
+    color: #D2E2FF;
+}

@@ -7,14 +7,14 @@
 {% block content %}
     <form method="post" action="{% url 'report_complete' %}">{% csrf_token %}
         <div class="title">
-            <h1><input type="text" name="title" value="[업무 파일 반출] {{ rMonth }}월 {{ rWeek }}주차 주간 보고서" readonly/>
-            <input type="submit" name="submit" value="작성">
+            <h1><input type="text" name="title" value="{{ reportData.title }}" readonly/>
+            <input type="button" name="save" value="저장">
             <input type="button" name="back" value="취소" onclick="history.back();"></h1>
         </div>
         <hr class="style3">
         <div class="summary">
             <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-
-                <input type="text" name="summary" value="{{ prevdate.month }}/{{ prevdate.day }}({{ pDow }}) ~ {{ nextdate.month }}/{{ nextdate.day }}({{ nDow }}) 총 {{ reason_totalCnt }}개 사유서 발송 중 {{ replyCnt }}개 회신 (위반 {{ vioCnt }}개, 업무 {{ bisCnt }}개)" readonly/>
+                <input type="text" name="summary" value="{{ reportData.summary }}" readonly/>
             </h2>
         </div>
         <div class="sub-title">
@@ -23,11 +23,11 @@
         <div class="singularity">
             <ul class="disc">
                 <li class="typeRank">유형별 반출 통계 :
-                    <input type="text" name="typeRank" value="{% if vioRank %}{% for vio in vioRank %}{{ vio }}{% if forloop.last %}{% else %} > {% endif %}{% endfor %}{% endif %}" readonly/></li>
+                    <input type="text" name="typeRank" value="{{ reportData.type_rank }}" readonly/></li>
                 <li class="severityCnt">반출 심각도 통계 :
-                    <input type="text" name="severity-Cnt" value="[上] {{ highSeverityCnt }},  [中] {{ middleSeverityCnt }},  [下] {{ lowSeverityCnt }}" readonly/></li>
+                    <input type="text" name="severity-Cnt" value="{{ reportData.severity_cnt }}" readonly/></li>
                 <li class="top5">보안 위반자 소속 TOP 5 :
-                    <input type="text" name="top5" value="{% if topTeam %}{% for team in topTeam%}{{ team }}{% if forloop.last %}{% else %}, {% endif %}{% endfor %}{% endif %}" readonly/></li>
+                    <input type="text" name="top5" value="{{ reportData.top5 }}" readonly/></li>
             </ul>
         </div>
         <div class="sub-title">
@@ -36,23 +36,23 @@
         <div class="main-violator">
             <ul class="disc">
                 <li class="violator">
-                    <input type="text" name="violator" value="{% for key, value in violator.items %}{{ value }} {% endfor %}포함 {{ violatorCnt }}명" readonly/>
+                    <input type="text" name="violator" value="{{ reportData.violator }}" readonly/>
                 <li style="list-style-type: none">
                     <ul class="dashed">
                         <li class="outflowFile">WEB 반출 파일 :
-                            <input type="text" name="web-file" value="{{ web_outfile }}" readonly/>
+                            <input type="text" name="web-file" value="{% ifnotequal reportData.web_file None %}{{ reportData.web_file }}{% endifnotequal %}" readonly/>
                         </li>
                         <li class="outflowFile">USB 반출 파일 :
-                            <input type="text" name="usb-file" value="{{ usb_outfile }}" readonly/>
+                            <input type="text" name="usb-file" value="{% ifnotequal reportData.usb_file None %}{{ reportData.usb_file }}{% endifnotequal %}" readonly/>
                         </li>
                         <li class="outflowFile">APP 반출 파일 :
-                            <input type="text" name="app-file" value="{{ app_outfile }}" readonly/>
+                            <input type="text" name="app-file" value="{% ifnotequal reportData.app_file None %}{{ reportData.app_file }}{% endifnotequal %}" readonly/>
                         </li>
                         <li class="outreason">반출 사유 :
-                            <input type="text" name="outreason" value="{{ outreason }}" readonly/>
+                            <input type="text" name="outreason" value="{{ reportData.outreason }}" readonly/>
                         </li>
                         <li class="accumulateCnt">총 누적 위반 횟수 :
-                            <input type="text" name="accumulateCnt" value="{{ mainvioTotalCnt }}회" readonly/>
+                            <input type="text" name="accumulateCnt" value="{{ reportData.accumulate_cnt }}" readonly/>
                         </li>
                     </ul>
                 </li>
@@ -64,7 +64,7 @@
         <div class="measure">
             <ul>
                 <li>
-                    <textarea name="measure" cols="67" rows="8"></textarea>
+                    <textarea name="measure" cols="67" rows="8" readonly>{{ reportData.measure }}</textarea>
                 </li>
             </ul>
         </div>
@@ -74,8 +74,7 @@
         </div>
 
         <div class="graph">
-            <img src="{% static 'graph/graph.png' %}">
-            <input type="hidden" name="graph_name" value="{{ graph_name }}">
+            <img src="../static/graph/{{ reportData.graph_name }}">
         </div>
     </form>
 {% endblock %}

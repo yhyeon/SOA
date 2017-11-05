@@ -1,10 +1,24 @@
+{% load staticfiles %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Success</title>
+
+    <link href="{% static 'css/e_success.css' %}" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript">
+        function winclose() {
+            window.close();
+        }
+    </script>
 </head>
 <body>
- 전송완료.
+    <center>
+        <h1>작성 완료</h1>
+        <h2>담당자가 처리 후 연락드리겠습니다.</h2>
+        <input type="button" name="ok" value="닫기" onclick="winclose();"/>
+    </center>
 </body>
 </html>

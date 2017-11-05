@@ -2,7 +2,7 @@
 
 div.table-title {
   display: block;
-  margin: auto;
+  margin-left: 13px;
   max-width: 600px;
   padding:5px;
   width: 100%;
@@ -10,26 +10,33 @@ div.table-title {
 
 .table-title h3 {
    color: #000000;
-   font-size: 12px;
-   font-weight: 400;
+   font-size: 15px;
+   font-weight: 600;
    font-style:normal;
-   font-family: "Roboto", helvetica, arial, sans-serif;
-   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
    text-transform:uppercase;
 }
 
 
 /*** Table Styles **/
 
+.table-wrapper {
+    margin-top:50px;
+}
+
+.table-content {
+    overflow-x: scroll;
+}
+
 .table-fill {
   background: white;
   border-radius:3px;
   border-collapse: collapse;
+    min-width:1300px;
   height: 150px;
   margin: auto;
   max-width: 95%;
   padding:5px;
-  width: 100%;
+  /*width: 100%;*/
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   animation: float 5s infinite;
 }
@@ -45,6 +52,7 @@ div.table-title {
   text-align:left;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   vertical-align:middle;
+    white-space: nowrap;
 }
 
 .table-fill th:first-child {
@@ -104,6 +112,7 @@ div.table-title {
   font-size:10px;
   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
   border-right: 1px solid #C1C3D1;
+    white-space: nowrap;
 }
 
 .table-hover td:last-child {
@@ -181,4 +190,33 @@ hr.style3{
     border-radius: 3px;
     color: #D2E2FF;
     float:right;
+}
+
+.table-menu {
+    width: 100%;
+}
+
+.table-menu a {
+    text-decoration:none;
+    color:#000000;
+}
+
+.table-menu a:hover {
+    color:#ff0000;
+}
+
+.table-menu ul {
+    padding-top: 10px;
+    padding-left: 10px;
+}
+
+.table-menu ul li {
+    display:inline;
+    border-left: 1px solid #999;
+    font: bold 12px Dotum;
+    padding: 0 10px;
+}
+
+.table-menu li:first-child {
+    border-left: none !important;
 }

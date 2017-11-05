@@ -25,7 +25,7 @@ SECRET_KEY = '_sa$!en!t9l1hvc+hye#fwa))gb&*h#&x)84ll)i(in80dw7h!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -78,10 +78,10 @@ WSGI_APPLICATION = 'WebSolution.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'SOA',
+        'NAME': 'soa_log',
         'USER':'root',
-        'PASSWORD':'wjdqhqhdks',
-        'HOST':'localhost',
+        'PASSWORD':'236p@ssw0rd',
+        'HOST':'cdisc.co.kr',
         'PORT':'3306',
     }
 }

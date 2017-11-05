@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/tablestyle.css' %}">{% endblock %}
+
+{% block content %}
+    <div class="table-title">
+        <h3>OA File Data Table (Current Page : {{ currentPage }})</h3>
+    </div>
+
+    <nav class="table-menu">
+        <ul>
+            <li><a href="{% url 'b_file_log' %}">File Scan</a></li>
+            <li><a href="{% url 'b_driver' %}">Driver Win7</a></li>
+            <li><a href="{% url 'b_download_chrome' %}">Download Chrom</a></li>
+            <li><a href="{% url 'b_history_chrome' %}">History Chrom</a></li>
+            <li><a href="{% url 'b_history_ie' %}">History IE</a></li>
+            <li><a href="{% url 'b_log_on_off' %}">Log On/Off</a></li>
+            <li><a href="{% url 'b_oa_file' %}">Oa File</a></li>
+            <li><a href="{% url 'b_oa_mtp' %}">Oa Mtp</a></li>
+            <li><a href="{% url 'b_partition_win10' %}">Partition Win10</a></li>
+            <li><a href="{% url 'b_quick_scan' %}">Quick Scan</a></li>
+            <li><a href="{% url 'b_registry' %}">Registry</a></li>
+            <li><a href="{% url 'b_zip_scan' %}">Zip Scan</a></li>
+        </ul>
+    </nav>
+
+    <div class="cd-search is-hidden">
+        <form id="search-form" method="post" action=".">{% csrf_token %}
+            {% if search_data %}
+                <input type="search" name="search_data" placeholder="{{ search_data }}" />
+            {% else %}
+                <input type="search" name="search_data" placeholder="Search..." />
+            {% endif %}
+        </form>
+    </div> <!-- Search From END -->
+
+    <div class="table-wrapper">
+        <div class="table-content">
+            <table class="table-fill">
+                <thead>
+                    <tr>
+                        <th class="text-left">No</th>
+                        <th class="text-left">IP</th>
+                        <th class="text-left">MAC</th>
+                        <th class="text-left">Accessmask</th>
+                        <th class="text-left">Event ID</th>
+                        <th class="text-left">Computer Name</th>
+                        <th class="text-left">User Name</th>
+                        <th class="text-left">Date Time</th>
+                        <th class="text-left">SID</th>
+                        <th class="text-left">Logon ID</th>
+                        <th class="text-left">Domain Name</th>
+                        <th class="text-left">Object Server</th>
+                        <th class="text-left">Root</th>
+                        <th class="text-left">Directory</th>
+                        <th class="text-left">File</th>
+                        <th class="text-left">EXT</th>
+                        <th class="text-left">PS Name</th>
+                    </tr>
+                </thead>
+
+                <tbody class="table-hover">
+                    {% if dataList %}
+                        {% for dataRow in dataList %}
+                            <tr>
+                                <td class="text-left">{{ dataRow.pk }}</td>
+                                <td class="text-left">{{ dataRow.ip }}</td>
+                                <td class="text-left">{{ dataRow.mac }}</td>
+                                <td class="text-left">{{ dataRow.accessmask }}</td>
+                                <td class="text-left">{{ dataRow.eventid }}</td>
+                                <td class="text-left">{{ dataRow.cname }}</td>
+                                <td class="text-left">{{ dataRow.uname }}</td>
+                                <td class="text-left">{{ dataRow.datetime }}</td>
+                                <td class="text-left">{{ dataRow.sid }}</td>
+                                <td class="text-left">{{ dataRow.logonid }}</td>
+                                <td class="text-left">{{ dataRow.dname }}</td>
+                                <td class="text-left">{{ dataRow.objserver }}</td>
+                                <td class="text-left">{{ dataRow.root }}</td>
+                                <td class="text-left">{{ dataRow.directory }}</td>
+                                <td class="text-left">{{ dataRow.file }}</td>
+                                <td class="text-left">{{ dataRow.ext }}</td>
+                                <td class="text-left">{{ dataRow.psname }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <td class="text-center" colspan="17" width="1300">No Data</td>
+                    {% endif %}
+                </tbody>
+            </table> <!-- Content Table END -->
+        </div>
+        <hr class="style3">
+
+        <div class="table-number-cover">
+            <span>
+                {% ifequal 1 prev %}
+                    <form class="table-number" method="post" action="./">{% csrf_token %}
+                        {% if search_data %}
+                            <input type="hidden" name="search_data" value={{ search_data }} />
+                            <input type="hidden" name="prev" value={{ currentPage }} />
+                            <input type="submit" value="<" />
+                        {% else %}
+                            <input type="hidden" name="prev" value={{ currentPage }} />
+                            <input type="submit" value="<" />
+                        {% endif %}
+                    </form>
+                {% endifequal %}
+                {% for page in totalPageList %}
+                    <form class="table-number" method="post" action="./">{% csrf_token %}
+                        {% if search_data %}
+                            <input type="hidden" name="search_data" value={{ search_data }} />
+                            <input type="hidden" name="page" value={{ page }} />
+                            <input type="submit" value="[{{ page }}]" />
+                        {% else %}
+                            <input type="hidden" name="page" value={{ page }} />
+                            <input type="submit" value="[{{ page }}]" />
+                        {% endif %}
+                    </form>
+                {% endfor %}
+                {% ifequal 1 next %}
+                    <form class="table-number" method="post" action="./">{% csrf_token %}
+                        {% if search_data %}
+                            <input type="hidden" name="search_data" value={{ search_data }} />
+                            <input type="hidden" name="next" value={{ currentPage }} />
+                            <input type="submit" value=">" />
+                        {% else %}
+                            <input type="hidden" name="next" value={{ currentPage }} />
+                            <input type="submit" value=">" />
+                        {% endif %}
+                    </form>
+                {% endifequal %}
+            </span>
+        </div><!-- Table Number END -->
+    </div>
+{% endblock %}

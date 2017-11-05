@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="table-title">
-        <h3>Data Table</h3>
+        <h3>완료 사유서 목록</h3>
     </div>
 
     <div class="cd-search is-hidden">
@@ -19,7 +19,7 @@
         </form>
     </div> <!-- Search From END -->
 
-    <div>
+    <div class="table-wrapper">
         <table class="table-fill">
             <thead>
                 <tr>
@@ -43,21 +43,15 @@
                             <td class="text-left">{{ dataRow.center_team }}</td>
                             <td class="text-left">{{ dataRow.empname }}</td>
                             <td class="text-left">{{ dataRow.empnum }}</td>
-                            {% ifequal '1' dataRow.log_table %}
-                                <td class="text-left">USB</td>
-                            {% endifequal %}
-                            {% ifequal '2' dataRow.log_table %}
-                                <td class="text-left">WEB</td>
-                            {% endifequal %}
-                            {% ifequal 'obj_access' dataRow.log_table %}
-                                <td class="text-left">APPLICATION</td>
-                            {% endifequal %}
-                            <td class="text-left">{{ dataRow.log_id }}</td>
+                            <td class="text-left">{{ dataRow.reasontype }}</td>
+                            <td class="text-left">{{ dataRow.lognum }}</td>
                             <td class="text-left">{{ dataRow.wdate }}</td>
                             <td class="text-left">{{ dataRow.violation }}</td>
                             <td class="text-center"><input type="button" name="process" value="보기" onclick="location.href='{% url 'reason_view' dataRow.id %}'"></td>
                         </tr>
                     {% endfor %}
+                {% else %}
+                    <td class="text-center" colspan="9" width="1300">No Data</td>
                 {% endif %}
             </tbody>
         </table> <!-- Content Table END -->

@@ -28,10 +28,9 @@
     <div class="body"></div>
 		<div class="grad"></div>
 		<div class="login">
-			<form method="post" action=".">
-				{% csrf_token %}
-				<input type="text" placeholder="e_num" name="e_num"><br><br>
-				<input type="text" placeholder="log_num" name="log_num"><br>
+			<form method="post" action=".">{% csrf_token %}
+				<input type="text" placeholder="empnum" name="empnum"><br><br>
+				<input type="text" placeholder="lognum" name="lognum"><br>
 				<input type="submit" value="Login">
 			</form>
 		</div>

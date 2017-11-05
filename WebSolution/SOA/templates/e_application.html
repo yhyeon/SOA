@@ -40,12 +40,12 @@
                 <ul>
                     <h1>작성자 정보</h1>
                     <center>
-                        <li><label for="belong">소속</label><input type="text" name="belong" value="{{ employee.center }}본부 {{ employee.team }}부서 {{ employee.position }}" maxlength="100" readonly/></li>
-                        <li><label for="name">이름</label><input type="text" name="name" value="{{ employee.empname }}" maxlength="100" readonly/></li>
-                        <li><label for="enum">사번</label><input type="text" name="enum" value="{{ employee.empnum }}" maxlength="100" readonly/></li>
+                        <li><label for="belong">소속</label><input type="text" name="belong" value="{{ employee.center }}본부 {{ employee.team }}부서" maxlength="100" readonly/></li>
+                        <li><label for="empname">이름</label><input type="text" name="empname" value="{{ employee.empname }}" maxlength="100" readonly/></li>
+                        <li><label for="empnum">사번</label><input type="text" name="empnum" value="{{ employee.empnum }}" maxlength="100" readonly/></li>
+                        <li><label for="position">직책</label><input type="text" name="position" value="{{ employee.position }}" maxlength="100" readonly/></li>
                         <li><label for="ip">IP</label><input type="text" name="ip" value="{{ employee.ip }}" maxlength="100" readonly/></li>
                         <li><label for="mac">MAC</label><input type="text" name="mac" value="{{ employee.mac }}" maxlength="100" readonly/></li>
-                        <li></li>
                     </center>
                 </ul>
             </div>
@@ -56,7 +56,7 @@
                     <center>
                         <li>
                             <label for="outflow_file">반출 파일</label>
-                            <input type="text" name="outflow_file" value="{{ logData.objname }}" maxlength="100" readonly/>
+                            <input type="text" name="outflow_file" value="{{ logData.file }}" maxlength="100" readonly/>
                             <span>위 파일에 대해 위반 행위가 탐지되었습니다.</span>
                         </li>
                         <li>
