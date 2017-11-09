@@ -3,12 +3,19 @@
 
 {% block title %}SOA WebSolution{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/reportstyle.css' %}">{% endblock %}
+{% block js %}
+    <script>
+        function test() {
+            window.open('{% url 'report_down' report_id %}');
+        }
+    </script>
+{% endblock %}
 
 {% block content %}
-    <form method="post" action="{% url 'report_complete' %}">{% csrf_token %}
+    <form method="post" action="#">{% csrf_token %}
         <div class="title">
             <h1><input type="text" name="title" value="{{ reportData.title }}" readonly/>
-            <input type="button" name="save" value="저장">
+            <input type="button" name="save" value="저장" onclick="test();">
             <input type="button" name="back" value="취소" onclick="history.back();"></h1>
         </div>
         <hr class="style3">
@@ -74,7 +81,8 @@
         </div>
 
         <div class="graph">
-            <img src="../static/graph/{{ reportData.graph_name }}">
+            {% static variable_with_path as staticpath %}
+            <img src="{{ staticpath }}graph/{{ reportData.graph_name }}">
         </div>
     </form>
 {% endblock %}

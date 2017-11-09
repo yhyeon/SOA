@@ -74,7 +74,8 @@
         </div>
 
         <div class="graph">
-            <img src="{% static 'graph/graph.png' %}">
+            {% static variable_with_path as staticpath %}
+            <img src="{{ staticpath }}graph/{{ reportData.graph_name }}">
             <input type="hidden" name="graph_name" value="{{ graph_name }}">
         </div>
     </form>

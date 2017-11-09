@@ -30,10 +30,11 @@ urlpatterns = [
     url(r'^reason/complete/(?P<reason_id>\w+)/', views.reason_view, name='reason_view'),
 
     url(r'^report/$', views.report, name='report'),
-    url(r'^report/(?P<report_id>\d+)/', views.report_view, name='report_view'),
+    url(r'^report/(?P<report_id>\d+)/$', views.report_view, name='report_view'),
+    url(r'^report/down/(?P<report_id>\d+)/$', views.report_down, name='report_down'),
     url(r'^report/new/$', views.report_new, name='report_new'),
-    url(r'^report/write/', views.report_process, name='report_write'),
-    url(r'^report/complete/', views.report_complete, name='report_complete'),
+    url(r'^report/write/$', views.report_process, name='report_write'),
+    url(r'^report/complete/$', views.report_complete, name='report_complete'),
 
     url(r'^guideline/statute/', views.statute, name='guideline_statute'),
     url(r'^guideline/case/', views.case, name='guideline_case'),

@@ -395,6 +395,13 @@ class Reg(models.Model):
         managed = False
         db_table = 'reg'
 
+class SbtProtectionAct(models.Model):
+    article = models.CharField(max_length=50)
+    contents = models.TextField()
+
+    class Meta:
+        managed = False
+        db_table = 'sbt_protection_act'
 
 class UactivReportSaves(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.

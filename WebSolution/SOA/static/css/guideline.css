@@ -1,0 +1,51 @@
+.content-title {
+    margin-top: 50px;
+    margin-left: 13px;
+    padding:5px;
+    width: 100%;
+}
+
+.content-title h5 {
+    color: #111 !important;
+    font-size: 32px;
+    font-weight: 500;
+    font-style:normal;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.content-title h2 {
+    color: #111 !important;
+    font-size: 14px;
+    font-weight: 300;
+    font-style:normal;
+    text-align: center;
+    margin-top: 20px;
+}
+
+hr.style3{
+	border-top: 1px solid #8c8b8b;
+    margin-bottom: 30px;
+}
+
+.contents-wrapper {
+    width: 100%;
+    margin-left: 15px;
+    padding-right: 10px;
+}
+
+.contents-main-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #424dd3;
+}
+
+.contents-sub-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #424dd3;
+}
+
+.contents-content {
+    line-height: 150%;
+}

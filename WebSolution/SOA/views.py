@@ -1,3 +1,5 @@
+#-*-coding:utf-8-*-
+
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
@@ -17,6 +19,14 @@ import matplotlib.pylab as plt
 from matplotlib import font_manager, rc
 from pylab import figure, axes, pie, title, savefig
 import os
+
+from reportlab.lib.pagesizes import A4, landscape
+from reportlab.lib.units import cm
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Flowable
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.graphics.shapes import Image, Drawing
 
 # Create your views here.
 @register.filter
@@ -788,7 +798,124 @@ def report_view(request, report_id):
     #print(type(report_id))
     reportData = WeekReportSaves.objects.get(id=int(report_id))
 
-    return render(request, 'report_view.html', {'username': request.session['username'], 'reportData': reportData})
+    return render(request, 'report_view.html', {'username': request.session['username'], 'reportData': reportData, 'report_id': report_id})
+
+# Make Line
+class MKLine(Flowable):
+    def __init__(self, width, height=0):
+        Flowable.__init__(self)
+        self.width = width
+        self.height = height
+
+    def __repr__(self):
+        return "Line(w=%s)" % self.width
+
+    def draw(self):
+        # Draw the line
+        self.canv.line(0, self.height, self.width, self.height)
+
+def report_down(request, report_id):
+    # Get Report Data
+    reportData = WeekReportSaves.objects.get(id=int(report_id))
+
+    # Font Settings
+    pdfmetrics.registerFont(TTFont("malgun", "malgun.ttf"))
+    pdfmetrics.registerFont(TTFont("malgunbd", "malgunbd.ttf"))
+
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(name="Malgun", fontName="malgun"))
+    styles.add(ParagraphStyle(name="MalgunB", fontName="malgunbd"))
+
+    # Create Content
+    Story = []
+    img = os.getcwd()+'\\SOA\\static\\graph\\'+reportData.graph_name
+    print(img)
+    d = Drawing(0, 0)
+    i = Image(370, -410, 12.5 * cm, 7.4 * cm, img)
+    d.add(i)
+    Story.append(d)
+
+    ptext = u'<font size=24>%s</font>' % (reportData.title)
+    Story.append(Paragraph(ptext, styles["MalgunB"]))
+    Story.append(Spacer(1, 34))
+
+    line = MKLine(700)
+    Story.append(line)
+    Story.append(Spacer(1, 12))
+
+    ptext = u'<font size=16>- %s</font>' % (reportData.summary)
+    Story.append(Paragraph(ptext, styles["Malgun"]))
+    Story.append(Spacer(1, 24))
+
+    ptext = u'<font size=14>[특이사항]</font>'
+    Story.append(Paragraph(ptext, styles["MalgunB"]))
+    Story.append(Spacer(1, 12))
+
+    ptext = u'<font size=12>ㆍ유형별 반출 통계 : %s</font>' % (reportData.type_rank)
+    Story.append(Paragraph(ptext, styles["Malgun"]))
+    Story.append(Spacer(1, 12))
+
+    ptext = u'<font size=12>ㆍ반출 심각도 통계 : %s</font>' % (reportData.severity_cnt)
+    Story.append(Paragraph(ptext, styles["Malgun"]))
+    Story.append(Spacer(1, 12))
+
+    ptext = u'<font size=12>ㆍ보안 위반자 소속 TOP 5 : %s</font>' % (reportData.top5)
+    Story.append(Paragraph(ptext, styles["Malgun"]))
+    Story.append(Spacer(1, 24))
+
+    ptext = u'<font size=14>[주요 위반자]</font>'
+    Story.append(Paragraph(ptext, styles["MalgunB"]))
+    Story.append(Spacer(1, 12))
+
+    ptext = u'<font size=12>ㆍ%s</font>' % (reportData.violator)
+    Story.append(Paragraph(ptext, styles["Malgun"]))
+    Story.append(Spacer(1, 12))
+
+    ptext = u'<font size=12>- WEB 반출 파일 : %s</font>' % (reportData.web_file)
+    Story.append(Paragraph(ptext, styles["Malgun"]))
+    Story.append(Spacer(1, 12))
+
+    ptext = u'<font size=12>- USB 반출 파일 : %s</font>' % (reportData.usb_file)
+    Story.append(Paragraph(ptext, styles["Malgun"]))
+    Story.append(Spacer(1, 12))
+
+    ptext = u'<font size=12>- APP 반출 파일 : %s</font>' % (reportData.app_file)
+    Story.append(Paragraph(ptext, styles["Malgun"]))
+    Story.append(Spacer(1, 12))
+
+    ptext = u'<font size=12>- 반출 사유 : %s</font>' % (reportData.outreason)
+    Story.append(Paragraph(ptext, styles["Malgun"]))
+    Story.append(Spacer(1, 12))
+
+    ptext = u'<font size=12>- 총 누적 위반 횟수 : %s</font>' % (reportData.accumulate_cnt)
+    Story.append(Paragraph(ptext, styles["Malgun"]))
+    Story.append(Spacer(1, 24))
+
+    ptext = u'<font size=14>[조치사항]</font>'
+    Story.append(Paragraph(ptext, styles["MalgunB"]))
+    Story.append(Spacer(1, 12))
+
+    ptext = u'<font size=12>ㆍ%s</font>' % (reportData.measure)
+    Story.append(Paragraph(ptext, styles["Malgun"]))
+    Story.append(Spacer(1, 40))
+
+    line = MKLine(700)
+    Story.append(line)
+    Story.append(Spacer(1, 12))
+
+    ptext = u'<font size=16>경영지원본부 보안팀</font>'
+    Story.append(Paragraph(ptext, styles["Malgun"]))
+    Story.append(Spacer(1, 12))
+
+    pdfname = os.getcwd() + '\\SOA\\reportPDF\\' + reportData.graph_name.split('.')[0] + '.pdf'
+    doc = SimpleDocTemplate(pdfname, pagesize=landscape(A4), rightMargin=1.9 * cm, leftMargin=1.9 * cm, topMargin=1 * cm, bottomMargin=1 * cm)
+    doc.build(Story)
+
+    with open(pdfname, 'rb') as pdf:
+        response = HttpResponse(pdf.read(), content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename=%s' % (reportData.graph_name.split('.')[0] + '.pdf')
+
+        return response
 
 def report_new(request):
     return render(request, 'report_new.html', {'username': request.session['username']})
@@ -804,7 +931,6 @@ def report_graph(prevdate, nextdate, report_title):
     font_name = font_manager.FontProperties(fname=font_location).get_name()
     rc('font', family=font_name)
 
-    plt.ion()
     PT = pandas.pivot_table(DF, index="center_team", columns="reasontype", values="violation", aggfunc="count")
     PT.plot(kind='Bar')
     plt.ylabel("Count")
@@ -812,8 +938,6 @@ def report_graph(prevdate, nextdate, report_title):
 
     fig = plt.gcf()
     fig.savefig(os.getcwd() + "\\SOA\\static\\graph\\" + report_title + ".png")
-    fig.savefig(os.getcwd() + "\\SOA\\static\\graph\\" + "graph.png")
-
 
 @csrf_exempt
 def report_process(request):
@@ -935,9 +1059,12 @@ def report_complete(request):
     new.save()
 
     return render(request, 'report_complete.html', {'username': request.session['username']})
+
 # Guideline tab
 def statute(request):
-    pass
+    statuteData = SbtProtectionAct.objects.all()
+
+    return render(request, 'statute.html', {'username': request.session['username'], 'statuteData': statuteData})
 
 def case(request):
     return render(request, 'home.html', {'username': request.session['username']})
