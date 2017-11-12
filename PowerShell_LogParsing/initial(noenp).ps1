@@ -19,7 +19,8 @@ dism.exe /online /add-package /packagepath:C:\Temp\msu\Windows6.1-KB2872035-x64.
 Remove-Item C:\temp\msu -recurse -force
 }
 
-if (!(Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full').Version -like '4.5*') # Install .NET Framework 4.5
+#if (!(Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full').Version -like '4.5*') # Install .NET Framework 4.5
+if (!(test-path 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full'))
 {
 (new-object net.webclient).downloadfile("http://cdisc.co.kr:1024/soa/download/dotNetFx45_Full_setup.exe", "C:\Windows\soa\ps5\dotNetFx45_Full_setup.exe")
 start-process -filepath "C:\Windows\soa\ps5\dotNetFx45_Full_setup.exe" -Argumentlist "/q /norestart" -wait
