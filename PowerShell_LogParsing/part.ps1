@@ -113,7 +113,7 @@ $sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;"
 }
 }
 }
-}
+
 
 elseif ($osversion -match "Windows 10") # if the client is Windows 10
 {
@@ -143,7 +143,7 @@ else
 $sn = $sn
 }
 }
-
+}
 
 #Get-ChildItem -path "C:\Windows\System32\winevt\Logs\*Partition*" | copy-Item -Destination C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_Microsoft-Windows-Partition%4Diagnostic.evtx
 #$events = get-winevent -path C:\ProgramData\soalog\*partition*.evtx | foreach {$_.toxml()}
@@ -187,7 +187,7 @@ $registryid = $partition | select-string -Pattern 'RegistryId'
 $registryid = $registryid.line.Split("=").Split(">").Split("'").split("{").split("}")[5]
 
 
-if (!(Test-Path -Path 'C:\ProgramData\soalog\p.txt'))
+if (! (Test-Path -Path 'C:\ProgramData\soalog\p.txt'))
 {
 $sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $datetime + ":::;" + $eventid + ":::;" + $disknumber + ":::;" + $diskid + ":::;" + $characteristics + ":::;" + $busType + ":::;" + $manufacturer + ":::;" + $model + ":::;" + $revision + ":::;" + $serialnumber + ":::;" + $parentid + ":::;" + $registryid + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_partition.txt -Append -Encoding utf8
 }
@@ -195,7 +195,6 @@ else
 {
 $compare = Get-Content -Path 'C:\ProgramData\soalog\p.txt'
 $sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $datetime + ":::;" + $eventid + ":::;" + $disknumber + ":::;" + $diskid + ":::;" + $characteristics + ":::;" + $busType + ":::;" + $manufacturer + ":::;" + $model + ":::;" + $revision + ":::;" + $serialnumber + ":::;" + $parentid + ":::;" + $registryid + ":::;" | Where-Object {$_ -notin $compare} | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_partition.txt -Append -Encoding utf8
-}
 }
 }
 
@@ -231,9 +230,10 @@ get-content $($_.FullName) | Out-File "C:\ProgramData\soalog\d.txt" -Append -Enc
 if ($($_.name) -match "partition.txt")
 {
 get-content $($_.FullName) | Out-File "C:\ProgramData\soalog\p.txt" -Append -Encoding UTF8
+Remove-Item $($_.FullName)
 }
 
-Remove-Item $($_.FullName)
+
 }
 Switch($job.jobstate)
 {
@@ -243,7 +243,7 @@ Switch($job.jobstate)
 }
 }
 }
-
+}
 
 Clear-Variable driver, eventid, partition, compare
 $sw.stop()
