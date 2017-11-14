@@ -42,6 +42,7 @@
                 <thead>
                     <tr>
                         <th class="text-left">No</th>
+                        <th class="text-left">Disk Serial Number</th>
                         <th class="text-left">Computer Name</th>
                         <th class="text-left">User Name</th>
                         <th class="text-left">IP</th>
@@ -60,6 +61,7 @@
                         {% for dataRow in dataList %}
                             <tr>
                                 <td class="text-left">{{ dataRow.pk }}</td>
+                                <td class="text-left">{{ dataRow.disksn }}</td>
                                 <td class="text-left">{{ dataRow.cname }}</td>
                                 <td class="text-left">{{ dataRow.uname }}</td>
                                 <td class="text-left">{{ dataRow.ip }}</td>
@@ -73,7 +75,7 @@
                             </tr>
                         {% endfor %}
                     {% else %}
-                        <td class="text-center" colspan="11" width="1300">No Data</td>
+                        <td class="text-center" colspan="12" width="1300">No Data</td>
                     {% endif %}
                 </tbody>
             </table> <!-- Content Table END -->

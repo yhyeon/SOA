@@ -1,0 +1,28 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+</head>
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-qrcode.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-qrcode.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/qrcode.js' %}"></script>
+    <center>
+        <div id="qrcodeCanvas"></div>
+        <form>
+            <input type="text">
+            <input type="button" value="Check">
+        </form>
+    </center>
+
+    <script>
+        jQuery('#qrcodeCanvas').qrcode({
+            text    : "{{ totp }}"
+        });
+    </script>
+</body>
+</html>
+
