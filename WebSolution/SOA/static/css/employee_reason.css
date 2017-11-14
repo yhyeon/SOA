@@ -529,3 +529,9 @@ hr.style4 {
 .judgment-view li:first-child{
     margin-top: 20px;
 }
+
+.log_table {
+    margin-left:10%;
+    width: 80%;
+    overflow-x: scroll;
+}

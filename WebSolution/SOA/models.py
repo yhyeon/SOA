@@ -78,16 +78,17 @@ class AuthUserUserPermissions(models.Model):
 
 class ClipProc(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    udname = models.CharField(db_column='UDname', max_length=255)  # Field name made lowercase.
-    cname = models.CharField(db_column='Cname', max_length=255)  # Field name made lowercase.
-    ip = models.CharField(db_column='IP', max_length=20)  # Field name made lowercase.
-    mac = models.CharField(db_column='MAC', max_length=17)  # Field name made lowercase.
-    uname = models.CharField(db_column='Uname', max_length=255)  # Field name made lowercase.
-    window = models.CharField(max_length=255)
-    process = models.CharField(max_length=255)
-    starttime = models.CharField(max_length=40)
-    datetime = models.CharField(max_length=40)
-    curs = models.CharField(max_length=5)
+    disksn = models.CharField(db_column='DiskSN', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    udname = models.CharField(db_column='UDname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    cname = models.CharField(db_column='Cname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    ip = models.CharField(db_column='IP', max_length=15, blank=True, null=True)  # Field name made lowercase.
+    mac = models.CharField(db_column='MAC', max_length=17, blank=True, null=True)  # Field name made lowercase.
+    uname = models.CharField(db_column='Uname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    window = models.CharField(max_length=255, blank=True, null=True)
+    process = models.CharField(max_length=255, blank=True, null=True)
+    starttime = models.CharField(max_length=40, blank=True, null=True)
+    datetime = models.CharField(max_length=40, blank=True, null=True)
+    curs = models.CharField(max_length=5, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -140,24 +141,25 @@ class DjangoSession(models.Model):
 
 class DownChrome(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    cname = models.CharField(db_column='Cname', max_length=255)  # Field name made lowercase.
-    uname = models.CharField(db_column='Uname', max_length=255)  # Field name made lowercase.
-    ip = models.CharField(db_column='IP', max_length=20)  # Field name made lowercase.
-    mac = models.CharField(db_column='MAC', max_length=17)  # Field name made lowercase.
-    guid = models.CharField(db_column='GUID', max_length=255)  # Field name made lowercase.
-    current_path = models.CharField(max_length=255)
-    target_path = models.CharField(max_length=255)
-    datetime = models.CharField(max_length=40)
-    received_bytes = models.CharField(max_length=255)
-    total_bytes = models.CharField(max_length=255)
-    state = models.CharField(max_length=255)
-    danger_type = models.CharField(max_length=255)
-    interrupt_reason = models.CharField(max_length=255)
+    disksn = models.CharField(db_column='DiskSN', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    cname = models.CharField(db_column='Cname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    uname = models.CharField(db_column='Uname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    ip = models.CharField(db_column='IP', max_length=15, blank=True, null=True)  # Field name made lowercase.
+    mac = models.CharField(db_column='MAC', max_length=17, blank=True, null=True)  # Field name made lowercase.
+    guid = models.CharField(db_column='GUID', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    current_path = models.CharField(max_length=255, blank=True, null=True)
+    target_path = models.CharField(max_length=255, blank=True, null=True)
+    datetime = models.CharField(max_length=40, blank=True, null=True)
+    received_bytes = models.CharField(max_length=255, blank=True, null=True)
+    total_bytes = models.CharField(max_length=255, blank=True, null=True)
+    state = models.CharField(max_length=255, blank=True, null=True)
+    danger_type = models.CharField(max_length=255, blank=True, null=True)
+    interrupt_reason = models.CharField(max_length=255, blank=True, null=True)
     uri = models.CharField(max_length=255, blank=True, null=True)
     url = models.CharField(max_length=255, blank=True, null=True)
-    fname = models.CharField(db_column='Fname', max_length=255)  # Field name made lowercase.
-    ext = models.CharField(max_length=10)
-    curs = models.CharField(max_length=10)
+    fname = models.CharField(db_column='Fname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    ext = models.CharField(max_length=10, blank=True, null=True)
+    curs = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -166,17 +168,18 @@ class DownChrome(models.Model):
 
 class DriverWin7(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    ip = models.CharField(db_column='IP', max_length=20)  # Field name made lowercase.
-    mac = models.CharField(db_column='MAC', max_length=17)  # Field name made lowercase.
-    cname = models.CharField(db_column='Cname', max_length=255)  # Field name made lowercase.
-    sid = models.CharField(db_column='SID', max_length=255)  # Field name made lowercase.
-    datetime = models.CharField(max_length=40)
+    disksn = models.CharField(db_column='DiskSN', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    ip = models.CharField(db_column='IP', max_length=15, blank=True, null=True)  # Field name made lowercase.
+    mac = models.CharField(db_column='MAC', max_length=17, blank=True, null=True)  # Field name made lowercase.
+    cname = models.CharField(db_column='Cname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    sid = models.CharField(db_column='SID', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    datetime = models.CharField(max_length=40, blank=True, null=True)
     eventid = models.IntegerField(db_column='EventID')  # Field name made lowercase.
-    lifetime = models.CharField(max_length=255)
-    hostguid = models.CharField(db_column='HostGUID', max_length=255)  # Field name made lowercase.
-    device = models.CharField(max_length=255)
-    statusinfo = models.CharField(max_length=255)
-    curs = models.CharField(max_length=10)
+    lifetime = models.CharField(max_length=255, blank=True, null=True)
+    hostguid = models.CharField(db_column='HostGUID', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    device = models.CharField(max_length=255, blank=True, null=True)
+    statusinfo = models.CharField(max_length=255, blank=True, null=True)
+    curs = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -185,22 +188,23 @@ class DriverWin7(models.Model):
 
 class Fscan(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    udname = models.CharField(db_column='UDname', max_length=255)  # Field name made lowercase.
-    cname = models.CharField(db_column='Cname', max_length=255)  # Field name made lowercase.
-    ip = models.CharField(db_column='IP', max_length=20)  # Field name made lowercase.
-    mac = models.CharField(db_column='MAC', max_length=17)  # Field name made lowercase.
-    uname = models.CharField(db_column='Uname', max_length=255)  # Field name made lowercase.
-    cdatetime = models.CharField(db_column='Cdatetime', max_length=40)  # Field name made lowercase.
-    adatetime = models.CharField(db_column='Adatetime', max_length=40)  # Field name made lowercase.
-    mdatetime = models.CharField(db_column='Mdatetime', max_length=40)  # Field name made lowercase.
-    size_kb = models.CharField(db_column='size_KB', max_length=255)  # Field name made lowercase.
-    rootdir = models.CharField(max_length=255)
-    dirname = models.CharField(max_length=255)
-    fname = models.CharField(db_column='Fname', max_length=255)  # Field name made lowercase.
-    basename = models.CharField(max_length=255)
-    ext = models.CharField(max_length=10)
-    attrib = models.CharField(max_length=255)
-    curs = models.CharField(max_length=10)
+    disksn = models.CharField(db_column='DiskSN', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    udname = models.CharField(db_column='UDname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    cname = models.CharField(db_column='Cname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    ip = models.CharField(db_column='IP', max_length=15, blank=True, null=True)  # Field name made lowercase.
+    mac = models.CharField(db_column='MAC', max_length=17, blank=True, null=True)  # Field name made lowercase.
+    uname = models.CharField(db_column='Uname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    cdatetime = models.CharField(db_column='Cdatetime', max_length=40, blank=True, null=True)  # Field name made lowercase.
+    adatetime = models.CharField(db_column='Adatetime', max_length=40, blank=True, null=True)  # Field name made lowercase.
+    mdatetime = models.CharField(db_column='Mdatetime', max_length=40, blank=True, null=True)  # Field name made lowercase.
+    size_kb = models.FloatField(db_column='size_KB')  # Field name made lowercase.
+    rootdir = models.CharField(max_length=255, blank=True, null=True)
+    dirname = models.CharField(max_length=255, blank=True, null=True)
+    fname = models.CharField(db_column='Fname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    basename = models.CharField(max_length=255, blank=True, null=True)
+    ext = models.CharField(max_length=10, blank=True, null=True)
+    attrib = models.CharField(max_length=255, blank=True, null=True)
+    curs = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -209,17 +213,18 @@ class Fscan(models.Model):
 
 class HistChrome(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    cname = models.CharField(db_column='Cname', max_length=255)  # Field name made lowercase.
-    uname = models.CharField(db_column='Uname', max_length=255)  # Field name made lowercase.
-    ip = models.CharField(db_column='IP', max_length=20)  # Field name made lowercase.
-    mac = models.CharField(db_column='MAC', max_length=17)  # Field name made lowercase.
-    datetime = models.CharField(max_length=40)
-    lvdatetime = models.CharField(db_column='LVdatetime', max_length=40)  # Field name made lowercase.
+    disksn = models.CharField(db_column='DiskSN', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    cname = models.CharField(db_column='Cname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    uname = models.CharField(db_column='Uname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    ip = models.CharField(db_column='IP', max_length=15, blank=True, null=True)  # Field name made lowercase.
+    mac = models.CharField(db_column='MAC', max_length=17, blank=True, null=True)  # Field name made lowercase.
+    datetime = models.CharField(max_length=40, blank=True, null=True)
+    lvdatetime = models.CharField(db_column='LVdatetime', max_length=40, blank=True, null=True)  # Field name made lowercase.
     uri = models.CharField(max_length=255, blank=True, null=True)
     url = models.CharField(max_length=255, blank=True, null=True)
-    site_name = models.CharField(max_length=255)
+    site_name = models.CharField(max_length=255, blank=True, null=True)
     vcount = models.IntegerField(db_column='Vcount')  # Field name made lowercase.
-    curs = models.CharField(max_length=10)
+    curs = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -228,15 +233,16 @@ class HistChrome(models.Model):
 
 class HistIe(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    cname = models.CharField(db_column='Cname', max_length=255)  # Field name made lowercase.
-    uname = models.CharField(db_column='Uname', max_length=255)  # Field name made lowercase.
-    ip = models.CharField(db_column='IP', max_length=20)  # Field name made lowercase.
-    mac = models.CharField(db_column='MAC', max_length=17)  # Field name made lowercase.
-    datetime = models.CharField(max_length=40)
-    uri = models.CharField(max_length=255)
-    url = models.CharField(max_length=255)
-    sname = models.CharField(db_column='Sname', max_length=255)  # Field name made lowercase.
-    curs = models.CharField(max_length=10)
+    disksn = models.CharField(db_column='DiskSN', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    cname = models.CharField(db_column='Cname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    uname = models.CharField(db_column='Uname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    ip = models.CharField(db_column='IP', max_length=15, blank=True, null=True)  # Field name made lowercase.
+    mac = models.CharField(db_column='MAC', max_length=17, blank=True, null=True)  # Field name made lowercase.
+    datetime = models.CharField(max_length=40, blank=True, null=True)
+    uri = models.CharField(max_length=255, blank=True, null=True)
+    url = models.CharField(max_length=255, blank=True, null=True)
+    sname = models.CharField(db_column='Sname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    curs = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -245,16 +251,17 @@ class HistIe(models.Model):
 
 class Hrdb(models.Model):
     empnum = models.IntegerField(db_column='EMPnum', primary_key=True)  # Field name made lowercase.
-    empname = models.CharField(db_column='EMPname', max_length=20)  # Field name made lowercase.
-    cname = models.CharField(db_column='Cname', max_length=255)  # Field name made lowercase.
-    ip = models.CharField(db_column='IP', max_length=20)  # Field name made lowercase.
+    disksn = models.CharField(db_column='DiskSN', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    empname = models.CharField(db_column='EMPname', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    cname = models.CharField(db_column='Cname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    ip = models.CharField(db_column='IP', max_length=15, blank=True, null=True)  # Field name made lowercase.
     mac = models.CharField(db_column='MAC', max_length=17)  # Field name made lowercase.
-    center = models.CharField(max_length=255)
+    center = models.CharField(max_length=255, blank=True, null=True)
     teamnum = models.IntegerField(db_column='teamNum')  # Field name made lowercase.
-    team = models.CharField(max_length=255)
-    position = models.CharField(max_length=255)
+    team = models.CharField(max_length=255, blank=True, null=True)
+    position = models.CharField(max_length=255, blank=True, null=True)
     age = models.IntegerField()
-    email = models.CharField(max_length=255)
+    email = models.CharField(max_length=255, blank=True, null=True)
     datehired = models.CharField(max_length=20)
 
     class Meta:
@@ -265,22 +272,23 @@ class Hrdb(models.Model):
 
 class Logonoff(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    ip = models.CharField(db_column='IP', max_length=20)  # Field name made lowercase.
-    mac = models.CharField(db_column='MAC', max_length=17)  # Field name made lowercase.
-    logtype = models.CharField(max_length=255)
-    eventid = models.IntegerField(db_column='eventID')  # Field name made lowercase.
-    datetime = models.CharField(max_length=40)
-    cname = models.CharField(db_column='Cname', max_length=255)  # Field name made lowercase.
-    ssid = models.CharField(db_column='SSID', max_length=255)  # Field name made lowercase.
-    suname = models.CharField(db_column='SUname', max_length=255)  # Field name made lowercase.
-    sdname = models.CharField(db_column='SDname', max_length=255)  # Field name made lowercase.
-    slogonid = models.CharField(db_column='SlogonID', max_length=255)  # Field name made lowercase.
-    tsid = models.CharField(db_column='TSID', max_length=255)  # Field name made lowercase.
-    tuname = models.CharField(db_column='TUname', max_length=255)  # Field name made lowercase.
-    tdname = models.CharField(db_column='TDname', max_length=255)  # Field name made lowercase.
-    tlogonid = models.CharField(db_column='TlogonID', max_length=255)  # Field name made lowercase.
-    failurecode = models.CharField(max_length=255)
-    curs = models.CharField(max_length=10)
+    disksn = models.CharField(db_column='DiskSN', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    ip = models.CharField(db_column='IP', max_length=15, blank=True, null=True)  # Field name made lowercase.
+    mac = models.CharField(db_column='MAC', max_length=17, blank=True, null=True)  # Field name made lowercase.
+    logtype = models.CharField(max_length=255, blank=True, null=True)
+    eventid = models.IntegerField(db_column='EventID')  # Field name made lowercase.
+    datetime = models.CharField(max_length=40, blank=True, null=True)
+    cname = models.CharField(db_column='Cname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    ssid = models.CharField(db_column='SSID', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    suname = models.CharField(db_column='SUname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    sdname = models.CharField(db_column='SDname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    slogonid = models.CharField(db_column='SlogonID', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    tsid = models.CharField(db_column='TSID', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    tuname = models.CharField(db_column='TUname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    tdname = models.CharField(db_column='TDname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    tlogonid = models.CharField(db_column='TlogonID', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    failurecode = models.CharField(max_length=255, blank=True, null=True)
+    curs = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -289,23 +297,24 @@ class Logonoff(models.Model):
 
 class Oafile(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    ip = models.CharField(db_column='IP', max_length=20)  # Field name made lowercase.
-    mac = models.CharField(db_column='MAC', max_length=17)  # Field name made lowercase.
-    accessmask = models.CharField(max_length=255)
-    eventid = models.IntegerField(db_column='eventID')  # Field name made lowercase.
-    cname = models.CharField(db_column='Cname', max_length=255)  # Field name made lowercase.
-    uname = models.CharField(db_column='Uname', max_length=255)  # Field name made lowercase.
-    datetime = models.CharField(max_length=40)
-    sid = models.CharField(db_column='SID', max_length=255)  # Field name made lowercase.
-    logonid = models.CharField(db_column='logonID', max_length=255)  # Field name made lowercase.
-    dname = models.CharField(db_column='Dname', max_length=255)  # Field name made lowercase.
-    objserver = models.CharField(max_length=255)
-    root = models.CharField(max_length=255)
-    directory = models.CharField(max_length=255)
-    file = models.CharField(max_length=255)
-    ext = models.CharField(max_length=10)
-    psname = models.CharField(db_column='PSname', max_length=255)  # Field name made lowercase.
-    curs = models.CharField(max_length=10)
+    disksn = models.CharField(db_column='DiskSN', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    ip = models.CharField(db_column='IP', max_length=15, blank=True, null=True)  # Field name made lowercase.
+    mac = models.CharField(db_column='MAC', max_length=17, blank=True, null=True)  # Field name made lowercase.
+    accessmask = models.CharField(max_length=255, blank=True, null=True)
+    eventid = models.IntegerField(db_column='EventID')  # Field name made lowercase.
+    cname = models.CharField(db_column='Cname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    uname = models.CharField(db_column='Uname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    datetime = models.CharField(max_length=40, blank=True, null=True)
+    sid = models.CharField(db_column='SID', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    logonid = models.CharField(db_column='logonID', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    dname = models.CharField(db_column='Dname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    objserver = models.CharField(max_length=255, blank=True, null=True)
+    root = models.CharField(max_length=255, blank=True, null=True)
+    directory = models.CharField(max_length=255, blank=True, null=True)
+    file = models.CharField(max_length=255, blank=True, null=True)
+    ext = models.CharField(max_length=10, blank=True, null=True)
+    psname = models.CharField(db_column='PSname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    curs = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -314,21 +323,22 @@ class Oafile(models.Model):
 
 class Oamtp(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    ip = models.CharField(db_column='IP', max_length=20)  # Field name made lowercase.
-    mac = models.CharField(db_column='MAC', max_length=17)  # Field name made lowercase.
-    accessmask = models.CharField(max_length=255)
-    eventid = models.IntegerField(db_column='eventID')  # Field name made lowercase.
-    cname = models.CharField(db_column='Cname', max_length=255)  # Field name made lowercase.
-    uname = models.CharField(db_column='Uname', max_length=255)  # Field name made lowercase.
-    datetime = models.CharField(max_length=40)
-    sid = models.CharField(db_column='SID', max_length=255)  # Field name made lowercase.
-    logonid = models.CharField(db_column='logonID', max_length=255)  # Field name made lowercase.
-    dname = models.CharField(db_column='Dname', max_length=255)  # Field name made lowercase.
-    objserver = models.CharField(max_length=255)
-    objname = models.CharField(max_length=255)
-    ext = models.CharField(max_length=10)
-    psname = models.CharField(db_column='PSname', max_length=255)  # Field name made lowercase.
-    curs = models.CharField(max_length=10)
+    disksn = models.CharField(db_column='DiskSN', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    ip = models.CharField(db_column='IP', max_length=15, blank=True, null=True)  # Field name made lowercase.
+    mac = models.CharField(db_column='MAC', max_length=17, blank=True, null=True)  # Field name made lowercase.
+    accessmask = models.CharField(max_length=255, blank=True, null=True)
+    eventid = models.IntegerField(db_column='EventID')  # Field name made lowercase.
+    cname = models.CharField(db_column='Cname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    uname = models.CharField(db_column='Uname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    datetime = models.CharField(max_length=40, blank=True, null=True)
+    sid = models.CharField(db_column='SID', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    logonid = models.CharField(db_column='logonID', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    dname = models.CharField(db_column='Dname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    objserver = models.CharField(max_length=255, blank=True, null=True)
+    objname = models.CharField(max_length=255, blank=True, null=True)
+    ext = models.CharField(max_length=10, blank=True, null=True)
+    psname = models.CharField(db_column='PSname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    curs = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -337,23 +347,24 @@ class Oamtp(models.Model):
 
 class PartWin10(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    ip = models.CharField(db_column='IP', max_length=20)  # Field name made lowercase.
-    mac = models.CharField(db_column='MAC', max_length=17)  # Field name made lowercase.
-    cname = models.CharField(db_column='Cname', max_length=255)  # Field name made lowercase.
-    sid = models.CharField(db_column='SID', max_length=255)  # Field name made lowercase.
-    datetime = models.CharField(max_length=40)
+    disksn = models.CharField(db_column='DiskSN', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    ip = models.CharField(db_column='IP', max_length=15, blank=True, null=True)  # Field name made lowercase.
+    mac = models.CharField(db_column='MAC', max_length=17, blank=True, null=True)  # Field name made lowercase.
+    cname = models.CharField(db_column='Cname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    sid = models.CharField(db_column='SID', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    datetime = models.CharField(max_length=40, blank=True, null=True)
     eventid = models.IntegerField(db_column='EventID')  # Field name made lowercase.
     disknum = models.IntegerField(db_column='diskNum')  # Field name made lowercase.
-    diskid = models.CharField(db_column='diskID', max_length=255)  # Field name made lowercase.
-    characteristics = models.CharField(max_length=255)
-    bustype = models.CharField(max_length=255)
-    manufacturer = models.CharField(max_length=255)
-    model = models.CharField(max_length=255)
-    modelversion = models.CharField(max_length=255)
-    serialnum = models.CharField(db_column='SerialNum', max_length=255)  # Field name made lowercase.
-    parentid = models.CharField(db_column='parentID', max_length=255)  # Field name made lowercase.
-    registryid = models.CharField(db_column='registryID', max_length=255)  # Field name made lowercase.
-    curs = models.CharField(max_length=10)
+    diskid = models.CharField(db_column='diskID', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    characteristics = models.CharField(max_length=255, blank=True, null=True)
+    bustype = models.CharField(max_length=255, blank=True, null=True)
+    manufacturer = models.CharField(max_length=255, blank=True, null=True)
+    model = models.CharField(max_length=255, blank=True, null=True)
+    modelversion = models.CharField(max_length=255, blank=True, null=True)
+    serialnum = models.CharField(db_column='SerialNum', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    parentid = models.CharField(db_column='parentID', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    registryid = models.CharField(db_column='registryID', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    curs = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -362,16 +373,17 @@ class PartWin10(models.Model):
 
 class Qscan(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    udname = models.CharField(db_column='UDname', max_length=255)  # Field name made lowercase.
-    cname = models.CharField(db_column='Cname', max_length=255)  # Field name made lowercase.
-    ip = models.CharField(db_column='IP', max_length=20)  # Field name made lowercase.
-    mac = models.CharField(db_column='MAC', max_length=17)  # Field name made lowercase.
-    uname = models.CharField(db_column='Uname', max_length=255)  # Field name made lowercase.
-    fname = models.CharField(db_column='Fname', max_length=255)  # Field name made lowercase.
-    ext = models.CharField(max_length=10)
+    disksn = models.CharField(db_column='DiskSN', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    udname = models.CharField(db_column='UDname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    cname = models.CharField(db_column='Cname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    ip = models.CharField(db_column='IP', max_length=15, blank=True, null=True)  # Field name made lowercase.
+    mac = models.CharField(db_column='MAC', max_length=17, blank=True, null=True)  # Field name made lowercase.
+    uname = models.CharField(db_column='Uname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    fname = models.CharField(db_column='Fname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    ext = models.CharField(max_length=10, blank=True, null=True)
     fnum = models.IntegerField(db_column='Fnum')  # Field name made lowercase.
-    datetime = models.CharField(max_length=20)
-    curs = models.CharField(max_length=5)
+    datetime = models.CharField(max_length=40, blank=True, null=True)
+    curs = models.CharField(max_length=5, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -380,28 +392,46 @@ class Qscan(models.Model):
 
 class Reg(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    ip = models.CharField(db_column='IP', max_length=20)  # Field name made lowercase.
-    mac = models.CharField(db_column='MAC', max_length=17)  # Field name made lowercase.
-    devicedesc = models.CharField(max_length=255)
-    hardwareid = models.CharField(db_column='hardwareID', max_length=255)  # Field name made lowercase.
-    compatibleids = models.CharField(max_length=255)
-    driver = models.CharField(max_length=255)
-    mfg = models.CharField(max_length=255)
-    service = models.CharField(max_length=255)
-    friendlyname = models.CharField(max_length=255)
-    curs = models.CharField(max_length=10)
+    disksn = models.CharField(db_column='DiskSN', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    ip = models.CharField(db_column='IP', max_length=15, blank=True, null=True)  # Field name made lowercase.
+    mac = models.CharField(db_column='MAC', max_length=17, blank=True, null=True)  # Field name made lowercase.
+    devicedesc = models.CharField(max_length=255, blank=True, null=True)
+    hardwareid = models.CharField(db_column='hardwareID', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    compatibleids = models.CharField(max_length=255, blank=True, null=True)
+    driver = models.CharField(max_length=255, blank=True, null=True)
+    mfg = models.CharField(max_length=255, blank=True, null=True)
+    service = models.CharField(max_length=255, blank=True, null=True)
+    friendlyname = models.CharField(max_length=255, blank=True, null=True)
+    curs = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'reg'
 
+
 class SbtProtectionAct(models.Model):
     article = models.CharField(max_length=50)
-    contents = models.TextField()
+    contents = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'sbt_protection_act'
+
+
+class TestprojectSendsms(models.Model):
+    to_number = models.CharField(max_length=30)
+    from_number = models.CharField(max_length=30)
+    sms_sid = models.CharField(max_length=34)
+    account_sid = models.CharField(max_length=34)
+    created_at = models.DateTimeField()
+    sent_at = models.DateTimeField(blank=True, null=True)
+    delivered_at = models.DateTimeField(blank=True, null=True)
+    status = models.CharField(max_length=20)
+
+    class Meta:
+        managed = False
+        db_table = 'testproject_sendsms'
+
 
 class UactivReportSaves(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
@@ -413,7 +443,7 @@ class UactivReportSaves(models.Model):
     reasontype = models.CharField(max_length=10)
     lognum = models.IntegerField()
     logtable = models.CharField(max_length=20)
-    ip = models.CharField(db_column='IP', max_length=20)  # Field name made lowercase.
+    ip = models.CharField(db_column='IP', max_length=15)  # Field name made lowercase.
     mac = models.CharField(db_column='MAC', max_length=17)  # Field name made lowercase.
     outflow_file = models.CharField(db_column='outflow_File', max_length=255)  # Field name made lowercase.
     url_link = models.CharField(db_column='url_Link', max_length=255, blank=True, null=True)  # Field name made lowercase.
@@ -445,32 +475,6 @@ class UactivReportSend(models.Model):
         db_table = 'uactiv_report_send'
 
 
-class Zscan(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    udname = models.CharField(db_column='UDname', max_length=255)  # Field name made lowercase.
-    cname = models.CharField(db_column='Cname', max_length=255)  # Field name made lowercase.
-    ip = models.CharField(db_column='IP', max_length=20)  # Field name made lowercase.
-    mac = models.CharField(db_column='MAC', max_length=17)  # Field name made lowercase.
-    uname = models.CharField(db_column='Uname', max_length=255)  # Field name made lowercase.
-    cdatetime = models.CharField(db_column='Cdatetime', max_length=40)  # Field name made lowercase.
-    adatetime = models.CharField(db_column='Adatetime', max_length=40)  # Field name made lowercase.
-    mdatetime = models.CharField(db_column='Mdatetime', max_length=40)  # Field name made lowercase.
-    size_kb = models.CharField(db_column='size_KB', max_length=255)  # Field name made lowercase.
-    rootdir = models.CharField(max_length=255)
-    dirname = models.CharField(max_length=255)
-    fname = models.CharField(db_column='Fname', max_length=255)  # Field name made lowercase.
-    basename = models.CharField(max_length=255)
-    ext = models.CharField(max_length=10)
-    attrib = models.CharField(max_length=255)
-    srcname = models.CharField(db_column='srCname', max_length=255)  # Field name made lowercase.
-    srcext = models.CharField(max_length=255)
-    srcsize = models.CharField(max_length=255)
-    curs = models.CharField(max_length=10)
-
-    class Meta:
-        managed = False
-        db_table = 'zscan'
-
 class WeekReportSaves(models.Model):
     title = models.CharField(max_length=255)
     summary = models.CharField(max_length=255)
@@ -479,9 +483,9 @@ class WeekReportSaves(models.Model):
     severity_cnt = models.CharField(max_length=50)
     top5 = models.CharField(max_length=100)
     violator = models.CharField(max_length=50)
-    web_file = models.CharField(max_length=100)
-    usb_file = models.CharField(max_length=100)
-    app_file = models.CharField(max_length=100)
+    web_file = models.CharField(max_length=100, blank=True, null=True)
+    usb_file = models.CharField(max_length=100, blank=True, null=True)
+    app_file = models.CharField(max_length=100, blank=True, null=True)
     outreason = models.CharField(max_length=50)
     accumulate_cnt = models.CharField(max_length=10)
     measure = models.TextField()
@@ -490,3 +494,31 @@ class WeekReportSaves(models.Model):
     class Meta:
         managed = False
         db_table = 'week_report_saves'
+
+
+class Zscan(models.Model):
+    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
+    disksn = models.CharField(db_column='DiskSN', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    udname = models.CharField(db_column='UDname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    cname = models.CharField(db_column='Cname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    ip = models.CharField(db_column='IP', max_length=15, blank=True, null=True)  # Field name made lowercase.
+    mac = models.CharField(db_column='MAC', max_length=17, blank=True, null=True)  # Field name made lowercase.
+    uname = models.CharField(db_column='Uname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    cdatetime = models.CharField(db_column='Cdatetime', max_length=40, blank=True, null=True)  # Field name made lowercase.
+    adatetime = models.CharField(db_column='Adatetime', max_length=40, blank=True, null=True)  # Field name made lowercase.
+    mdatetime = models.CharField(db_column='Mdatetime', max_length=40, blank=True, null=True)  # Field name made lowercase.
+    size_kb = models.FloatField(db_column='size_KB')  # Field name made lowercase.
+    rootdir = models.CharField(max_length=255, blank=True, null=True)
+    dirname = models.CharField(max_length=255, blank=True, null=True)
+    fname = models.CharField(db_column='Fname', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    basename = models.CharField(max_length=255, blank=True, null=True)
+    ext = models.CharField(max_length=10, blank=True, null=True)
+    attrib = models.CharField(max_length=255, blank=True, null=True)
+    srcname = models.CharField(max_length=255, blank=True, null=True)
+    srcext = models.CharField(max_length=255, blank=True, null=True)
+    srcsize = models.FloatField()
+    curs = models.CharField(max_length=10, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'zscan'

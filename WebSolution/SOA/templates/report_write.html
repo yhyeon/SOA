@@ -40,13 +40,13 @@
                 <li style="list-style-type: none">
                     <ul class="dashed">
                         <li class="outflowFile">WEB 반출 파일 :
-                            <input type="text" name="web-file" value="{{ web_outfile }}" readonly/>
+                            <input type="text" name="web-file" value="{% if web_outfile %}{{ web_outfile }}{% else %} - {% endif %}" readonly/>
                         </li>
                         <li class="outflowFile">USB 반출 파일 :
-                            <input type="text" name="usb-file" value="{{ usb_outfile }}" readonly/>
+                            <input type="text" name="usb-file" value="{% if usb_outfile %}{{ usb_outfile }}{% else %} - {% endif %}" readonly/>
                         </li>
                         <li class="outflowFile">APP 반출 파일 :
-                            <input type="text" name="app-file" value="{{ app_outfile }}" readonly/>
+                            <input type="text" name="app-file" value="{% if app_outfile %}{{ app_outfile }}{% else %} - {% endif %}" readonly/>
                         </li>
                         <li class="outreason">반출 사유 :
                             <input type="text" name="outreason" value="{{ outreason }}" readonly/>
@@ -75,7 +75,7 @@
 
         <div class="graph">
             {% static variable_with_path as staticpath %}
-            <img src="{{ staticpath }}graph/{{ reportData.graph_name }}">
+            <img src="{{ staticpath }}graph/{{ graph_name }}">
             <input type="hidden" name="graph_name" value="{{ graph_name }}">
         </div>
     </form>
