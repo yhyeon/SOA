@@ -1,4 +1,4 @@
-﻿$ErrorActionPreference = 'silentlycontinue'
+$ErrorActionPreference = 'silentlycontinue'
 if(!(test-path 'C:\ProgramData\soalog'))
 {new-item -Path "C:\Windows\soa" -ItemType Directory -Force }
 $osversion = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName).ProductName
@@ -80,6 +80,7 @@ else
 $compare = Get-Content -Path 'C:\ProgramData\soalog\d.txt'
 $sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $date + ":::;" + $time + ":::;" + $eventid + ":::;" + $slifetime + ":::;" + $hostguid + ":::;" + $device + ":::;" + 'USB 연결' + ":::;" | Where-Object {$_ -notin $compare} | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_Win7Driver.txt -Append -Encoding utf8
 }
+}
 else
 {
 $datetime = $driver | select-string -pattern 'TimeCreated' | Out-String
@@ -101,7 +102,7 @@ $elifetime = $elifetime.split("{")[1]
 $elifetime = $elifetime.Split("}")[0]
 
 
-if (!(C:\ProgramData\soalog\d.txt))
+if (!(Test-Path C:\ProgramData\soalog\d.txt))
 {
 $sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $date + ":::;" + $time + ":::;" + $eventid + ":::;" + $elifetime + ":::;" + ":::;" + ":::;" + 'USB 해제' + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_Win7Driver.txt -Append -Encoding utf8
 }
@@ -113,7 +114,6 @@ $sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;"
 }
 }
 }
-
 
 elseif ($osversion -match "Windows 10") # if the client is Windows 10
 {
@@ -143,7 +143,7 @@ else
 $sn = $sn
 }
 }
-}
+
 
 #Get-ChildItem -path "C:\Windows\System32\winevt\Logs\*Partition*" | copy-Item -Destination C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_Microsoft-Windows-Partition%4Diagnostic.evtx
 #$events = get-winevent -path C:\ProgramData\soalog\*partition*.evtx | foreach {$_.toxml()}
@@ -187,7 +187,7 @@ $registryid = $partition | select-string -Pattern 'RegistryId'
 $registryid = $registryid.line.Split("=").Split(">").Split("'").split("{").split("}")[5]
 
 
-if (! (Test-Path -Path 'C:\ProgramData\soalog\p.txt'))
+if (!(Test-Path -Path 'C:\ProgramData\soalog\p.txt'))
 {
 $sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $datetime + ":::;" + $eventid + ":::;" + $disknumber + ":::;" + $diskid + ":::;" + $characteristics + ":::;" + $busType + ":::;" + $manufacturer + ":::;" + $model + ":::;" + $revision + ":::;" + $serialnumber + ":::;" + $parentid + ":::;" + $registryid + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_partition.txt -Append -Encoding utf8
 }
@@ -195,6 +195,7 @@ else
 {
 $compare = Get-Content -Path 'C:\ProgramData\soalog\p.txt'
 $sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $datetime + ":::;" + $eventid + ":::;" + $disknumber + ":::;" + $diskid + ":::;" + $characteristics + ":::;" + $busType + ":::;" + $manufacturer + ":::;" + $model + ":::;" + $revision + ":::;" + $serialnumber + ":::;" + $parentid + ":::;" + $registryid + ":::;" | Where-Object {$_ -notin $compare} | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_partition.txt -Append -Encoding utf8
+}
 }
 }
 
@@ -242,7 +243,7 @@ Switch($job.jobstate)
 }
 }
 }
-}
+
 
 Clear-Variable driver, eventid, partition, compare
 $sw.stop()
