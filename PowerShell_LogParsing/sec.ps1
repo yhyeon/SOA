@@ -664,8 +664,7 @@ $oalog.Dispose()
 $sw.stop()
 $sw.Elapsed.tostring('dd\.hh\"mm\:ss\.fff')
 $sw = [System.Diagnostics.Stopwatch]::startnew()
-if($?)
-{
+
 if (test-path 'C:\ProgramData\soalog\*_logon.txt')
 {
 Get-Content  C:\ProgramData\soalog\*_logon.txt | Sort-Object | Get-Unique | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_logonoff.txt -Append -encoding utf8
@@ -706,7 +705,8 @@ $enc.Dispose()
 $user.Dispose()
 $cred.Dispose()
 $src.Dispose()
-}
+
+
 $sw.stop()
 $sw.Elapsed.tostring('dd\.hh\"mm\:ss\.fff')
 

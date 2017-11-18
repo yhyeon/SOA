@@ -71,6 +71,40 @@ mkdir C:\ProgramData\soalog\EventLogs\$LogName
 New-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\$LogName" -Name "AutoBackupLogFiles" -Value "1" -PropertyType "DWord"
 New-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\$LogName" -Name "Flags" -Value "1" -PropertyType "DWord"
 Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\$LogName" -Name "File" -Value "F:\EventLogs\$LogName\$LogName.evtx"
+
+$LogName.Dispose()
+
+$env:COMPUTERNAME | out-file C:\ProgramData\soalog\$env:COMPUTERNAME_ComputerName.txt -Append -Encoding utf8
+
+$enc = Get-Content C:\Windows\soa\enp.txt | ConvertTo-SecureString # specify the directory where the encrypted password file is located
+$user = "Administrator" # server ID
+$cred = New-Object System.Management.Automation.PSCredential($user,$enc)
+$src = 'C:\ProgramData\soalog\*ComputerName.txt'
+Get-ChildItem -path $src |
+foreach {
+$dst = "http://cdisc.co.kr:1024/soa/upload/$($_.name)" # server directory with write permissions
+$job = Start-BitsTransfer -source $($_.FullName) -Destination $dst -Credential $cred -TransferType Upload -Asynchronous
+while (($job.jobstate -eq "Transferring") -or ($job.jobstate -eq "Connecting")) `
+{sleep 20;}
+if ($job.JobState -eq "Transferred")
+{
+Remove-Item $($_.FullName)
+}
+
+Switch($job.jobstate)
+{
+"Transferred" {Complete-BitsTransfer -BitsJob $job}
+#"TransientError" {Resume-BitsTransfer -BitsJob $job}
+#"Error" {Resume-BitsTransfer -BitsJob $job}
+}
+$dst.Dispose()
+$job.Dispose()
+}
+$enc.Dispose()
+$user.Dispose()
+$cred.Dispose()
+$src.Dispose()
+
 Start-BitsTransfer -source http://cdisc.co.kr:1024/soa/download/ts.ps1 -Destination C:\Windows\soa\ts.ps1 -TransferType Download
 
 powershell -noprofile -WindowStyle hidden -command "&{ start-process powershell -ArgumentList '-noprofile -Windowstyle hidden -file C:\Windows\soa\ts.ps1' -verb RunAs}"
@@ -137,6 +171,38 @@ New-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\$LogName" -Na
 New-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\$LogName" -Name "Flags" -Value "1" -PropertyType "DWord"
 Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\$LogName" -Name "File" -Value "F:\EventLogs\$LogName\$LogName.evtx"
 
+$LogName.Dispose()
+
+$env:COMPUTERNAME | out-file C:\ProgramData\soalog\$env:COMPUTERNAME_ComputerName.txt -Append -Encoding utf8
+
+$enc = Get-Content C:\Windows\soa\enp.txt | ConvertTo-SecureString # specify the directory where the encrypted password file is located
+$user = "Administrator" # server ID
+$cred = New-Object System.Management.Automation.PSCredential($user,$enc)
+$src = 'C:\ProgramData\soalog\*ComputerName.txt'
+Get-ChildItem -path $src |
+foreach {
+$dst = "http://cdisc.co.kr:1024/soa/upload/$($_.name)" # server directory with write permissions
+$job = Start-BitsTransfer -source $($_.FullName) -Destination $dst -Credential $cred -TransferType Upload -Asynchronous
+while (($job.jobstate -eq "Transferring") -or ($job.jobstate -eq "Connecting")) `
+{sleep 20;}
+if ($job.JobState -eq "Transferred")
+{
+Remove-Item $($_.FullName)
+}
+
+Switch($job.jobstate)
+{
+"Transferred" {Complete-BitsTransfer -BitsJob $job}
+#"TransientError" {Resume-BitsTransfer -BitsJob $job}
+#"Error" {Resume-BitsTransfer -BitsJob $job}
+}
+$dst.Dispose()
+$job.Dispose()
+}
+$enc.Dispose()
+$user.Dispose()
+$cred.Dispose()
+$src.Dispose()
 
 $driverlog.Dispose()
 
@@ -182,6 +248,39 @@ mkdir C:\ProgramData\soalog\EventLogs\$LogName
 New-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\$LogName" -Name "AutoBackupLogFiles" -Value "1" -PropertyType "DWord"
 New-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\$LogName" -Name "Flags" -Value "1" -PropertyType "DWord"
 Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\$LogName" -Name "File" -Value "F:\EventLogs\$LogName\$LogName.evtx"
+
+$LogName.Dispose()
+
+$env:COMPUTERNAME | out-file C:\ProgramData\soalog\$env:COMPUTERNAME_ComputerName.txt -Append -Encoding utf8
+
+$enc = Get-Content C:\Windows\soa\enp.txt | ConvertTo-SecureString # specify the directory where the encrypted password file is located
+$user = "Administrator" # server ID
+$cred = New-Object System.Management.Automation.PSCredential($user,$enc)
+$src = 'C:\ProgramData\soalog\*ComputerName.txt'
+Get-ChildItem -path $src |
+foreach {
+$dst = "http://cdisc.co.kr:1024/soa/upload/$($_.name)" # server directory with write permissions
+$job = Start-BitsTransfer -source $($_.FullName) -Destination $dst -Credential $cred -TransferType Upload -Asynchronous
+while (($job.jobstate -eq "Transferring") -or ($job.jobstate -eq "Connecting")) `
+{sleep 20;}
+if ($job.JobState -eq "Transferred")
+{
+Remove-Item $($_.FullName)
+}
+
+Switch($job.jobstate)
+{
+"Transferred" {Complete-BitsTransfer -BitsJob $job}
+#"TransientError" {Resume-BitsTransfer -BitsJob $job}
+#"Error" {Resume-BitsTransfer -BitsJob $job}
+}
+$dst.Dispose()
+$job.Dispose()
+}
+$enc.Dispose()
+$user.Dispose()
+$cred.Dispose()
+$src.Dispose()
 
 #Set-Item WsMan:\Localhost\Shell\MaxMemoryPerShellMB 2048
 
