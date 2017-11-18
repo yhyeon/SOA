@@ -46,18 +46,30 @@ $lifetiemid = ($usb | ForEach-Object {Get-ItemProperty $_.pspath} | select lifet
 
 if (! (Test-Path -Path 'C:\ProgramData\soalog\r.txt'))
 {
-$sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $devicedesc + ":::;" + $hardwareid + ":::;" + $compatibleids + ":::;" + $driver + ":::;" + $mfg + ":::;" + $service + ":::;" + $friendlyname + ":::;" | Out-File  C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_reg.txt -Append -Encoding utf8
+$sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $devicedesc + ":::;" + $hardwareid + ":::;" + $compatibleids + ":::;" + $driver + ":::;" + $mfg + ":::;" + $service + ":::;" + $friendlyname + ":::;" | Out-File  C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_reg.txt -Append -Encoding utf8
 }
 
 else
 {
 $compare = Get-Content -Path 'C:\ProgramData\soalog\r.txt'
-$sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $devicedesc + ":::;" + $hardwareid + ":::;" + $compatibleids + ":::;" + $driver + ":::;" + $mfg + ":::;" + $service + ":::;" + $friendlyname + ":::;" | Where-Object {$_ -notin $compare} | Out-File  C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_reg.txt -Append -Encoding utf8
+$sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $devicedesc + ":::;" + $hardwareid + ":::;" + $compatibleids + ":::;" + $driver + ":::;" + $mfg + ":::;" + $service + ":::;" + $friendlyname + ":::;" | Where-Object {$_ -notin $compare} | Out-File  C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_reg.txt -Append -Encoding utf8
+$compare.Dispose()
 }
+$devicedesc.Dispose()
+$hardwareid.Dispose()
+$compatibleids.Dispose()
+$driver.Dispose()
+$mfg.Dispose()
+$service.Dispose()
+$friendlyname.Dispose()
+$label.Dispose()
+$lifetiemid.Dispose()
+$usb.Dispose()
 }
+$reg.Dispose()
+$usbpath.Dispose()
 
-if($?)
-{
+
 Import-Module bitstransfer
 $enc = Get-Content C:\Windows\soa\enp.txt | ConvertTo-SecureString # specify the directory where the encrypted password file is located
 $user = "Administrator" # server ID
@@ -72,11 +84,7 @@ Remove-Item $($_.FullName)
 }
 $dst = "http://cdisc.co.kr:1024/soa/upload/$($_.name)" # server directory with write permissions
 $job = Start-BitsTransfer -source $($_.FullName) -Destination $dst -Credential $cred -TransferType Upload -Asynchronous
-while (($job.jobstate -eq "TransientError"))
-{
-sleep 10;
-Resume-BitsTransfer
-}
+
 while (($job.jobstate -eq "Transferring") -or ($job.jobstate -eq "Connecting")) `
 {sleep 10;}
 if ($job.JobState -eq "Transferred")
@@ -90,8 +98,14 @@ Switch($job.jobstate)
 "TransientError" {Resume-BitsTransfer -BitsJob $job}
 "Error" {Resume-BitsTransfer -BitsJob $job}
 }
+$dst.Dispose()
+$job.Dispose()
 }
-}
+$enc.Dispose()
+$user.Dispose()
+$cred.Dispose()
+$src.Dispose()
+
 
 $sw.stop()
 $sw.Elapsed.tostring('dd\.hh\"mm\:ss\.fff')

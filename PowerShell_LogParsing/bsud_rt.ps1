@@ -5,7 +5,7 @@ $enc = Get-Content C:\Windows\soa\enp.txt | ConvertTo-SecureString # specify the
 $user = "Administrator" # server ID
 $cred = New-Object System.Management.Automation.PSCredential($user,$enc)
 #$src = "C:\ProgramData\soalog\" # directory in which files to be sent
-$src = "C:\ProgramData\soalog\*_clip_process.txt", "C:\ProgramData\soalog\*.png", "C:\ProgramData\soalog\clip.txt"
+$src = "C:\ProgramData\soalog\*_clip_process.txt", "C:\ProgramData\soalog\*.png", "C:\ProgramData\soalog\*fclip.txt"
 Get-ChildItem -path $src |
 foreach {
 $dst = "http://cdisc.co.kr:1024/soa/upload/$($_.name)" # server directory with write permissions
@@ -22,7 +22,13 @@ Switch($job.jobstate)
 "TransientError" {Resume-BitsTransfer -BitsJob $job}
 "Error" {Resume-BitsTransfer -BitsJob $job}
 }
+$dst.Dispose()
+$job.Dispose()
 }
+$enc.Dispose()
+$user.Dispose()
+$cred.Dispose()
+$src.Dispose()
 sleep 1
 } 
 while ($true)

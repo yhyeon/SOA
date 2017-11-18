@@ -21,6 +21,7 @@ else
 {
 $fcompare = get-content "C:\ProgramData\soalog\df.txt"
 get-content $($_.FullName) | Where-Object {$_ -notin $fcompare} | Out-File $($_.FullName).replace("dscanfiles","files") -Append -Encoding UTF8
+$fcompare.Dispose()
 }
 }
 
@@ -35,6 +36,7 @@ else
 {
 $zcompare = get-content "C:\ProgramData\soalog\dz.txt"
 get-content $($_.FullName) | Where-Object {$_ -notin $zcompare} | Out-File $($_.FullName).replace("dscanzip","zip") -Append -Encoding UTF8
+$zcompare.Dispose()
 }
 }
 
@@ -49,6 +51,7 @@ else
 {
 $qcompare = get-content "C:\ProgramData\soalog\dq.txt"
 get-content $($_.FullName) | Where-Object {$_ -notin $qcompare} | Out-File $($_.FullName).replace("dscanquicks","quicks") -Append -Encoding UTF8
+$qcompare.Dispose()
 }
 }
 
@@ -63,13 +66,12 @@ else
 {
 $pcompare = get-content "C:\ProgramData\soalog\p.txt"
 get-content $($_.FullName) | Where-Object {$_ -notin $pcompare} | Out-File $($_.FullName).replace("dscanpart","partition") -Append -Encoding UTF8
+$pcompare.Dispose()
 }
 
 }
 }
 
-if ($?)
-{
 Import-Module bitstransfer
 $enc = Get-Content C:\Windows\soa\enp.txt | ConvertTo-SecureString # specify the directory where the encrypted password file is located
 $user = "Administrator" # server ID
@@ -114,7 +116,13 @@ Switch($job.jobstate)
 "TransientError" {Resume-BitsTransfer -BitsJob $job}
 "Error" {Resume-BitsTransfer -BitsJob $job}
 }
+$dst.Dispose()
+$job.Dispose()
 }
-}
+$enc.Dispose()
+$user.Dispose()
+$cred.Dispose()
+$src.Dispose()
+
 $sw.stop()
 $sw.Elapsed.tostring('dd\.hh\"mm\:ss\.fff')
