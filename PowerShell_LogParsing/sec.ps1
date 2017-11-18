@@ -1,4 +1,4 @@
-﻿do {
+do {
 $ErrorActionPreference = 'silentlycontinue'
 
 if(!(test-path 'C:\ProgramData\soalog'))
@@ -688,8 +688,8 @@ while (($job.jobstate -eq "Transferring") -or ($job.jobstate -eq "Connecting")) 
 {sleep 20;}
 if ($job.JobState -eq "Transferred")
 {
-Remove-Item $($_.FullName)
-Remove-Item "C:\ProgramData\soalog\*_logon.txt", "C:\ProgramData\soalog\*_oa.txt"
+Remove-Item $($_.FullName) -Force
+Remove-Item "C:\ProgramData\soalog\*_logon.txt", "C:\ProgramData\soalog\*_oa.txt" -Force
 }
 
 Switch($job.jobstate)
