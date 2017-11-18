@@ -1,12 +1,13 @@
-do {
 $ErrorActionPreference = 'silentlycontinue'
 
 if(!(test-path 'C:\ProgramData\soalog'))
 {new-item -Path "C:\ProgramData\soalog" -ItemType Directory -Force }
 
+do {
 #$drive = (Get-WmiObject Win32_OperatingSystem).Name.split("\")[-2].replace("Harddisk","PHYSICALDRIVE")
 #$drive = "\\.\"+$drive
 #$sn = (Get-WMIObject win32_physicalmedia | Where-Object {$_.tag -eq $drive} | select SerialNumber).SerialNumber
+$sw = [System.Diagnostics.Stopwatch]::startnew()
 $sn = (Get-WMIObject win32_physicalmedia | Where-Object {$_.tag -match "PHYSICALDRIVE0"} | select SerialNumber).SerialNumber
 if ($sn -ne $null)
 {
@@ -33,9 +34,8 @@ $sn = $sn
 }
 
 
-
-
-$sw = [System.Diagnostics.Stopwatch]::startnew()
+if (Test-Path ( "C:\Windows\System32\winevt\Logs\*Archive-Security*.evtx"))
+{
 $allname = (Get-ChildItem -path "C:\Windows\System32\winevt\Logs\*Archive-Security*.evtx" | select name).name | Select-Object -First 1
 foreach ($name in $allname)
 {
@@ -714,5 +714,6 @@ $sw.Elapsed.tostring('dd\.hh\"mm\:ss\.fff')
 
 
 sleep 5
+}
 }
 while ($true)
