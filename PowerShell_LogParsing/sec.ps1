@@ -1,13 +1,12 @@
+do {
 $ErrorActionPreference = 'silentlycontinue'
 
 if(!(test-path 'C:\ProgramData\soalog'))
 {new-item -Path "C:\ProgramData\soalog" -ItemType Directory -Force }
 
-do {
 #$drive = (Get-WmiObject Win32_OperatingSystem).Name.split("\")[-2].replace("Harddisk","PHYSICALDRIVE")
 #$drive = "\\.\"+$drive
 #$sn = (Get-WMIObject win32_physicalmedia | Where-Object {$_.tag -eq $drive} | select SerialNumber).SerialNumber
-$sw = [System.Diagnostics.Stopwatch]::startnew()
 $sn = (Get-WMIObject win32_physicalmedia | Where-Object {$_.tag -match "PHYSICALDRIVE0"} | select SerialNumber).SerialNumber
 if ($sn -ne $null)
 {
@@ -34,8 +33,9 @@ $sn = $sn
 }
 
 
-if (Test-Path ( "C:\Windows\System32\winevt\Logs\*Archive-Security*.evtx"))
-{
+
+
+$sw = [System.Diagnostics.Stopwatch]::startnew()
 $allname = (Get-ChildItem -path "C:\Windows\System32\winevt\Logs\*Archive-Security*.evtx" | select name).name | Select-Object -First 1
 foreach ($name in $allname)
 {
@@ -391,8 +391,8 @@ $directoryonly = get-content C:\ProgramData\soalog\path.txt
 #$eextension = ".nls", ".dll", ".mui", ".clb", ".ini", ".ttc", ".xml", ".log", ".ldb", ".edb-journal", ".tlb", ".deb", ".json", ".pages", ".insertion", ".css", ".ar", ".de", ".otf", ".svg", ".js", ".pt_PT", ".zh_TW", ".it", ".fr", ".en", ".yahoo", ".option", ".woff",`
 #".ttf", ".eot", ".html", ".cat", ".drv", ".dat", ".manifest", ".sdb", ".aym", ".scd", ".cdf-ms", ".ico", ".fon", ".icm", ".tingo", ".compact", ".config", ".configuration", ".core", ".db", ".pris", ".pri", ".web", ".xam"
 
-$eextension = ".nls|.dll|.mui|.clb|.ini|.ttc|.xml|.tmp|.log|.ldb|.edb-journal|.tlb|.deb|.json|.pages|.insertion|.css|.ar|.de|.otf|.svg|.js|.pt_PT|.zh_TW|.it|.fr|.en|.yahoo|.option|.woff|.ttf|.eot|.cat|.drv|.dat|.manifest|.sdb|.aym|.scd|.cdf-ms|.ico|.fon|.icm|.tingo|.compact|`
-.config|.configuration|.core|.db|.pris|.pri|.web|.xam|.aye"
+$eextension = ".nls", ".dll", ".mui", ".clb", ".ini", ".ttc", ".xml", ".tmp", ".log", ".ldb", ".edb-journal", ".tlb", ".deb", ".json", ".pages", ".insertion", ".css", ".ar", ".de", ".otf", ".svg", ".js", ".pt_PT", ".zh_TW", ".it", ".fr", ".en", ".yahoo", `
+".option", ".woff", ".ttf", ".eot", ".cat", ".drv", ".dat", ".manifest", ".sdb", ".aym", ".scd", ".cdf-ms", ".ico", ".fon", ".icm", ".tingo", ".compact", ".config", ".configuration", ".core", ".db", ".pris", ".pri", ".web", ".xam", ".aye"
 
 #foreach ($security in (get-winevent -FilterHashtable @{path='C:\ProgramData\soalog\*Security*.evtx'; ID = 4656, 4659, 4660, 4662, 4663} | foreach {$_.toxml()}))
 $oalog = get-winevent -FilterHashtable @{path='C:\ProgramData\soalog\*Security*.evtx'; ID = 4656, 4659, 4660, 4662, 4663} | foreach {$_.toxml()}
@@ -421,8 +421,8 @@ $objectname = $objectname.line.Split("=").split(">")[2]
 
 if ($objectname | Where-Object {$_ -notin $directoryonly})
 {
-if ($objectname | where-object {$_ -notmatch $eextension})
-{
+#if ($objectname | where-object {$_ -notmatch $eextension})
+#{
 
 $root = $objectname.split(":")[0]
 $file = $objectname.Split("\")[-1]
@@ -449,6 +449,8 @@ $domainname = $domainname.line.Split("=").split(">")[2]
 $accessmask = $security | select-string -pattern 'AccessMask'
 $accessmask = $accessmask.line.Split("=").split(">")[2]
 $ext = $file.split(".")[-1]
+if ($objectname | Where-Object {$_ -notin $eextension})
+{
 if ($file -eq $ext)
 {
 $next = $null
@@ -688,8 +690,8 @@ while (($job.jobstate -eq "Transferring") -or ($job.jobstate -eq "Connecting")) 
 {sleep 20;}
 if ($job.JobState -eq "Transferred")
 {
-Remove-Item $($_.FullName) -Force
-Remove-Item "C:\ProgramData\soalog\*_logon.txt", "C:\ProgramData\soalog\*_oa.txt" -Force
+Remove-Item $($_.FullName)
+Remove-Item "C:\ProgramData\soalog\*_logon.txt", "C:\ProgramData\soalog\*_oa.txt"
 }
 
 Switch($job.jobstate)
@@ -714,6 +716,5 @@ $sw.Elapsed.tostring('dd\.hh\"mm\:ss\.fff')
 
 
 sleep 5
-}
 }
 while ($true)
