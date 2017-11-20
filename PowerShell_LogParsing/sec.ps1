@@ -392,7 +392,7 @@ $directoryonly = get-content C:\ProgramData\soalog\path.txt
 #".ttf", ".eot", ".html", ".cat", ".drv", ".dat", ".manifest", ".sdb", ".aym", ".scd", ".cdf-ms", ".ico", ".fon", ".icm", ".tingo", ".compact", ".config", ".configuration", ".core", ".db", ".pris", ".pri", ".web", ".xam"
 
 $eextension = "nls", "dll", "mui", "clb", "ini", "ttc", "xml", "tmp", "log", "ldb", "edb-journal", "tlb", "deb", "json", "pages", "insertion", "css", "ar", "de", "otf", "svg", "js", "pt_PT", "zh_TW", "it", "fr", "en", "yahoo", `
-"option", "woff", "ttf", "eot", "cat", "drv", "dat", "manifest", "sdb", "aym", "scd", "cdf-ms", "ico", "fon", "icm", "tingo", "compact", "config", "configuration", "core", "db", "pris", "pri", "web", "xam", "aye"
+"option", "woff", "ttf", "eot", "cat", "drv", "dat", "manifest", "sdb", "aym", "scd", "cdf-ms", "ico", "fon", "icm", "tingo", "compact", "config", "configuration", "core", "db", "pris", "pri", "web", "xam", "aye", "mta"
 
 #foreach ($security in (get-winevent -FilterHashtable @{path='C:\ProgramData\soalog\*Security*.evtx'; ID = 4656, 4659, 4660, 4662, 4663} | foreach {$_.toxml()}))
 $oalog = get-winevent -FilterHashtable @{path='C:\ProgramData\soalog\*Security*.evtx'; ID = 4656, 4659, 4660, 4662, 4663} | foreach {$_.toxml()}
