@@ -449,7 +449,7 @@ $domainname = $domainname.line.Split("=").split(">")[2]
 $accessmask = $security | select-string -pattern 'AccessMask'
 $accessmask = $accessmask.line.Split("=").split(">")[2]
 $ext = $file.split(".")[-1]
-if ($objectname | Where-Object {$_ -notin $eextension})
+if ($ext | Where-Object {$_ -notin $eextension})
 {
 if ($file -eq $ext)
 {
