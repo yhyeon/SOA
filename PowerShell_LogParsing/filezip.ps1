@@ -111,7 +111,7 @@ if ($_.Name -match "zip.txt")
 {
 get-content $($_.FullName) | Out-File "C:\ProgramData\soalog\z.txt" -Append -Encoding UTF8
 }
-Remove-Item $($_.FullName)
+Remove-Item $($_.FullName) -Force
 }
 Switch($job.jobstate)
 {
