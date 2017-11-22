@@ -383,7 +383,8 @@ $eprocess = "C:\/Windows\/System32\/svchost.exe", "C:\/Program Files (x86)\/Goog
 "C:\/Program Files (x86)\/NVIDIA Corporation\/NvContainer\/nvcontainer.exe", "C:\/Windows\/System32\/taskhostw.exe", "C:\/Windows\/System32\/wbem\/WmiPrvSE.exe", "C:\/Windows\/System32\/backgroundTaskHost.exe", "C:\/Windows\/SystemApps\/ShellExperienceHost_cw5n1h2txyewy\/ShellExperienceHost.exe", "C:\/Program Files (x86)\/ESTsoft\/ALUpdate\/ALUpProduct.exe", "C:\/Program Files\/KCP\/kcppayplugin.exe", "C:\/Windows\/System32\/WerFault.exe", "C:\/Windows\/System32\/winlogon.exe", "C:\/Program Files\/Microsoft SQL Server\/MSRS13.H\/Reporting Services\/ReportServer\/bin\/ReportingServicesService.exe",`
 "C:\/Program Files\/Microsoft SQL Server\/MSSQL13.H\/MSSQL\/Binn\/Polybase\/mpdwsvc.exe", "C:\/Program Files\/Windows Defender\/MsMpEng.exe", "C:\/Program Files\/NVIDIA Corporation\/ShadowPlay\/nvspcaps64.exe", "C:\/Windows\/SoftwareDistribution\/Download\/Install\/NIS_Delta_Patch.exe", "C:\/Windows\/System32\/MpSigStub.exe", "C:\/Program Files (x86)\/INCAInternet\/nProtect Online Security\/npUpdateC.exe", "C:\/Program Files\/Realtek\/Audio\/HDA\/RAVCpl64.exe", "C:\/Windows\/System32\/RuntimeBroker.exe", "C:\/Windows\/System32\/mobsync.exe",`
 "C:\/Program Files\/KCP\/kcppayplugin.exe", "C:\/Windows\/System32\/WerFault.exe", "C:\/Program Files (x86)\/INCAInternet\/nProtect Online Security\/nossvc.exe", "C:\/Windows\/System32\/dwm.exe", "C:\/Windows\/System32\/CompatTelRunner.exe", "C:\/Windows\/System32\/rundll32.exe", "C:\/Program Files (x86)\/Common Files\/Adobe\/AdobeGCClient\/AGSService.exe",`
-"C:\/Windows\/System32\/InputMethod\/CHS\/ChsIME.exe", "C:\/Program Files\/WindowsApps\/Microsoft.Windows.Photos_2017.35071.16410.0_x64__8wekyb3d8bbwe\/Microsoft.Photos.exe", "C:\/Program Files\/NVIDIA Corporation\/NvContainer\/nvcontainer.exe"
+"C:\/Windows\/System32\/InputMethod\/CHS\/ChsIME.exe", "C:\/Program Files\/WindowsApps\/Microsoft.Windows.Photos_2017.35071.16410.0_x64__8wekyb3d8bbwe\/Microsoft.Photos.exe", "C:\/Program Files\/NVIDIA Corporation\/NvContainer\/nvcontainer.exe", "C:\/Windows\/System32\/WindowsPowerShell\/v1.0\/powershell.exe", "C:\/Windows\/System32\/WindowsPowerShell\/v1.0\/Modules\/BitsTransfer", "C:\/Program Files\/ESTsoft\/ALYac\/AYHost.aye", "C:\/Windows\/System32\/WindowsPowerShell\/v1.0\/powershell_ise.exe",`
+"C:\/Program Files\/ESTsoft\/ALYac\/AYPop.aye"
 
 #"C:\Program Files (x86)\ESTsoft\ALToolBar\atbsvc.exe", "C:\/Windows\/System32\/WindowsPowerShell\/v1.0\/powershell_ise.exe"
 $directoryonly = get-content C:\ProgramData\soalog\path.txt
@@ -392,7 +393,7 @@ $directoryonly = get-content C:\ProgramData\soalog\path.txt
 #".ttf", ".eot", ".html", ".cat", ".drv", ".dat", ".manifest", ".sdb", ".aym", ".scd", ".cdf-ms", ".ico", ".fon", ".icm", ".tingo", ".compact", ".config", ".configuration", ".core", ".db", ".pris", ".pri", ".web", ".xam"
 
 $eextension = "nls", "dll", "mui", "clb", "ini", "ttc", "xml", "tmp", "log", "ldb", "edb-journal", "tlb", "deb", "json", "pages", "insertion", "css", "ar", "de", "otf", "svg", "js", "pt_PT", "zh_TW", "it", "fr", "en", "yahoo", `
-"option", "woff", "ttf", "eot", "cat", "drv", "dat", "manifest", "sdb", "aym", "scd", "cdf-ms", "ico", "fon", "icm", "tingo", "compact", "config", "configuration", "core", "db", "pris", "pri", "web", "xam", "aye", "mta"
+"option", "woff", "ttf", "eot", "cat", "drv", "dat", "manifest", "sdb", "aym", "scd", "cdf-ms", "ico", "fon", "icm", "tingo", "compact", "config", "configuration", "core", "db", "pris", "pri", "web", "xam", "aye", "mta", "library-ms", "automaticDestinations-ms", "odf"
 
 #foreach ($security in (get-winevent -FilterHashtable @{path='C:\ProgramData\soalog\*Security*.evtx'; ID = 4656, 4659, 4660, 4662, 4663} | foreach {$_.toxml()}))
 $oalog = get-winevent -FilterHashtable @{path='C:\ProgramData\soalog\*Security*.evtx'; ID = 4656, 4659, 4660, 4662, 4663} | foreach {$_.toxml()}
@@ -669,11 +670,11 @@ $sw = [System.Diagnostics.Stopwatch]::startnew()
 
 if (test-path 'C:\ProgramData\soalog\*_logon.txt')
 {
-Get-Content  C:\ProgramData\soalog\*_logon.txt | Get-Unique | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_logonoff.txt -Append -encoding utf8
+Get-Content  C:\ProgramData\soalog\*_logon.txt | select -Unique | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_logonoff.txt -Append -encoding utf8
 }
 if (Test-Path 'C:\ProgramData\soalog\*_oa.txt')
 {
-Get-Content  C:\ProgramData\soalog\*_oa.txt | Get-Unique | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_oa_filtered.txt -Append -encoding utf8
+Get-Content  C:\ProgramData\soalog\*_oa.txt | select -Unique | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_oa_filtered.txt -Append -encoding utf8
 }
 
 Import-Module bitstransfer
