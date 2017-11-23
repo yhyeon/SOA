@@ -84,6 +84,7 @@ $sn = $sn
 $log = get-winevent -FilterHashtable @{path='C:\ProgramData\soalog\*Security*.evtx'; ID = 4624, 528, 540, 4648, 552, 4634, 538, 4647, 551, 4608, 512, 4625, 529, 530, 531, 532, 533, 534, 536, 537, 539} | foreach {$_.toxml()}
 #foreach ($logon in (get-winevent -FilterHashtable @{path='C:\ProgramData\soalog\*Security*.evtx'; ID = 4624, 528, 540, 4648, 552, 4634, 538, 4647, 551, 4608, 512, 4625, 529, 530, 531, 532, 533, 534, 536, 537, 539} | foreach {$_.toxml()}))
 
+
 foreach ($logon in $log)
 {
 $logon = $logon.split("<")
@@ -112,7 +113,10 @@ $targetuname = $logon | select-string -Pattern 'TargetUserName'
 $targetuname = $targetuname.line.Split(">")[1]
 $targetdname = $logon | select-string -Pattern 'TargetDomainName'
 $targetdname = $targetdname.line.Split(">")[1]
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$logontype = $logon | Select-String -Pattern 'LogonType'
+$logontype = $logontype.line.split(">")[-1]
+
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif (($eventid -eq "4648") -or ($eventid -eq "552"))
 {
@@ -136,7 +140,10 @@ $targetuname = $logon | select-string -Pattern 'TargetUserName'
 $targetuname = $targetuname.line.Split(">")[1]
 $targetdname = $logon | select-string -Pattern 'TargetDomainName'
 $targetdname = $targetdname.line.Split(">")[1]
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$logontype = $logon | Select-String -Pattern 'LogonType'
+$logontype = $logontype.line.split(">")[-1]
+
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif (($eventid -eq "4634") -or ($eventid -eq "538"))
 {
@@ -156,7 +163,9 @@ $targetdname = $logon | select-string -Pattern 'TargetDomainName'
 $targetdname = $targetdname.line.Split(">")[1]
 $targetlogonid = $logon | select-string -Pattern 'TargetLogonId'
 $targetlogonid = $targetlogonid.line.Split(">")[1]
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" +  ":::;" +  ":::;" +  ":::;" +  ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + $targetlogonid+ ":::;" + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$logontype = $logon | Select-String -Pattern 'LogonType'
+$logontype = $logontype.line.split(">")[-1]
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" +  ":::;" +  ":::;" +  ":::;" +  ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + $targetlogonid+ ":::;" + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif (($eventid -eq "4647") -or ($eventid -eq "551"))
 {
@@ -174,7 +183,9 @@ $targetuname = $logon | select-string -Pattern 'TargetUserName'
 $targetuname = $targetuname.line.Split(">")[1]
 $targetdname = $logon | select-string -Pattern 'TargetDomainName'
 $targetdname = $targetdname.line.Split(">")[1]
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + ":::;" + ":::;" + ":::;" + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$logontype = $logon | Select-String -Pattern 'LogonType'
+$logontype = $logontype.line.split(">")[-1]
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + ":::;" + ":::;" + ":::;" + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif (($eventid -eq "4608") -or ($eventid -eq "512"))
 {
@@ -192,7 +203,9 @@ $targetuname = $logon | select-string -Pattern 'TargetUserName'
 $targetuname = $targetuname.line.Split(">")[1]
 $targetdname = $logon | select-string -Pattern 'TargetDomainName'
 $targetdname = $targetdname.line.Split(">")[1]
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + ":::;" + ":::;" +  ":::;" +  ":::;" + ":::;" +  ":::;" +  ":::;" + ":::;" + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$logontype = $logon | Select-String -Pattern 'LogonType'
+$logontype = $logontype.line.split(">")[-1]
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + ":::;" + ":::;" +  ":::;" +  ":::;" + ":::;" +  ":::;" +  ":::;" + ":::;" + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif (($eventid -eq "4625") -or ($eventid -eq "529") -or ($eventid -eq "530") -or ($eventid -eq "531") -or ($eventid -eq "532") -or ($eventid -eq "533") -or ($eventid -eq "534") -or ($eventid -eq "535") -or ($eventid -eq "536") -or ($eventid -eq "537") -or ($eventid -eq "539"))
 {
@@ -220,105 +233,107 @@ $targetdname = $logon | select-string -Pattern 'TargetDomainName'
 $targetdname = $targetdname.line.Split(">")[1]
 $failurestatus = $logon | select-string -Pattern 'FailureReason'
 $failurestatus = $failurestatus.line.Split(">")[1]
+$logontype = $logon | Select-String -Pattern 'LogonType'
+$logontype = $logontype.line.split(">")[-1]
 if($failurestatus -eq '0XC000005E')
 {
 $failurecode = 'Currently no logon servers available'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif($failurestatus -eq '0xC0000064')
 {
 $failurecode = 'User logon with misspelled or bad user account '
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif($failurestatus -eq '0xC000006A')
 {
 $failurecode = 'User logon with misspelled or bad password'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif($failurestatus -eq '0XC000006D')
 {
 $failurecode = 'Either due to a bad username or authentication information'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif($failurestatus -eq '0XC000006E')
 {
 $failurecode = 'Unknown user name or bad password'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif($failurestatus -eq '0xC000006F')
 {
 $failurecode = 'User logon outside authorized hours'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif($failurestatus -eq '0xC0000070')
 {
 $failurecode = 'User logon from unauthroized workstation'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif($failurestatus -eq '0xC0000071')
 {
 $failurecode = 'User logon with expired password'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif($failurestatus -eq '0xC0000072')
 {
 $failurecode = 'User logon to account disabled by administrator'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif($failurestatus -eq '0xC00000DC')
 {
 $failurecode = 'Sam Server was in the wrong state to perform the desired operation'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;"  | out-file C:\ProgramData\soalog\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" + $logontype + ":::;"  | out-file C:\ProgramData\soalog\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif($failurestatus -eq '0xC0000133')
 {
 $failurecode = 'Clocks between DC and other computer too far out of sync'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode  + ":::;" | out-file C:\ProgramData\soalog\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode  + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif($failurestatus -eq '0xC000015B')
 {
 $failurecode = 'The user has not been granted the requested logon right at this machine'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif($failurestatus -eq '0xC000018C')
 {
 $failurecode = 'Due to the trust relationship between the primary domain and the trusted domain failed'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif($failurestatus -eq '0xC0000192')
 {
 $failurecode = 'Netlogon service was not started'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif($failurestatus -eq '0xC0000193')
 {
 $failurecode = 'User logon with expired account'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif($failurestatus -eq '0xC0000224')
 {
 $failurecode = 'User is required to change password at next logon'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $time + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $time + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif($failurestatus -eq '0xC0000225')
 {
 $failurecode = 'Evidently a bug in Windows and not a risk'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif($failurestatus -eq '0xC0000234')
 {
 $failurecode = 'User logon with account locked'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif($failurestatus -eq '0xC00002EE')
 {
 $failurecode = 'An Error occured during Logon'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 elseif($failurestatus -eq '0xC0000413')
 {
 $failurecode = 'The specified account is not allowed to authenticate to this machine under the protection of authentication firewall'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $subjectsid + ":::;" + $subjectuname + ":::;" + $subjectdname + ":::;" + $subjectlogonid + ":::;" + $targetsid + ":::;" + $targetuname + ":::;" + $targetdname + ":::;" + ":::;" + $failurecode + ":::;" + $logontype + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 }
 }
 }
@@ -337,11 +352,13 @@ $targetsid.Dispose()
 $targetlogonid.Dispose()
 $failurestatus.Dispose()
 $failurecode.Dispose()
+$logontype.Dispose()
 $sn.Dispose()
 $ip.Dispose()
 $MAC.Dispose()
-}
 $log.Dispose()
+}
+
 
 $IP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress
 $MAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"} | Where-Object {$_.InterfaceDescription -notmatch "TEST"}).MacAddress
@@ -394,6 +411,7 @@ $directoryonly = get-content C:\ProgramData\soalog\path.txt
 
 $eextension = "nls", "dll", "mui", "clb", "ini", "ttc", "xml", "tmp", "log", "ldb", "edb-journal", "tlb", "deb", "json", "pages", "insertion", "css", "ar", "de", "otf", "svg", "js", "pt_PT", "zh_TW", "it", "fr", "en", "yahoo", `
 "option", "woff", "ttf", "eot", "cat", "drv", "dat", "manifest", "sdb", "aym", "scd", "cdf-ms", "ico", "fon", "icm", "tingo", "compact", "config", "configuration", "core", "db", "pris", "pri", "web", "xam", "aye", "mta", "library-ms", "automaticDestinations-ms", "odf"
+
 
 #foreach ($security in (get-winevent -FilterHashtable @{path='C:\ProgramData\soalog\*Security*.evtx'; ID = 4656, 4659, 4660, 4662, 4663} | foreach {$_.toxml()}))
 $oalog = get-winevent -FilterHashtable @{path='C:\ProgramData\soalog\*Security*.evtx'; ID = 4656, 4659, 4660, 4662, 4663} | foreach {$_.toxml()}
@@ -670,11 +688,11 @@ $sw = [System.Diagnostics.Stopwatch]::startnew()
 
 if (test-path 'C:\ProgramData\soalog\*_logon.txt')
 {
-Get-Content  C:\ProgramData\soalog\*_logon.txt | select -Unique | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_logonoff.txt -Append -encoding utf8
+Get-Content  C:\ProgramData\soalog\*_logon.txt | select -unique | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_logonoff.txt -Append -encoding utf8
 }
 if (Test-Path 'C:\ProgramData\soalog\*_oa.txt')
 {
-Get-Content  C:\ProgramData\soalog\*_oa.txt | select -Unique | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_oa_filtered.txt -Append -encoding utf8
+Get-Content  C:\ProgramData\soalog\*_oa.txt | select -unique | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_oa_filtered.txt -Append -encoding utf8
 }
 
 Import-Module bitstransfer
