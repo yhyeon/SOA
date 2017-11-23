@@ -691,11 +691,15 @@ $sw = [System.Diagnostics.Stopwatch]::startnew()
 
 if (test-path 'C:\ProgramData\soalog\*_logon.txt')
 {
-Get-Content  C:\ProgramData\soalog\*_logon.txt | select -unique | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_logonoff.txt -Append -encoding utf8
+$uniquelogon = Get-Content  C:\ProgramData\soalog\*_logon.txt | select -unique
+$uniquelogon | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_logonoff.txt -Append -encoding utf8
+$uniquelogon.dispose()
 }
 if (Test-Path 'C:\ProgramData\soalog\*_oa.txt')
 {
-Get-Content  C:\ProgramData\soalog\*_oa.txt | select -unique | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_oa_filtered.txt -Append -encoding utf8
+$uniqueoa = Get-Content  C:\ProgramData\soalog\*_oa.txt | select -unique
+$uniqueoa | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_oa_filtered.txt -Append -encoding utf8
+$uniqueoa.dispose()
 }
 
 Import-Module bitstransfer
