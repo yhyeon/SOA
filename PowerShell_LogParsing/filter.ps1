@@ -4,11 +4,11 @@ $ErrorActionPreference = 'silentlycontinue'
 if(!(test-path 'C:\ProgramData\soalog'))
 {new-item -Path "C:\ProgramData\soalog" -ItemType Directory -Force }
 
-#if (!(test-path "C:₩ProgramData₩soalog₩path.txt"))
-#{
+if (!(test-path "C:₩ProgramData₩soalog₩path.txt"))
+{
 $dpath = "C:\"
 $dpathnohidden = (Get-ChildItem -Path $dpath -recurse -Directory | select Fullname).FullName
-$dpathnohidden | out-file C:\ProgramData\soalog\path.txt -Encoding utf8
+$dpathnohidden | out-file C:\ProgramData\soalog\path.txt -Encoding utf8 -Append
 $dpathhidden = (Get-ChildItem -Path $dpath -recurse -Directory -Hidden | select Fullname).FullName
 $dpathhidden | out-file C:\ProgramData\soalog\path.txt -Encoding utf8 -Append
 "C:\" | out-file C:\ProgramData\soalog\path.txt -Append -Encoding utf8
@@ -26,16 +26,16 @@ $dpathhidden.Dispose()
 $dpathhn.Dispose()
 $fpath.Dispose()
 
-#}
-<#
+}
+
 else
 {
 $compare = Get-Content -Path C:\ProgramData\soalog\path.txt
 $dpath = "C:\"
 $dpathnohidden = (Get-ChildItem -Path $dpath -recurse -Directory | select Fullname).FullName | Where-Object {$_ -notin $compare}
 $dpathnohidden | out-file C:\ProgramData\soalog\path.txt -Append -Encoding utf8
-$dpathhidden = (Get-ChildItem -Path $dpath -recurse -Directory -Hidden | select Fullname).FullName
-$dpathhidden | out-file C:\ProgramData\soalog\path.txt -Encoding utf8
+$dpathhidden = (Get-ChildItem -Path $dpath -recurse -Directory -Hidden | select Fullname).FullName | Where-Object {$_ -notin $compare}
+$dpathhidden | out-file C:\ProgramData\soalog\path.txt -Encoding utf8 -Append
 "C:\" | Where-Object {$_ -notin $compare} | out-file C:\ProgramData\soalog\path.txt -Append Encoding utf8
 #"C:\Users\Hyeon\AppData\Roaming\Microsoft\Windows\Libraries" | Where-Object {$_ -notin $compare} | out-file C:\ProgramData\soalog\path.txt -Append -Encoding utf8
 $dpathhn = (Get-ChildItem -Path $dpathhidden -Recurse -Directory | select Fullname).FullName | Where-Object {$_ -notin $compare}
@@ -51,4 +51,3 @@ $dpathhidden.Dispose()
 $dpathhn.Dispose()
 $fpath.Dispose()
 }
-#>
