@@ -37,7 +37,7 @@ $sn = $sn
 
 $sw = [System.Diagnostics.Stopwatch]::startnew()
 
-powershell -noprofile -WindowStyle hidden -command "&{ start-process powershell -ArgumentList '-noprofile -Windowstyle hidden -file C:\Windows\soa\filter.ps1' -verb RunAs}"
+Start-Process powershell.exe -ArgumentList 'C:\Windows\soa\filter.ps1' -Wait -PassThru -WindowStyle Hidden -Verb RunAs
 
 $allname = (Get-ChildItem -path "C:\Windows\System32\winevt\Logs\*Archive-Security*.evtx" | select name).name | Select-Object -First 1
 foreach ($name in $allname)
