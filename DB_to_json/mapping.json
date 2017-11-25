@@ -1,0 +1,17 @@
+{
+	"file_scan": {
+		"properties": {
+			"Adate": {"type": "date" }
+			"Atime": {"type": "date" }
+			"Cdate": {"type": "date" }
+			"Ctime": {"type": "date" }
+			"Fname": {"type": "string" }
+			"ID": {"type": "number" }
+			"IP": {"type": "string" }
+			"MAC": {"type": "string" }
+			"Mdate": {"type": "date" }
+			"UDnme": {"type": "string" }
+			"Uname": {"type": "string" }
+		}
+	}
+}

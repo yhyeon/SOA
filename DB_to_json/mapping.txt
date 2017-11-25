@@ -1,0 +1,18 @@
+{
+	"file_scan": {
+		"properties": {
+			"ID": {"type": "integer" }, 
+			"IP": {"type": "text" }, 
+			"MAC": {"type": "text" }, 
+			"Cname": {"type": "text" }, 
+			"SID": {"type": "text" }, 
+			"date": {"type": "date" }, 
+			"time": {"type": "date" }, 
+			"EventID": {"type": "text" }, 
+			"lifetime": {"type": "text" }, 
+			"HostGUID": {"type": "text" }, 
+			"device": {"type": "text" }, 
+			"statuinfo": {"type": "text" }
+		}
+	}
+}
