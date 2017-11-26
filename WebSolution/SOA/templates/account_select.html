@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/tablestyle.css' %}">{% endblock %}
+
+{% block content %}
+    <div class="table-title">
+        <h3>Admin Account Table</h3>
+    </div>
+
+    <div class="table-wrapper">
+        <div class="table-content">
+            <table class="table-fill">
+                <thead>
+                    <tr>
+                        <th class="text-left">No</th>
+                        <th class="text-left">Admin ID</th>
+                        <th class="text-left">Admin Name</th>
+                        <th class="text-left">Email</th>
+                        <th class="text-left">Last Login</th>
+                    </tr>
+                </thead>
+
+                <tbody class="table-hover">
+                    {% if dataList %}
+                        {% for dataRow in dataList %}
+                            <tr>
+                                <td class="text-left">{{ dataRow.pk }}</td>
+                                <td class="text-left">{{ dataRow.username }}</td>
+                                <td class="text-left">{{ dataRow.first_name }} {{ dataRow.last_name }}</td>
+                                <td class="text-left">{{ dataRow.email }}</td>
+                                <td class="text-left">
+                                    {% ifequal dataRow.last_login None%}
+                                        No Login
+                                    {% else %}
+                                        {{ dataRow.last_login }} +09:00
+                                    {% endifequal %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <td class="text-center" colspan="5" width="1300">No Data</td>
+                    {% endif %}
+                </tbody>
+            </table> <!-- Content Table END -->
+        </div>
+
+        <hr class="style3">
+
+        <div class="table-number-cover">
+            <input type="button" name="change" value="비밀번호 변경" onclick="location.href='{% url 'setting_account_change' %}'">
+            <input type="button" name="delete" value="계정 삭제" onclick="location.href='{% url 'setting_account_del' %}'">
+            <input type="button" name="add" value="계정 추가" onclick="location.href='{% url 'setting_account_add' %}'">
+        </div>
+    </div>
+{% endblock %}

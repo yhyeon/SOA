@@ -263,6 +263,7 @@ class Hrdb(models.Model):
     age = models.IntegerField()
     email = models.CharField(max_length=255, blank=True, null=True)
     datehired = models.CharField(max_length=20)
+    secretkey = models.CharField(db_column='secretKey', max_length=16, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -408,6 +409,21 @@ class Reg(models.Model):
         managed = False
         db_table = 'reg'
 
+class SbtItpAct(models.Model):
+    article = models.CharField(max_length=50)
+    contents = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'sbt_itp_act'
+
+class SbtPreventUc(models.Model):
+    article = models.CharField(max_length=50)
+    contents = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'sbt_prevent_uc'
 
 class SbtProtectionAct(models.Model):
     article = models.CharField(max_length=50)
@@ -417,21 +433,13 @@ class SbtProtectionAct(models.Model):
         managed = False
         db_table = 'sbt_protection_act'
 
-
-class TestprojectSendsms(models.Model):
-    to_number = models.CharField(max_length=30)
-    from_number = models.CharField(max_length=30)
-    sms_sid = models.CharField(max_length=34)
-    account_sid = models.CharField(max_length=34)
-    created_at = models.DateTimeField()
-    sent_at = models.DateTimeField(blank=True, null=True)
-    delivered_at = models.DateTimeField(blank=True, null=True)
-    status = models.CharField(max_length=20)
+class SbtWwCooperation(models.Model):
+    article = models.CharField(max_length=50)
+    contents = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'testproject_sendsms'
-
+        db_table = 'sbt_ww_cooperation'
 
 class UactivReportSaves(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.

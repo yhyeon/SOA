@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+
+{% block css %}<link rel="stylesheet" href="{% static 'css/account.css' %}">{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+        function chk() {
+            var theForm = document.inputpw;
+
+            if(theForm.chpw.value === "" || theForm.chpw2.value === ""){
+                alert("필수 입력란이 비었습니다. 확인해주세요.");
+                theForm.chpw.focus();
+
+                return false;
+            }
+
+            if(theForm.chpw.value.length < 8 || theForm.chpw.value.length > 16){
+                alert("비밀번호는 8자리 ~ 16자리 이내로 입력해주세요.");
+                theForm.chpw.value = "";
+                theForm.chpw2.value = "";
+                theForm.chpw.focus();
+
+                return false;
+            }
+
+            if(theForm.chpw.value.search(/\s/g) !== -1){
+                alert("비밀번호에 공백이 존재합니다.");
+                theForm.chpw.value = "";
+                theForm.chpw2.value = "";
+                theForm.chpw.focus();
+
+                return false;
+            }
+
+            if(theForm.chpw.value.search(/\d/g) < 0 || theForm.chpw.value.search(/[a-zA-Z]/ig) < 0 || theForm.chpw.value.search(/[!@#$%^&*()_+=|\\`~/?]/ig) < 0){
+                alert("비밀번호는 영문, 숫자, 특수문자를 혼합하여 입력해주세요.");
+                theForm.chpw.value = "";
+                theForm.chpw2.value = "";
+                theForm.chpw.focus();
+
+                return false;
+            }
+
+            if(theForm.chpw.value !== theForm.chpw2.value){
+                alert("변경할 비밀번호가 일치하지 않습니다.");
+                theForm.chpw.value = "";
+                theForm.chpw2.value = "";
+                theForm.chpw.focus();
+
+                return false;
+            }
+
+            theForm.submit();
+            return true;
+        }
+
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="title">
+        <h1>비밀번호 변경</h1>
+    </div>
+
+    <hr class="style3">
+
+    <div class="password_ch">
+        <form name="inputpw" method="post" action="."> {% csrf_token %}
+            <ul>
+                <center>
+                    <li>
+                        <label for="chpw">변경할 비밀번호</label>
+                        <input name="chpw" type="password">
+                        <span>숫자, 영문, 특수기호를 포함한 8~16자리의 비밀번호를 입력해주세요.</span>
+                    </li><br>
+                    <li>
+                        <label for="chpw2">변경할 비밀번호 재입력</label>
+                        <input name="chpw2" type="password">
+                        <span>변경하실 비밀번호를 다시 입력해주세요.</span>
+                    </li><br>
+
+                    <input type="button" value="취소" onclick="history.back();">
+                    <input type="button" value="확인" onclick="chk();">
+                </center>
+            </ul>
+        </form>
+    </div>
+{% endblock %}
+
+

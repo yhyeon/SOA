@@ -5,10 +5,19 @@
 {% block css %}<link rel="stylesheet" href="{% static 'css/guideline.css' %}">{% endblock %}
 
 {% block content %}
+    <nav class="table-menu">
+        <ul>
+            <li><a href="{% url 'guideline_statute_pact' %}">중소기업기술보호법</a></li>
+            <li><a href="{% url 'guideline_statute_ww' %}">상생협력법</a></li>
+            <li><a href="{% url 'guideline_statute_itp' %}">산업기술보호법</a></li>
+            <li><a href="{% url 'guideline_statute_puc' %}">부정경쟁방지법</a></li>
+        </ul>
+    </nav>
+
     <div class="content-title">
-        <h5>중소기업기술 보호 지원에 관한 법률 <font style="font-size:18px;">( 약칭 : 중소기업기술보호법 )</font></h5>
+        <h5>부정경쟁방지 및 영업비밀보호에 관한 법률<font style="font-size:18px;">( 약칭 : 부정경쟁방지법 )</font></h5>
         <h2>[시행 2017.07.26.] [법률 제14839호, 2017.07.26., 타법개정]</h2>
-        <h2 style="text-align: right; margin-right:20px;">중소벤처기업부(기술협력보호과), 042-481-4400</h2>
+        <h2 style="text-align: right; margin-right:20px;">특허청(산업재산보호정책과), 042-481-3310</h2>
     </div>
 
     <hr class="style3">

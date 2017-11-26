@@ -1,0 +1,48 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Login</title>
+
+    <link href="{% static 'css/qrcode.css' %}" rel="stylesheet" type="text/css" />
+
+    {% if message %}
+        <script>
+    	    alert('{{ message }}');
+	    </script>
+	{% endif %}
+</head>
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-qrcode.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-qrcode.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/qrcode.js' %}"></script>
+
+    <div class="title">
+        <h1>신규 접속 QR Code 인증 설정</h1>
+        <h3>로그인 시 필요한 QR Code 인증을 설정합니다.<br>
+        <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=ko" target="_blank">Google OTP APP</a>을 다운로드 받으신 뒤 아래의 QR Code를 인증하세요.</h3>
+    </div>
+
+    <hr class="style3">
+
+    <div class="login">
+        <center>
+            <div id="qrcodeCanvas"></div>
+            <form method="post" action=".">{% csrf_token %}
+                <input type="text" name="otp">
+                <input type="hidden" name="sck" value="{{ secretKey }}"><br>
+                <input type="submit" value="Check">
+            </form>
+        </center>
+    </div>
+
+    <script>
+        jQuery('#qrcodeCanvas').qrcode({
+            text    : "{{ totp }}"
+        });
+    </script>
+</body>
+</html>

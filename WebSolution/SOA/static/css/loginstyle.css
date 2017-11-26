@@ -129,6 +129,29 @@ body{
 	outline: none;
 }
 
+.login a:link,
+.login a:visited,
+.login a:active,
+.login a:hover
+{
+	background-color: #FFFFFF;
+	color: #a18d6c;
+	padding: 14px 25px;
+	text-align: center;
+	text-decoration: none;
+	display: block;
+	border-radius: 2px;
+	width: 210px;
+	height: 10px;
+	font-family: 'Exo', sans-serif;
+	font-size: 12px;
+	font-weight: 500;
+}
+
+.login a:hover{
+	opacity: 0.8;
+}
+
 ::-webkit-input-placeholder{
    color: rgba(255,255,255,0.6);
 }

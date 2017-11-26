@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load app_filters %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/tablestyle.css' %}">{% endblock %}
+
+{% block content %}
+    <div class="table-title">
+        <h3>Employee Information Data Table (Current Page : {{ currentPage }})</h3>
+    </div>
+
+    <div class="cd-search is-hidden">
+        <form id="search-form" method="post" action=".">{% csrf_token %}
+            {% if search_data %}
+                <input type="search" name="search_data" placeholder="{{ search_data }}" />
+            {% else %}
+                <input type="search" name="search_data" placeholder="Search..." />
+            {% endif %}
+        </form>
+    </div> <!-- Search From END -->
+
+    <div class="table-wrapper">
+        <div class="table-content">
+            <table class="table-fill">
+                <thead>
+                    <tr>
+                        <th class="text-left">Employee Number</th>
+                        <th class="text-left">Employee Name</th>
+                        <th class="text-left">Disk Serial Number</th>
+                        <th class="text-left">Computer Name</th>
+                        <th class="text-left">IP</th>
+                        <th class="text-left">MAC</th>
+                        <th class="text-left">Center</th>
+                        <th class="text-left">Team Number</th>
+                        <th class="text-left">Team Name</th>
+                        <th class="text-left">Position</th>
+                        <th class="text-left">Age</th>
+                        <th class="text-left">Email</th>
+                        <th class="text-left">Date of entry</th>
+                        <th class="text-left">Total Violation Count</th>
+                    </tr>
+                </thead>
+
+                <tbody class="table-hover">
+                    {% if dataList %}
+                        {% for dataRow in dataList %}
+                            <tr>
+                                <td class="text-left">{{ dataRow.empnum }}</td>
+                                <td class="text-left">{{ dataRow.empname }}</td>
+                                <td class="text-left">{{ dataRow.disksn }}</td>
+                                <td class="text-left">{{ dataRow.cname }}</td>
+                                <td class="text-left">{{ dataRow.ip }}</td>
+                                <td class="text-left">{{ dataRow.mac }}</td>
+                                <td class="text-left">{{ dataRow.center }}</td>
+                                <td class="text-left">{{ dataRow.teamnum }}</td>
+                                <td class="text-left">{{ dataRow.team }}</td>
+                                <td class="text-left">{{ dataRow.position }}</td>
+                                <td class="text-left">{{ dataRow.age }}</td>
+                                <td class="text-left">{{ dataRow.email }}</td>
+                                <td class="text-left">{{ dataRow.datehired }}</td>
+                                <td class="text-left">{{ dataRow.empnum|get_total_outflow }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <td class="text-center" colspan="14" width="1300">No Data</td>
+                    {% endif %}
+                </tbody>
+            </table> <!-- Content Table END -->
+        </div>
+        <hr class="style3">
+
+        <div class="table-number-cover">
+            <span>
+                {% ifequal 1 prev %}
+                    <form class="table-number" method="post" action="./">{% csrf_token %}
+                        {% if search_data %}
+                            <input type="hidden" name="search_data" value={{ search_data }} />
+                            <input type="hidden" name="prev" value={{ currentPage }} />
+                            <input type="submit" value="<" />
+                        {% else %}
+                            <input type="hidden" name="prev" value={{ currentPage }} />
+                            <input type="submit" value="<" />
+                        {% endif %}
+                    </form>
+                {% endifequal %}
+                {% for page in totalPageList %}
+                    <form class="table-number" method="post" action="./">{% csrf_token %}
+                        {% if search_data %}
+                            <input type="hidden" name="search_data" value={{ search_data }} />
+                            <input type="hidden" name="page" value={{ page }} />
+                            <input type="submit" value="[{{ page }}]" />
+                        {% else %}
+                            <input type="hidden" name="page" value={{ page }} />
+                            <input type="submit" value="[{{ page }}]" />
+                        {% endif %}
+                    </form>
+                {% endfor %}
+                {% ifequal 1 next %}
+                    <form class="table-number" method="post" action="./">{% csrf_token %}
+                        {% if search_data %}
+                            <input type="hidden" name="search_data" value={{ search_data }} />
+                            <input type="hidden" name="next" value={{ currentPage }} />
+                            <input type="submit" value=">" />
+                        {% else %}
+                            <input type="hidden" name="next" value={{ currentPage }} />
+                            <input type="submit" value=">" />
+                        {% endif %}
+                    </form>
+                {% endifequal %}
+            </span>
+        </div><!-- Table Number END -->
+    </div>
+{% endblock %}

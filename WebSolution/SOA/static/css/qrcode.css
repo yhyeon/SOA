@@ -1,0 +1,74 @@
+.title h1 {
+    width: 100%;
+    color: #111;
+    padding-top: 10px !important;
+    padding-left: 10px !important;
+    font-size: 2rem !important;
+    font-weight: 600 !important;
+}
+
+.title h3 {
+    width: 100%;
+    color: #17364c;
+    padding-left: 10px !important;
+    font-size: 1rem !important;
+    font-weight: 400 !important;
+}
+
+.title a:link,
+.title a:visited,
+.title a:active,
+.title a:hover
+{
+	color: #0008d3;
+	text-decoration: none;
+	font-weight: 700;
+}
+
+.login input[type=text]{
+	width: 250px;
+	height: 30px;
+	background: transparent;
+	border: 1px solid rgba(000,000,000,0.6);
+	border-radius: 2px;
+	color: #000000;
+	font-family: 'Exo', sans-serif;
+	font-size: 16px;
+	font-weight: 400;
+	padding: 4px;
+    margin-top: 10px;
+}
+
+.login input[type=submit]{
+	width: 260px;
+	height: 35px;
+	background: #17364c;
+	border: 1px solid #17364c;
+	cursor: pointer;
+	border-radius: 2px;
+	color: #fff;
+	font-family: 'Exo', sans-serif;
+	font-size: 16px;
+	font-weight: 400;
+	padding: 6px;
+	margin-top: 10px;
+}
+
+.login input[type=submit]:hover{
+	opacity: 0.8;
+}
+
+.login input[type=submit]:active{
+	opacity: 0.6;
+}
+
+.login input[type=submit]:focus{
+	outline: none;
+}
+
+hr.style3{
+	border-top: 1px solid #8c8b8b;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+

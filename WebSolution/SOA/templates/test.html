@@ -1,28 +1,70 @@
 {% load staticfiles %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Test</title>
-</head>
-<body>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
-    <script type="text/javascript" src="{% static 'js/jquery-qrcode.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/jquery-qrcode.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/qrcode.js' %}"></script>
-    <center>
-        <div id="qrcodeCanvas"></div>
-        <form>
-            <input type="text">
-            <input type="button" value="Check">
-        </form>
-    </center>
+    <title>Title</title>
 
-    <script>
-        jQuery('#qrcodeCanvas').qrcode({
-            text    : "{{ totp }}"
+    <link rel="stylesheet" href="{% static 'css/tablestyle.css' %}">
+
+    <script src="http://cdn.jquerytools.org/1.2.5/jquery.tools.min.js"></script>
+    <script language="javascript" type="text/javascript">
+        $(function () {
+            $('#contents tr').hide();
+            $('#contents').find('.title').show();
+
+            $('#contents .title').click(function(){
+                $('#contents tr').hide();
+                $('#contents').find('.title').show();
+                $('#contents').find('.title').css('background-color', '#fff');
+                var tr = $('#contents tr');
+                var rindex = $(this).parent().children().index(this);
+                $(this).css('background-color', '#f7f7f7');
+                for(var i = rindex; i < rindex + 2; i++){
+                    $(tr[i]).show();
+                }
+            });
         });
     </script>
+</head>
+<body>
+    <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
+        <thead>
+            <tr>
+                <td>A</td>
+                <td>B</td>
+                <td>C</td>
+                <td>D</td>
+                <td>E</td>
+            </tr>
+        </thead>
+        <tbody id="contents">
+            <tr class="title">
+                <td >
+                    테이블 행 펼치고 접기_1 클릭
+                </td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+            </tr>
+            <tr>
+                <td class="conts" colspan="5">
+                    첫번째 행의 내용입니다.
+                </td>
+            </tr>
+            <tr class="title">
+                <td  colspan="5">
+                    테이블 행 펼치고 접기_2 클릭
+                </td>
+            </tr>
+            <tr>
+                <td class="conts" colspan="5">
+                    <img src="{% static 'img/BoB Logo.png' %}" width=320 height=320>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>
-

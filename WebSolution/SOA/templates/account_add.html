@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+
+{% block css %}<link rel="stylesheet" href="{% static 'css/account.css' %}">{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+        function chk() {
+            var theForm = document.account;
+
+            if(theForm.userid.value === "" || theForm.password.value === "" || theForm.password2.value === "" || theForm.first_name.value === "" || theForm.last_name.value === "" || theForm.email.value === ""){
+                alert("필수 입력란이 비었습니다. 확인해주세요.");
+                if(theForm.userid.value === ""){
+                    theForm.userid.focus();
+
+                    return false;
+                }
+                if(theForm.password.value === ""){
+                    theForm.password.focus();
+
+                    return false;
+                }
+                if(theForm.password2.value === ""){
+                    theForm.password2.focus();
+
+                    return false;
+                }
+                if(theForm.first_name.value === ""){
+                    theForm.first_name.focus();
+
+                    return false;
+                }
+                if(theForm.last_name.value === ""){
+                    theForm.last_name.focus();
+
+                    return false;
+                }
+                if(theForm.email.value === ""){
+                    theForm.email.focus();
+
+                    return false;
+                }
+            }
+            if(!/^[a-zA-Z0-9]{4,12}$/.test(theForm.userid.value)){
+                alert("잘못된 ID 형식입니다.");
+                theForm.userid.value = "";
+                theForm.userid.focus();
+
+                return false;
+            }
+
+            if(theForm.userid.value.search(/\s/g) !== -1){
+                alert("계정 ID에 공백이 존재합니다.");
+                theForm.userid.value = "";
+                theForm.userid.focus();
+
+                return false;
+            }
+
+            if(theForm.password.value.length < 8 || theForm.password.value.length > 16){
+                alert("비밀번호는 8자리 ~ 16자리 이내로 입력해주세요.");
+                theForm.password.value = "";
+                theForm.password2.value = "";
+                theForm.password.focus();
+
+                return false;
+            }
+
+            if(theForm.password.value.search(/\s/g) !== -1){
+                alert("비밀번호에 공백이 존재합니다.");
+                theForm.password.value = "";
+                theForm.password2.value = "";
+                theForm.password.focus();
+
+                return false;
+            }
+
+            if(theForm.password.value.search(/\d/g) < 0 || theForm.password.value.search(/[a-zA-Z]/ig) < 0 || theForm.password.value.search(/[!@#$%^&*()_+=|\\`~/?]/ig) < 0){
+                alert("비밀번호는 영문, 숫자, 특수문자를 혼합하여 입력해주세요.");
+                theForm.password.value = "";
+                theForm.password2.value = "";
+                theForm.password.focus();
+
+                return false;
+            }
+
+            if(theForm.password.value !== theForm.password2.value){
+                alert("변경할 비밀번호가 일치하지 않습니다.");
+                theForm.password.value = "";
+                theForm.password2.value = "";
+                theForm.password.focus();
+
+                return false;
+            }
+
+            if(!/^[a-zA-Z]{1,}$/.test(theForm.first_name.value)){
+                alert("First Name의 형식이 잘못되었습니다.");
+                theForm.first_name.value = "";
+                theForm.first_name.focus();
+
+                return false;
+            }
+
+            if(!/^[a-zA-Z]{1,}$/.test(theForm.last_name.value)){
+                alert("Last Name의 형식이 잘못되었습니다.");
+                theForm.last_name.value = "";
+                theForm.last_name.focus();
+
+                return false;
+            }
+
+            if(!/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i.test(theForm.email.value)){
+                alert("잘못된 이메일 형식입니다.");
+                theForm.email.value = "";
+                theForm.email.focus();
+
+                return false;
+            }
+
+            theForm.submit();
+            return true;
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="title">
+        <h1>관리자 계정 추가</h1>
+    </div>
+
+    <hr class="style3">
+
+    <div class="account_create">
+        <form name="account" method="post" action="."> {% csrf_token %}
+            <ul>
+                <center>
+                    <li>
+                        <label for="userid">ID</label>
+                        <input name="userid" type="text">
+                        <span>사용하실 계정의 ID를 입력해주세요.</span>
+                    </li><br>
+                    <li>
+                        <label for="password">Password</label>
+                        <input name="password" type="password">
+                        <span>숫자, 영문, 특수기호를 포함한 8~16자리의 비밀번호를 입력해주세요.</span>
+                    </li><br>
+                    <li>
+                        <label for="password2">Password 재입력</label>
+                        <input name="password2" type="password">
+                        <span>변경하실 비밀번호를 다시 입력해주세요.</span>
+                    </li><br>
+                    <li>
+                        <label for="first_name">First Name</label>
+                        <input name="first_name" type="text">
+                        <span>가입하시는 분의 성을 입력해주세요.</span>
+                    </li><br>
+                    <li>
+                        <label for="last_name">Last Name</label>
+                        <input name="last_name" type="text">
+                        <span>가입하시는 분의 이름을 입력해주세요.</span>
+                    </li><br>
+                    <li>
+                        <label for="email">Email</label>
+                        <input name="email" type="text">
+                        <span>가입하시는 분의 Email을 입력해주세요.</span>
+                    </li><br>
+
+                    <input type="button" value="취소" onclick="history.back();">
+                    <input type="button" value="확인" onclick="chk();">
+                </center>
+            </ul>
+        </form>
+    </div>
+{% endblock %}
+
+

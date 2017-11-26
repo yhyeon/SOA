@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     url(r'^login/', views.user_login, name='login'),
-    url(r'logout/', views.user_logout, name='logout'),
+    url(r'^logout/', views.user_logout, name='logout'),
     url(r'^home/', views.home, name='home'),
 
     url(r'^logs/beginning/file_log/', views.b_file_log, name='b_file_log'),
@@ -36,18 +36,29 @@ urlpatterns = [
     url(r'^report/write/$', views.report_process, name='report_write'),
     url(r'^report/complete/$', views.report_complete, name='report_complete'),
 
-    url(r'^guideline/statute/', views.statute, name='guideline_statute'),
+    url(r'^guideline/statute/pact/', views.statute_pact, name='guideline_statute_pact'),
+    url(r'^guideline/statute/ww/', views.statute_ww, name='guideline_statute_ww'),
+    url(r'^guideline/statute/itp/', views.statute_itp, name='guideline_statute_itp'),
+    url(r'^guideline/statute/puc/', views.statute_puc, name='guideline_statute_puc'),
+
     url(r'^guideline/case/', views.case, name='guideline_case'),
     url(r'^guideline/preventive/', views.preventive, name='guideline_preventive'),
     url(r'^guideline/communication/', views.communication, name='guideline_communication'),
 
-    url(r'^setting/account/', views.account, name='setting_account'),
+    url(r'^setting/account/$', views.account, name='setting_account'),
+    url(r'^setting/account/add/$', views.account_add, name='setting_account_add'),
+    url(r'^setting/account/delete/$', views.account_del, name='setting_account_del'),
+    url(r'^setting/account/change/$', views.account_change, name='setting_account_change'),
+
     url(r'^setting/solution/', views.solution, name='setting_solution'),
 
     url(r'^employee/', views.employee, name='employee'),
     url(r'^support', views.support, name='support'),
 
-    url(r'^employee_login/', views.e_login, name='employee_login'),
+    url(r'^employee_login/$', views.e_login, name='employee_login'),
+    url(r'^employee_login/new/$', views.e_new, name='e_new'),
+    url(r'^employee_login/qr_auth/$', views.e_qr, name='qr_auth'),
+
     url(r'^usb/', views.e_usb, name='usb'),
     url(r'^web/', views.e_web, name='web'),
     url(r'^application/', views.e_application, name='application'),

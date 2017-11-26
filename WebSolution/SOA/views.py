@@ -3,6 +3,7 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from .forms import *
 from SOA.models import *
 from django.db.models import Q
@@ -13,13 +14,16 @@ from datetime import datetime
 from collections import Counter
 from django.template.defaultfilters import register
 from operator import itemgetter
+from django.contrib import messages
 
+# Make Report Graph
 import pandas
 import matplotlib.pylab as plt
 from matplotlib import font_manager, rc
 from pylab import figure, axes, pie, title, savefig
 import os
 
+# Make Report PDF
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib.units import cm
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -28,7 +32,11 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.graphics.shapes import Image, Drawing
 
+# OTP / QR Code
 import pyotp
+from random import randint, choice
+import base64
+import qrcode
 
 # Create your views here.
 @register.filter
@@ -101,13 +109,13 @@ def user_login(request):
 def user_logout(request):
     del request.session['username']
     logout(request)
-    return redirect('login')
+    return HttpResponseRedirect('/login/')
 
 def home(request):
     if request.user.is_authenticated():
         return render(request, 'home.html', {'username':request.session['username']})
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 
 # Logs tab
@@ -153,7 +161,7 @@ def b_file_log(request):
 
             return render_to_response('b_file_scan.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 @csrf_exempt
 def b_driver(request):
@@ -197,7 +205,7 @@ def b_driver(request):
 
             return render_to_response('b_driver.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 @csrf_exempt
 def b_download_chrome(request):
@@ -241,7 +249,7 @@ def b_download_chrome(request):
 
             return render_to_response('b_download_chrome.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 @csrf_exempt
 def b_history_chrome(request):
@@ -285,7 +293,7 @@ def b_history_chrome(request):
 
             return render_to_response('b_history_chrome.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 @csrf_exempt
 def b_history_ie(request):
@@ -329,7 +337,7 @@ def b_history_ie(request):
 
             return render_to_response('b_history_ie.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 @csrf_exempt
 def b_log_on_off(request):
@@ -373,7 +381,7 @@ def b_log_on_off(request):
 
             return render_to_response('b_log_on_off.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 @csrf_exempt
 def b_oa_file(request):
@@ -417,7 +425,7 @@ def b_oa_file(request):
 
             return render_to_response('b_oa_file.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 @csrf_exempt
 def b_oa_mtp(request):
@@ -461,7 +469,7 @@ def b_oa_mtp(request):
 
             return render_to_response('b_oa_mtp.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 @csrf_exempt
 def b_partition_win10(request):
@@ -505,7 +513,7 @@ def b_partition_win10(request):
 
             return render_to_response('b_partition_win10.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 @csrf_exempt
 def b_quick_scan(request):
@@ -549,7 +557,7 @@ def b_quick_scan(request):
 
             return render_to_response('b_quick_scan.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 @csrf_exempt
 def b_registry(request):
@@ -593,7 +601,7 @@ def b_registry(request):
 
             return render_to_response('b_registry.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 @csrf_exempt
 def b_zip_scan(request):
@@ -637,7 +645,7 @@ def b_zip_scan(request):
 
             return render_to_response('b_zip_scan.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 def outflowsign(request):
     pass
@@ -691,7 +699,7 @@ def waiting(request):
 
             return render_to_response('reason_waiting.html',{'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList,'prev': prev, 'next': next}, RequestContext(request))
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 @csrf_exempt
 def process(request):
@@ -744,7 +752,7 @@ def process(request):
 
             return render_to_response('reason_process.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 @csrf_exempt
 def reason_check(request, reason_id):
@@ -758,7 +766,7 @@ def reason_check(request, reason_id):
             return render_to_response('reason_check.html',{'username': request.session['username'], 'reasonData': reasonData}, RequestContext(request))
 
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 @csrf_exempt
 def complete(request):
@@ -802,7 +810,7 @@ def complete(request):
 
             return render_to_response('reason_complete.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 @csrf_exempt
 def reason_view(request, reason_id):
@@ -811,7 +819,7 @@ def reason_view(request, reason_id):
 
         return render(request, 'reason_view.html', {'username': request.session['username'], 'reasonData': reasonData})
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 # Report tab
 def report(request):
@@ -855,7 +863,7 @@ def report(request):
 
         return render(request, 'report.html', {'username': request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next})
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 def report_view(request, report_id):
     if request.user.is_authenticated():
@@ -863,7 +871,7 @@ def report_view(request, report_id):
 
         return render(request, 'report_view.html', {'username': request.session['username'], 'reportData': reportData, 'report_id': report_id})
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 # Make Line
 class MKLine(Flowable):
@@ -983,13 +991,13 @@ def report_down(request, report_id):
 
             return response
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 def report_new(request):
     if request.user.is_authenticated():
         return render(request, 'report_new.html', {'username': request.session['username']})
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 def report_graph(prevdate, nextdate, report_title):
     titles = ['ID', 'Wdate', 'EMPnum', 'EMPname', 'center_team', 'position', 'reasontype', 'lognum', 'logtable', 'IP',
@@ -1048,9 +1056,10 @@ def report_process(request):
         lowSeverityCnt = UactivReportSaves.objects.filter(wdate__gte=prevdate.date(), wdate__lte=nextdate.date(), violation='위반', severity='하').count()
 
         vioReasons = UactivReportSaves.objects.filter(wdate__gte=prevdate.date(), wdate__lte=nextdate.date(), violation='위반')
+
         for item in vioReasons:
             teamlist.append(item.center_team)
-
+            print(mainvio_dict)
             if ('%s-%s-%s' % (item.center_team, item.empname, item.position) in mainvio_dict):
                 if (item.severity == '상'):
                     mainvio_dict['%s-%s-%s' % (item.center_team, item.empname, item.position)]['상'] += 1
@@ -1059,7 +1068,8 @@ def report_process(request):
                 elif (item.severity == '하'):
                     mainvio_dict['%s-%s-%s' % (item.center_team, item.empname, item.position)]['하'] += 1
             else:
-                mainvio_dict = {'%s-%s-%s' % (item.center_team, item.empname, item.position): {'상': 0, '중': 0, '하': 0}}
+                mainvio_dict['%s-%s-%s' % (item.center_team, item.empname, item.position)] = {'상': 0, '중': 0, '하': 0}
+
                 if (item.severity == '상'):
                     mainvio_dict['%s-%s-%s' % (item.center_team, item.empname, item.position)]['상'] += 1
                 elif (item.severity == '중'):
@@ -1109,8 +1119,22 @@ def report_process(request):
         for item in UactivReportSaves.objects.filter(wdate__gte=prevdate.date(), wdate__lte=nextdate.date(), violation='위반', empname=temp[0].split('-')[1]):
             if (item.reasontype == 'WEB' and item.severity == '상'):
                 web_outfile = item.outflow_file
+            elif (item.reasontype == 'WEB' and item.severity == '중'):
+                web_outfile = item.outflow_file
+            elif (item.reasontype == 'WEB' and item.severity == '하'):
+                web_outfile = item.outflow_file
+
+            if (item.reasontype == 'USB' and item.severity == '상'):
+                usb_outfile = item.outflow_file
             elif (item.reasontype == 'USB' and item.severity == '중'):
                 usb_outfile = item.outflow_file
+            elif (item.reasontype == 'USB' and item.severity == '하'):
+                usb_outfile = item.outflow_file
+
+            if (item.reasontype == 'APP' and item.severity == '상'):
+                app_outfile = item.outflow_file
+            elif (item.reasontype == 'APP' and item.severity == '중'):
+                app_outfile = item.outflow_file
             elif (item.reasontype == 'APP' and item.severity == '하'):
                 app_outfile = item.outflow_file
 
@@ -1124,7 +1148,7 @@ def report_process(request):
                                                      'middleSeverityCnt': middleSeverityCnt, 'lowSeverityCnt': lowSeverityCnt, 'topTeam': topTeam, 'violator':mainvioinfo, 'violatorCnt': len(mainvio_dict), 'outreason': outreason,
                                                      'mainvioTotalCnt': mainvioTotalCnt, 'vioRank': vioRank, 'web_outfile': web_outfile, 'usb_outfile': usb_outfile, 'app_outfile': app_outfile, 'graph_name': report_title+'.png'})
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 @csrf_exempt
 def report_complete(request):
@@ -1136,22 +1160,46 @@ def report_complete(request):
 
         return render(request, 'report_complete.html', {'username': request.session['username']})
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 # Guideline tab
-def statute(request):
+def statute_pact(request):
     if request.user.is_authenticated():
         statuteData = SbtProtectionAct.objects.all()
 
-        return render(request, 'statute.html', {'username': request.session['username'], 'statuteData': statuteData})
+        return render(request, 'statute_pact.html', {'username': request.session['username'], 'statuteData': statuteData})
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
+
+def statute_ww(request):
+    if request.user.is_authenticated():
+        statuteData = SbtWwCooperation.objects.all()
+
+        return render(request, 'statute_ww.html', {'username': request.session['username'], 'statuteData': statuteData})
+    else:
+        return HttpResponseRedirect('/login/')
+
+def statute_itp(request):
+    if request.user.is_authenticated():
+        statuteData = SbtItpAct.objects.all()
+
+        return render(request, 'statute_itp.html', {'username': request.session['username'], 'statuteData': statuteData})
+    else:
+        return HttpResponseRedirect('/login/')
+
+def statute_puc(request):
+    if request.user.is_authenticated():
+        statuteData = SbtPreventUc.objects.all()
+
+        return render(request, 'statute_puc.html', {'username': request.session['username'], 'statuteData': statuteData})
+    else:
+        return HttpResponseRedirect('/login/')
 
 def case(request):
     if request.user.is_authenticated():
         return render(request, 'home.html', {'username': request.session['username']})
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/login/')
 
 def preventive(request):
     pass
@@ -1160,12 +1208,112 @@ def communication(request):
     pass
 
 # Employee tab
+@csrf_exempt
 def employee(request):
-    pass
+    if request.user.is_authenticated():
+        if request.POST.get('page'):
+            currentPage = int(request.POST.get('page'))
+        else:
+            currentPage = 1
+        rowsPerData = 15
+        rowsPerPage = 10
+        totalCnt = 0
+        dataList = []
+        totalPageList = []
+
+        if request.POST.get('prev'):
+            currentPage = int(request.POST.get('prev'))
+            currentBlock = math.ceil(currentPage / rowsPerPage) - 1
+            currentPage = ((currentBlock - 1) * rowsPerPage) + 1
+        if request.POST.get('next'):
+            currentPage = int(request.POST.get('next'))
+            currentBlock = math.ceil(currentPage / rowsPerPage) - 1
+            currentPage = ((currentBlock + 1) * rowsPerPage) + 1
+
+        start_pos = (currentPage - 1) * rowsPerData
+        end_pos = start_pos + rowsPerData
+
+        if request.POST.get('search_data'):
+            search_data = '%s' % request.POST.get('search_data')
+            totalCnt = Hrdb.objects.filter(Q(empnum=search_data) | Q(disksn=search_data) | Q(empname=search_data) | Q(cname=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(center=search_data) | Q(teamnum=search_data) | Q(team=search_data) | Q(position=search_data) | Q(age=search_data) | Q(email=search_data) | Q(datehired=search_data)).count()
+            dataList = Hrdb.objects.filter(Q(empnum=search_data) | Q(disksn=search_data) | Q(empname=search_data) | Q(cname=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(center=search_data) | Q(teamnum=search_data) | Q(team=search_data) | Q(position=search_data) | Q(age=search_data) | Q(email=search_data) | Q(datehired=search_data))[start_pos:end_pos]
+
+            totalPageList, prev, next = paging(totalCnt, currentPage)
+
+            return render_to_response('employee.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data}, RequestContext(request))
+
+        else:
+            totalCnt = Hrdb.objects.all().count()
+            dataList = Hrdb.objects.all()[start_pos:end_pos]
+
+            totalPageList, prev, next = paging(totalCnt, currentPage)
+
+            return render_to_response('employee.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
+    else:
+        return HttpResponseRedirect('/login/')
 
 # Setting tab
+@csrf_exempt
 def account(request):
-    pass
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            user = authenticate(username=request.session['username'], password=request.POST.get('account_pw'))
+            if user is not None:
+                if user.is_active:
+                    dataList = AuthUser.objects.all()
+                    return render_to_response('account_select.html', {'username': request.session['username'], 'dataList': dataList})
+                else:
+                    return HttpResponse('Disabled account')
+            else:
+                return render_to_response('account_login.html', {'username': request.session['username'], 'message': 'no Password'})
+        else:
+            return render_to_response('account_login.html', {'username':request.session['username']})
+    else:
+        return HttpResponseRedirect('/login/')
+
+@csrf_exempt
+def account_add(request):
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            usr = User.objects.create_superuser(request.POST.get('userid'), request.POST.get('email'), request.POST.get('password'))
+            usr.first_name = request.POST.get('first_name')
+            usr.last_name = request.POST.get('last_name')
+            usr.save()
+
+            return HttpResponseRedirect('/home/', {'username': request.session['username'], 'message': '계정 추가가 완료되었습니다.'})
+        else:
+            return render_to_response('account_add.html', {'username': request.session['username']})
+    else:
+        return HttpResponseRedirect('/login/')
+
+@csrf_exempt
+def account_del(request):
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            print(request.POST.get('delid'))
+            User.objects.get(username = request.POST.get('delid')).delete()
+
+            return HttpResponseRedirect('/home/', {'username': request.session['username'], 'message': '계정 제거가 완료되었습니다.'})
+        else:
+            selectData = User.objects.all()
+
+            return render_to_response('account_del.html', {'username': request.session['username'], 'selectData': selectData})
+    else:
+        return HttpResponseRedirect('/login/')
+
+@csrf_exempt
+def account_change(request):
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            usr = User.objects.get(username=request.session['username'])
+            usr.set_password(request.POST.get('chpw'))
+            usr.save()
+
+            return render_to_response('login.html', {'message': '비밀번호가 변경되었습니다. 다시 로그인하십시오.'})
+        else:
+            return render_to_response('account_change.html', {'username': request.session['username']})
+    else:
+        return HttpResponseRedirect('/login/')
 
 def solution(request):
     pass
@@ -1182,26 +1330,91 @@ def e_login(request):
         if form.is_valid():
             cd = form.cleaned_data
             if UactivReportSend.objects.filter(empnum=int(cd['empnum']), lognum=int(cd['lognum'])):
+                hr = Hrdb.objects.get(empnum=int(cd['empnum']))
                 user = UactivReportSend.objects.get(empnum=int(cd['empnum']), lognum=int(cd['lognum']))
 
+                request.session['empname'] = hr.empname
                 request.session['empnum'] = cd['empnum']
                 request.session['lognum'] = cd['lognum']
                 request.session['logtable'] = user.logtable
                 request.session['reasontype'] = user.reasontype
 
-                if user.reasontype == 'USB':
-                    return redirect('usb')
-                elif user.reasontype == 'WEB':
-                    return redirect('web')
-                elif user.reasontype == 'APP':
-                    return redirect('application')
+                if hr.secretkey is None:
+                    return HttpResponseRedirect('/employee_login/new/')
+                else:
+                    return HttpResponseRedirect('/employee_login/qr_auth/')
             else:
                 return render(request, 'e_login.html', {'message': 'Login Fail!'})
         else:
             form = ELoginForm()
     return render(request, 'e_login.html', {})
 
+@csrf_exempt
+def e_new(request):
+    if request.method == 'POST':
+        secretKey = request.POST.get('sck')
+        uotp = request.POST.get('otp')
 
+        if pyotp.TOTP(base64.b32encode(secretKey.encode())).now() == uotp:
+            if request.session['reasontype'] == 'USB':
+                return redirect('usb')
+            elif request.session['reasontype'] == 'WEB':
+                return redirect('web')
+            elif request.session['reasontype'] == 'APP':
+                return HttpResponseRedirect('/application/')
+
+        else:
+            print(secretKey)
+            totp = pyotp.TOTP(base64.b32encode(secretKey.encode())).provisioning_uri('SOA Auth (' + request.session['empname'] + ')')
+
+            return render_to_response('e_new.html', {'totp': totp, 'secretKey': secretKey, 'message': '다시 확인해주세요.'})
+
+    secretKey = pyotp.random_base32()
+
+    '''
+    for i in range(0, 16):
+        secretKey += choice([chr(randint(ord('A'), ord('Z'))), chr(randint(ord('1'), ord('9')))])
+    '''
+    print(secretKey)
+
+    hr = Hrdb.objects.get(empnum=request.session['empnum'])
+    hr.secretkey = secretKey
+    hr.save()
+
+    totp = pyotp.TOTP(base64.b32encode(secretKey.encode())).provisioning_uri('SOA Auth (' + request.session['empname'] + ')')
+    otp = pyotp.TOTP(base64.b32encode(secretKey.encode())).now()
+    print(otp)
+
+    return render_to_response('e_new.html', {'totp': totp, 'secretKey': secretKey})
+
+@csrf_exempt
+def e_qr(request):
+    if request.method == 'POST':
+        secretKey = request.POST.get('sck')
+        uotp = request.POST.get('otp')
+
+        if pyotp.TOTP(base64.b32encode(secretKey.encode())).now() == uotp:
+            if request.session['reasontype'] == 'USB':
+                return redirect('usb')
+            elif request.session['reasontype'] == 'WEB':
+                return redirect('web')
+            elif request.session['reasontype'] == 'APP':
+                return HttpResponseRedirect('/application/')
+            
+        else:
+            print(secretKey)
+            totp = pyotp.TOTP(base64.b32encode(secretKey.encode())).provisioning_uri('SOA Auth (' + request.session['empname'] + ')')
+
+            return render_to_response('qr_auth.html', {'totp': totp, 'secretKey': secretKey, 'message': '다시 확인해주세요.'})
+
+    secretKey = Hrdb.objects.get(empnum = request.session['empnum']).secretkey
+
+    print(secretKey)
+    totp = pyotp.TOTP(base64.b32encode(secretKey.encode())).provisioning_uri('SOA Auth (' + request.session['empname'] + ')')
+    otp = pyotp.TOTP(base64.b32encode(secretKey.encode())).now()
+    print(otp)
+
+    return render_to_response('qr_auth.html', {'totp': totp, 'secretKey': secretKey})
 
 @csrf_exempt
 def e_usb(request):
@@ -1281,10 +1494,14 @@ def e_success(request):
     else:
         return HttpResponseRedirect('/employee_login/')
 
-def test(request):
+def qrtest(request):
     totp = pyotp.TOTP('JBSWY3DPEHPK3PXP').provisioning_uri('SOA Auth')
     print(totp)
     totp2 = pyotp.TOTP('JBSWY3DPEHPK3PXP').now()
     print(totp2)
 
-    return render(request, 'test.html', {'totp':totp})
+    return render(request, 'qr_auth.html', {'totp':totp})
+
+def test(request):
+    dataList = ['a','b']
+    return render(request, 'clip.html', {'username':request.session['username'], 'dataList':dataList})

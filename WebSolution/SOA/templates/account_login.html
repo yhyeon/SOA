@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/settings.css' %}">{% endblock %}
+{% block js %}
+    {% if message %}
+        <script>
+            alert('{{ message }}');
+            history.back();
+        </script>
+	{% endif %}
+
+    <script type="text/javascript">
+        function chk() {
+            theForm = document.account_form;
+
+            if(theForm.account_pw.value == ""){
+                alert("비밀번호를 입력해주세요.");
+            } else {
+                theForm.submit();
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="account_login">
+        <center>
+            <form name="account_form" method="post" action=".">{% csrf_token %}
+                <input name="account_pw" type="password" /><br>
+                <input type="button" value="확인" onclick="chk()" />
+            </form>
+        </center>
+    </div>
+{% endblock %}

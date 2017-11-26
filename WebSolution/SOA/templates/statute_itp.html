@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/guideline.css' %}">{% endblock %}
+
+{% block content %}
+    <nav class="table-menu">
+        <ul>
+            <li><a href="{% url 'guideline_statute_pact' %}">중소기업기술보호법</a></li>
+            <li><a href="{% url 'guideline_statute_ww' %}">상생협력법</a></li>
+            <li><a href="{% url 'guideline_statute_itp' %}">산업기술보호법</a></li>
+            <li><a href="{% url 'guideline_statute_puc' %}">부정경쟁방지법</a></li>
+        </ul>
+    </nav>
+
+    <div class="content-title">
+        <h5>산업기술의 유출방지 및 보호에 관한 법률 <font style="font-size:18px;">( 약칭 : 산업기술보호법 )</font></h5>
+        <h2>[시행 2017.09.15.] [법률 제14591호, 2017.03.14., 일부개정]</h2>
+        <h2 style="text-align: right; margin-right:20px;">산업통상자원부(산업기술시장과), 02-2110-5399</h2>
+    </div>
+
+    <hr class="style3">
+
+    <div class="contents-wrapper">
+        {% for data in statuteData %}
+            {% ifequal data.contents None %}
+                <pre class="contents-main-title">{{ data.article }}</pre><br>
+            {% else %}
+                <pre class="contents-sub-title">{{ data.article }}</pre>
+                <pre class="contents-content" style="white-space: pre-wrap">{{ data.contents }}</pre><br><br>
+            {% endifequal %}
+        {% endfor %}
+    </div>
+{% endblock %}

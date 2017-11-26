@@ -1,0 +1,41 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Login</title>
+    <link href="{% static 'css/qrcode.css' %}" rel="stylesheet" type="text/css" />
+
+    {% if message %}
+    <script>
+    	alert('{{ message }}');
+	</script>
+	{% endif %}
+
+</head>
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-qrcode.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-qrcode.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/qrcode.js' %}"></script>
+
+    <div class="title">
+        <h1>QR Code Authentication</h1>
+        <h3>아래 QR Code를 통해 얻은 6자리 숫자를 입력해주세요.</h3>
+    </div>
+
+    <hr class="style3">
+
+    <div class="login">
+        <center>
+            <form method="post" action=".">{% csrf_token %}
+                <input type="text" name="otp">
+                <input type="hidden" name="sck" value="{{ secretKey }}"><br>
+                <input type="submit" value="Check">
+            </form>
+        </center>
+    </div>
+</body>
+</html>
+

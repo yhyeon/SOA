@@ -1,0 +1,28 @@
+.account_login {
+    padding-top: 200px;
+}
+
+.account_login input[type="button"] {
+    background: #162b40;
+    border: none;
+    padding: 10px 20px 10px 20px;
+    border-bottom: 3px solid #17364c;
+    border-radius: 3px;
+    color: #D2E2FF;
+}
+
+.account_login input[type="password"] {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 15%;
+    display: block;
+    outline: none;
+    border: dashed;
+    height: 50px;
+    line-height: 25px;
+    font-size: 19px;
+    padding: 0px 0px 0px 9px;
+    /*font-family: Georgia, "Times New Roman", Times, serif;*/
+    font-family: 'Open Sans Condensed', sans-serif;
+}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+
+{% block css %}<link rel="stylesheet" href="{% static 'css/account.css' %}">{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+        function chk() {
+            var theForm = document.account_del;
+
+            if(theForm.delid.value === ""){
+                alert('삭제할 ID를 선택해주세요.');
+
+                return false;
+            }
+
+            theForm.submit();
+            return true;
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="title">
+        <h1>관리자 계정 삭제</h1>
+    </div>
+
+    <hr class="style3">
+
+    <div class="account_delete">
+        <form name="account_del" method="post" action="."> {% csrf_token %}
+            <ul>
+                <center>
+                    <li>
+                        <label for="delid">ID</label>
+                        <select name="delid">
+                            <option value="">ID를 선택해주세요.</option>
+                            {% if selectData %}
+                                {% for data in selectData %}
+                                    {% ifnotequal data.username 'admin' %}
+                                        <option value="{{ data.username }}">{{ data.username }}</option>
+                                    {% endifnotequal %}
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                        <span>제거하실 계정의 ID를 선택해주세요.</span>
+                    </li><br>
+
+                    <input type="button" value="취소" onclick="history.back();">
+                    <input type="button" value="확인" onclick="chk();">
+                </center>
+            </ul>
+        </form>
+    </div>
+{% endblock %}
+
+
