@@ -1,0 +1,50 @@
+{ "index" : {"_id" : "0" } }
+{"department" : "A", "name" : "Googy", "person_number" : "201701", "IP" : "192.168.52.12", "MAC" : "-", "media" : "USB", "file" : "Hang.docx", "program" : "-", "receiver" : "-", "violation" : "X", "serious" : 0}
+{ "index" : {"_id" : "1" } }
+{"department" : "A", "name" : "Gook", "person_number" : "201719", "IP" : "192.168.52.25", "MAC" : "-", "media" : "Mail", "file" : "PT_Seminar.ppt", "program" : "-", "receiver" : "GoGo", "violation" : "O", "serious" : 50}
+{ "index" : {"_id" : "2" } }
+{"department" : "B", "name" : "GoGo", "person_number" : "201750", "IP" : "192.168.48.3", "MAC" : "-", "media" : "Cloud", "file" : "GoGo.docx", "program" : "-", "receiver" : "-", "violation" : "X", "serious" : 0}
+{ "index" : {"_id" : "3" } }
+{"department" : "C", "name" : "Harry", "person_number" : "201803", "IP" : "192.168.71.29", "MAC" : "-", "media" : "Cloud", "file" : "Sk8er boy.mp3", "program" : "-", "receiver" : "-", "violation" : "X", "serious" : 0}
+{ "index" : {"_id" : "4" } }
+{"department" : "B", "name" : "Poter", "person_number" : "201884", "IP" : "192.168.48.12", "MAC" : "-", "media" : "Mail", "file" : "Dear.txt", "program" : "-", "receiver" : "Emma", "violation" : "O", "serious" : 20}
+{ "index" : {"_id" : "5" } }
+{"department" : "A", "name" : "Emma", "person_number" : "201999", "IP" : "192.168.52.26", "MAC" : "-", "media" : "USB", "file" : "Dear.txt", "program" : "-", "receiver" : "-", "violation" : "X", "serious" : 0}
+{ "index" : {"_id" : "6" } }
+{"department" : "C", "name" : "Heise", "person_number" : "202154", "IP" : "192.168.71.37", "MAC" : "-", "media" : "Mail", "file" : "pop_data.xlsx", "program" : "-", "receiver" : "Evar", "violation" : "O", "serious" : 80}
+{ "index" : {"_id" : "7" } }
+{"department" : "C", "name" : "Turing", "person_number" : "202355", "IP" : "192.168.71.43", "MAC" : "-", "media" : "Cloud", "file" : "Imitation_Game.mp4", "program" : "-", "receiver" : "-", "violation" : "X", "serious" : 0}
+{ "index" : {"_id" : "8" } }
+{"department" : "B", "name" : "Tom", "person_number" : "202608", "IP" : "192.168.48.13", "MAC" : "-", "media" : "Network", "file" : "S_project.pptx", "program" : "-", "receiver" : "Michael", "violation" : "X", "serious" : 0}
+{ "index" : {"_id" : "9" } }
+{"department" : "B", "name" : "Hady", "person_number" : "202919", "IP" : "192.168.48.15", "MAC" : "-", "media" : "Mail", "file" : "Model.jpg", "program" : "-", "receiver" : "Joel", "violation" : "O", "serious" : 80}
+{ "index" : {"_id" : "10" } }
+{"department" : "B", "name" : "Michael", "person_number" : "203294", "IP" : "192.168.48.19", "MAC" : "-", "media" : "USB", "file" : "S_docx.pptx", "program" : "-", "receiver" : "-", "violation" : "O", "serious" : 50}
+{ "index" : {"_id" : "11" } }
+{"department" : "C", "name" : "Curry", "person_number" : "203739", "IP" : "192.168.71.55", "MAC" : "-", "media" : "Mail", "file" : "New_ways.txt", "program" : "-", "receiver" : "Michael", "violation" : "O", "serious" : 20}
+{ "index" : {"_id" : "12" } }
+{"department" : "A", "name" : "Hansgard", "person_number" : "204260", "IP" : "192.168.52.28", "MAC" : "-", "media" : "Mail", "file" : "Hans_profile.docx", "program" : "-", "receiver" : "Hansgard", "violation" : "X", "serious" : 0}
+{ "index" : {"_id" : "13" } }
+{"department" : "C", "name" : "Joel", "person_number" : "204863", "IP" : "192.168.71.57", "MAC" : "-", "media" : "USB", "file" : "Model.jpg", "program" : "-", "receiver" : "-", "violation" : "O", "serious" : 80}
+{ "index" : {"_id" : "14" } }
+{"department" : "B", "name" : "Mammy", "person_number" : "205554", "IP" : "192.168.48.22", "MAC" : "-", "media" : "USB", "file" : "Taepoong.txt", "program" : "-", "receiver" : "-", "violation" : "O", "serious" : 50}
+{ "index" : {"_id" : "15" } }
+{"department" : "A", "name" : "Kimpingpong", "person_number" : "206339", "IP" : "192.168.52.30", "MAC" : "-", "media" : "Mail", "file" : "hangjung.txt", "program" : "-", "receiver" : "May", "violation" : "O", "serious" : 80}
+{ "index" : {"_id" : "16" } }
+{"department" : "A", "name" : "Evar", "person_number" : "207224", "IP" : "192.168.52.31", "MAC" : "-", "media" : "Network", "file" : "Sea.docx", "program" : "-", "receiver" : "Chamchi", "violation" : "O", "serious" : 20}
+{ "index" : {"_id" : "17" } }
+{"department" : "C", "name" : "Chamchi", "person_number" : "208215", "IP" : "192.168.71.64", "MAC" : "-", "media" : "USB", "file" : "myworld.jpg", "program" : "-", "receiver" : "-", "violation" : "X", "serious" : 0}
+{ "index" : {"_id" : "18" } }
+{"department" : "B", "name" : "GoGo", "person_number" : "209318", "IP" : "192.168.48.3", "MAC" : "-", "media" : "USB", "file" : "S_docx.pptx", "program" : "-", "receiver" : "-", "violation" : "X", "serious" : 0}
+{ "index" : {"_id" : "19" } }
+{"department" : "C", "name" : "Curry", "person_number" : "210539", "IP" : "192.168.71.55", "MAC" : "-", "media" : "Mail", "file" : "New_ways.txt", "program" : "-", "receiver" : "Michael", "violation" : "O", "serious" : 20}
+{ "index" : {"_id" : "20" } }
+{"department" : "A", "name" : "Emma", "person_number" : "211884", "IP" : "192.168.52.26", "MAC" : "-", "media" : "Mail", "file" : "Hans_profile.docx", "program" : "-", "receiver" : "Hansgard", "violation" : "X", "serious" : 0}
+{ "index" : {"_id" : "21" } }
+{"department" : "B", "name" : "Tom", "person_number" : "213359", "IP" : "192.168.48.13", "MAC" : "-", "media" : "Mail", "file" : "PT_Seminar.ppt", "program" : "-", "receiver" : "GoGo", "violation" : "O", "serious" : 50}
+{ "index" : {"_id" : "22" } }
+{"department" : "A", "name" : "Hansgard", "person_number" : "214970", "IP" : "192.168.52.28", "MAC" : "-", "media" : "Cloud", "file" : "Sk8er boy.mp3", "program" : "-", "receiver" : "-", "violation" : "X", "serious" : 0}
+{ "index" : {"_id" : "23" } }
+{"department" : "A", "name" : "Kimpingpong", "person_number" : "216723", "IP" : "192.168.52.30", "MAC" : "-", "media" : "USB", "file" : "S_docx.pptx", "program" : "-", "receiver" : "-", "violation" : "O", "serious" : 50}
+{ "index" : {"_id" : "24" } }
+{"department" : "A", "name" : "Kimpingpong", "person_number" : "218624", "IP" : "192.168.52.30", "MAC" : "-", "media" : "Mail", "file" : "S_docx.pptx", "program" : "-", "receiver" : "-", "violation" : "O", "serious" : 50}

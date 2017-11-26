@@ -7,6 +7,7 @@ if(($osversion -match "Windows 7") -or ($osversion -match "windows 8")) # if the
 $driverlog = get-winevent -listlog Microsoft-Windows-DriverFrameworks-UserMode/Operational
 $driverlog.isenabled = $true
 $driverlog.SaveChanges()
+$driverlog.Dispose()
 $IP = (Get-WmiObject -Class Win32_NetworkAdapterConfiguration -Filter 'IPEnabled = True' | select IPAddress).IPAddress[0]
 $MAC = ((Get-WmiObject -Class Win32_NetworkAdapterConfiguration -Filter 'IPEnabled = True' | select MACAddress).MACAddress).replace(":","-")
 $sn = (Get-WMIObject win32_physicalmedia | Where-Object {$_.tag -match "PHYSICALDRIVE0"} | select SerialNumber).SerialNumber
@@ -34,7 +35,10 @@ $sn = $sn
 }
 }
 
-foreach ($driver in (get-winevent -FilterHashtable @{logname = 'Microsoft-Windows-DriverFrameworks-UserMode/Operational'; ID = 1003, 1008} | foreach {$_.toxml()}))
+$driverlog = get-winevent -FilterHashtable @{logname = 'Microsoft-Windows-DriverFrameworks-UserMode/Operational'; ID = 1003, 1008} | foreach {$_.toxml()}
+#foreach ($driver in (get-winevent -FilterHashtable @{logname = 'Microsoft-Windows-DriverFrameworks-UserMode/Operational'; ID = 1003, 1008} | foreach {$_.toxml()}))
+
+foreach ($driver in $driverlog)
 {
 $driver = $driver.split("<")
 $eventid = $driver | select-string -pattern 'EventID' | out-string
@@ -46,9 +50,9 @@ if($eventid -eq 1003)
 $datetime = $driver | select-string -pattern 'TimeCreated' | Out-String
 $datetime = $datetime.split("=")[1]
 $datetime = [datetime]($datetime.split("'")[1])
-$datetime = get-date $datetime -format yyyy-MM-dd@HH:mm:ss
-$date = $datetime.split("@")[0]
-$time = $datetime.Split("@")[1]
+$datetime = get-date $datetime -format yyyy-MM-ddTHH:mm:ss+09:00
+#$date = $datetime.split("@")[0]
+#$time = $datetime.Split("@")[1]
 $computer = $driver | select-string -pattern 'Computer' | Out-String
 $computer = $computer.split(">")[1]
 $computer = $computer.split("/")[0]
@@ -68,26 +72,32 @@ $device = $device.split(">")[1]
 $device = $device.split("
 ")[0]
 
-
-
-
 if (!(Test-Path C:\ProgramData\soalog\d.txt))
 {
-$sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $date + ":::;" + $time + ":::;" + $eventid + ":::;" + $slifetime + ":::;" + $hostguid + ":::;" + $device + ":::;" + 'USB 연결' + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_Win7Driver.txt -Append -Encoding utf8
+$sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $datetime + ":::;" + $eventid + ":::;" + $slifetime + ":::;" + $hostguid + ":::;" + $device + ":::;" + 'USB 연결' + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_Win7Driver.txt -Append -Encoding utf8
 }
 else
 {
 $compare = Get-Content -Path 'C:\ProgramData\soalog\d.txt'
-$sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $date + ":::;" + $time + ":::;" + $eventid + ":::;" + $slifetime + ":::;" + $hostguid + ":::;" + $device + ":::;" + 'USB 연결' + ":::;" | Where-Object {$_ -notin $compare} | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_Win7Driver.txt -Append -Encoding utf8
+$sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $datetime + ":::;" + $eventid + ":::;" + $slifetime + ":::;" + $hostguid + ":::;" + $device + ":::;" + 'USB 연결' + ":::;" | Where-Object {$_ -notin $compare} | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_Win7Driver.txt -Append -Encoding utf8
+$compare.Dispose()
 }
+$datetime.Dispose()
+$computer.Dispose()
+$sid.Dispose()
+$slifetime.Dispose()
+$hostguid.Dispose()
+$device.Dispose()
+$driver.Dispose()
+}
+
+
 else
 {
 $datetime = $driver | select-string -pattern 'TimeCreated' | Out-String
 $datetime = $datetime.split("=")[1]
 $datetime = [datetime]($datetime.split("'")[1])
-$datetime = get-date $datetime -format yyyy-MM-dd@HH:mm:ss
-$date = $datetime.split("@")[0]
-$time = $datetime.Split("@")[1]
+$datetime = get-date $datetime -format yyyy-MM-ddTHH:mm:ss+09:00
 $computer = $driver | select-string -pattern 'Computer' | Out-String
 $computer = $computer.split(">")[1]
 $computer = $computer.split("/")[0]
@@ -101,19 +111,27 @@ $elifetime = $elifetime.split("{")[1]
 $elifetime = $elifetime.Split("}")[0]
 
 
-if (!(C:\ProgramData\soalog\d.txt))
+if (!(Test-Path C:\ProgramData\soalog\d.txt))
 {
-$sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $date + ":::;" + $time + ":::;" + $eventid + ":::;" + $elifetime + ":::;" + ":::;" + ":::;" + 'USB 해제' + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_Win7Driver.txt -Append -Encoding utf8
+$sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $datetime + ":::;" + $eventid + ":::;" + $elifetime + ":::;" + ":::;" + ":::;" + 'USB 해제' + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_Win7Driver.txt -Append -Encoding utf8
 }
 else
 {
 $compare = Get-Content -Path 'C:\ProgramData\soalog\d.txt'
-$sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $date + ":::;" + $time + ":::;" + $eventid + ":::;" + $elifetime + ":::;" + ":::;" + ":::;" + 'USB 해제' + ":::;" | Where-Object {$_ -notin $compare} | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_Win7Driver.txt -Append -Encoding utf8
+$sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $datetime + ":::;" + $eventid + ":::;" + $elifetime + ":::;" + ":::;" + ":::;" + 'USB 해제' + ":::;" | Where-Object {$_ -notin $compare} | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_Win7Driver.txt -Append -Encoding utf8
+$compare.Dispose()
 }
+$elifetime.Dispose()
+$sid.Dispose()
+$computer.Dispose()
+$datetime.Dispose()
 }
+$driver.Dispose()
 }
-}
-
+$driverlog.Dispose()
+$sn.Dispose()
+$MAC.Dispose()
+$IP.Dispose()
 
 elseif ($osversion -match "Windows 10") # if the client is Windows 10
 {
@@ -145,10 +163,12 @@ $sn = $sn
 }
 }
 
-#Get-ChildItem -path "C:\Windows\System32\winevt\Logs\*Partition*" | copy-Item -Destination C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_Microsoft-Windows-Partition%4Diagnostic.evtx
+#Get-ChildItem -path "C:\Windows\System32\winevt\Logs\*Partition*" | copy-Item -Destination C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_Microsoft-Windows-Partition%4Diagnostic.evtx
 #$events = get-winevent -path C:\ProgramData\soalog\*partition*.evtx | foreach {$_.toxml()}
 
-foreach ($partition in (get-winevent -FilterHashtable @{logname = 'Microsoft-Windows-Partition/Diagnostic'} | foreach {$_.toxml()}))
+$partitionlog = get-winevent -FilterHashtable @{logname = 'Microsoft-Windows-Partition/Diagnostic'} | foreach {$_.toxml()}
+#foreach ($partition in (get-winevent -FilterHashtable @{logname = 'Microsoft-Windows-Partition/Diagnostic'} | foreach {$_.toxml()}))
+foreach ($partition in $partitionlog)
 {
 $partition = $partition.split("<")
 $eventrecordid = $partition | select-string -pattern 'EventRecordID>'
@@ -189,17 +209,37 @@ $registryid = $registryid.line.Split("=").Split(">").Split("'").split("{").split
 
 if (! (Test-Path -Path 'C:\ProgramData\soalog\p.txt'))
 {
-$sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $datetime + ":::;" + $eventid + ":::;" + $disknumber + ":::;" + $diskid + ":::;" + $characteristics + ":::;" + $busType + ":::;" + $manufacturer + ":::;" + $model + ":::;" + $revision + ":::;" + $serialnumber + ":::;" + $parentid + ":::;" + $registryid + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_partition.txt -Append -Encoding utf8
+$sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $datetime + ":::;" + $eventid + ":::;" + $disknumber + ":::;" + $diskid + ":::;" + $characteristics + ":::;" + $busType + ":::;" + $manufacturer + ":::;" + $model + ":::;" + $revision + ":::;" + $serialnumber + ":::;" + $parentid + ":::;" + $registryid + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_partition.txt -Append -Encoding utf8
 }
 else
 {
 $compare = Get-Content -Path 'C:\ProgramData\soalog\p.txt'
-$sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $datetime + ":::;" + $eventid + ":::;" + $disknumber + ":::;" + $diskid + ":::;" + $characteristics + ":::;" + $busType + ":::;" + $manufacturer + ":::;" + $model + ":::;" + $revision + ":::;" + $serialnumber + ":::;" + $parentid + ":::;" + $registryid + ":::;" | Where-Object {$_ -notin $compare} | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_partition.txt -Append -Encoding utf8
+$sn + ":::;" + $ip + ":::;" + $mac + ":::;" + $computer + ":::;" + $sid + ":::;" + $datetime + ":::;" + $eventid + ":::;" + $disknumber + ":::;" + $diskid + ":::;" + $characteristics + ":::;" + $busType + ":::;" + $manufacturer + ":::;" + $model + ":::;" + $revision + ":::;" + $serialnumber + ":::;" + $parentid + ":::;" + $registryid + ":::;" | Where-Object {$_ -notin $compare} | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_partition.txt -Append -Encoding utf8
+$compare.Dispose()
 }
+$registryid.Dispose()
+$diskid.Dispose()
+$parentid.Dispose()
+$serialnumber.Dispose()
+$revision.Dispose()
+$model.Dispose()
+$manufacturer.Dispose()
+$busType.Dispose()
+$characteristics.Dispose()
+$disknumber.Dispose()
+$sid.Dispose()
+$computer.Dispose()
+$datetime.Dispose()
+$eventid.Dispose()
+$eventrecordid.Dispose()
+$partition.Dispose()
 }
+$partitionlog.Dispose()
+$sn.Dispose()
+$MAC.Dispose()
+$IP.Dispose()
 
-if($?)
-{
+
 Import-Module bitstransfer
 $enc = Get-Content C:\Windows\soa\enp.txt | ConvertTo-SecureString # specify the directory where the encrypted password file is located
 $user = "Administrator" # server ID
@@ -214,11 +254,6 @@ Remove-Item $($_.FullName)
 }
 $dst = "http://cdisc.co.kr:1024/soa/upload/$($_.name)" # server directory with write permissions
 $job = Start-BitsTransfer -source $($_.FullName) -Destination $dst -Credential $cred -TransferType Upload -Asynchronous
-while (($job.jobstate -eq "TransientError"))
-{
-sleep 10;
-Resume-BitsTransfer
-}
 while (($job.jobstate -eq "Transferring") -or ($job.jobstate -eq "Connecting")) `
 {sleep 10;}
 if ($job.JobState -eq "Transferred")
@@ -230,9 +265,8 @@ get-content $($_.FullName) | Out-File "C:\ProgramData\soalog\d.txt" -Append -Enc
 if ($($_.name) -match "partition.txt")
 {
 get-content $($_.FullName) | Out-File "C:\ProgramData\soalog\p.txt" -Append -Encoding UTF8
-}
-
 Remove-Item $($_.FullName)
+}
 }
 Switch($job.jobstate)
 {
@@ -240,11 +274,16 @@ Switch($job.jobstate)
 "TransientError" {Resume-BitsTransfer -BitsJob $job}
 "Error" {Resume-BitsTransfer -BitsJob $job}
 }
+$dst.Dispose()
+$job.Dispose()
 }
-}
+$enc.Dispose()
+$user.Dispose()
+$cred.Dispose()
+$src.Dispose()
 }
 
-Clear-Variable driver, eventid, partition, compare
+#Clear-Variable driver, eventid, partition, compare
 $sw.stop()
 $sw.Elapsed.tostring('dd\.hh\"mm\:ss\.fff')
 

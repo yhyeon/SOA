@@ -50,11 +50,22 @@ $sn = $sn
                        $datetime = "$($pageFolder.GetDetailsOf($_,2))"   
                        $visit_time = Get-Date $datetime -Format yyyy-MM-ddTHH:mm:ss+09:00
                        $sn + ":::;" + $env:COMPUTERNAME + ":::;" + $env:username + ":::;"  + $env:hostIP + ':::;' + $env:hostMAC + ':::;'  +  $visit_time + ':::;' +
-                       $($site.Name) + ':::;' +$($pageFolder.GetDetailsOf($_,0)) + ':::;' + $($pageFolder.GetDetailsOf($_,1)) + ':::;'  | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_IEhistory.txt -Append -encoding utf8
+                       $($site.Name) + ':::;' +$($pageFolder.GetDetailsOf($_,0)) + ':::;' + $($pageFolder.GetDetailsOf($_,1)) + ':::;'  | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_IEhistory.txt -Append -encoding utf8
 
                        Start-Process -FilePath "C:\Windows\System32\rundll32.exe" -ArgumentList "InetCpl.cpl","ClearMyTracksByProcess 1" -NoNewWindow
+                     $visit_time.Dispose()
+                     $datetime.Dispose()
+                     $site.Dispose()
+                     $pageFolder.Dispose()
+                     $siteFolder.Dispose()
                      
                        }
+      $history.Dispose()
+      $folder.Dispose()
+      $shell.Dispose()
+      $env:hostIP.Dispose()
+      $env:hostMAC.Dispose()
+      $sn.Dispose()
 
                        #$split_date = $datetime.split(" ")      
                        #if($split_date[1] -eq "오후"){
@@ -79,8 +90,7 @@ $sn = $sn
          }            
     }  
   
-   if($?)
-    {
+
         Import-Module bitstransfer
         $enc = Get-Content C:\Windows\soa\enp.txt | ConvertTo-SecureString # specify the directory where the encrypted password file is located
         $user = "Administrator" # server ID
@@ -90,12 +100,7 @@ $sn = $sn
         foreach {
         $dst = "http://cdisc.co.kr:1024/soa/upload/$($_.name)" # server directory with write permissions
         $job = Start-BitsTransfer -source $($_.FullName) -Destination $dst -Credential $cred -TransferType Upload -Asynchronous
-       while (($job.jobstate -eq "TransientError"))
-{
-sleep 10;
-Resume-BitsTransfer
-}
-while (($job.jobstate -eq "Transferring") -or ($job.jobstate -eq "Connecting")) `
+       while (($job.jobstate -eq "Transferring") -or ($job.jobstate -eq "Connecting"))
 {sleep 10;}
 if ($job.JobState -eq "Transferred")
 {
@@ -107,5 +112,11 @@ Switch($job.jobstate)
 "TransientError" {Resume-BitsTransfer -BitsJob $job}
 "Error" {Resume-BitsTransfer -BitsJob $job}
 }
+$dst.Dispose()
+$job.Dispose()
         }
-    }
+        $enc.Dispose()
+        $user.Dispose()
+        $cred.Dispose()
+        $src.Dispose()
+    

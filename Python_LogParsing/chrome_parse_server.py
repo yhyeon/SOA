@@ -45,36 +45,36 @@ def Last_Visit_time(value):
 			temp = row[5]
 			return str(getFiletime(temp))	
 
-def get_IP():
-	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-	s.connect(("8.8.8.8", 80))
-	ip = (s.getsockname()[0])
-	s.close()
-	return ip
+# def get_IP():
+# 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# 	s.connect(("8.8.8.8", 80))
+# 	ip = (s.getsockname()[0])
+# 	s.close()
+# 	return ip
 
-def getMac() :
+# def getMac() :
 
-    cmd = 'wmic.exe nicconfig where "IPEnabled  = True" get MACAddress /format:rawxml'
-    xml_text = check_output(cmd)
-    xml_root = fromstring(xml_text)
+#     cmd = 'wmic.exe nicconfig where "IPEnabled  = True" get MACAddress /format:rawxml'
+#     xml_text = check_output(cmd)
+#     xml_root = fromstring(xml_text)
 
-    nics = []
-    keyslookup = {
-        'MACAddress' : 'mac',
-    }
+#     nics = []
+#     keyslookup = {
+#         'MACAddress' : 'mac',
+#     }
 
-    for nic in xml_root.findall("./RESULTS/CIM/INSTANCE") :
-        n = {'mac':'',}
+#     for nic in xml_root.findall("./RESULTS/CIM/INSTANCE") :
+#         n = {'mac':'',}
 
-        for prop in nic :
-            name = keyslookup[prop.attrib['NAME']]
-            if prop.tag == 'PROPERTY':
-                if len(prop):
-                    for v in prop:
-                        n[name] = v.text
-        nics.append(n)
+#         for prop in nic :
+#             name = keyslookup[prop.attrib['NAME']]
+#             if prop.tag == 'PROPERTY':
+#                 if len(prop):
+#                     for v in prop:
+#                         n[name] = v.text
+#         nics.append(n)
 
-    return nics
+#     return nics
 
 def State(state):
 	if(state == 0):
