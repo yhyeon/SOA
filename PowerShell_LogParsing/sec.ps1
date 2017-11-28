@@ -1,4 +1,4 @@
-do {
+﻿do {
 $ErrorActionPreference = 'silentlycontinue'
 
 if(!(test-path 'C:\ProgramData\soalog'))

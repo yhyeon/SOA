@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'silentlycontinue'
+﻿$ErrorActionPreference = 'silentlycontinue'
 if(!(test-path 'C:\ProgramData\soalog'))
 {new-item -Path "C:\Windows\soa" -ItemType Directory -Force }
 $osversion = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName).ProductName

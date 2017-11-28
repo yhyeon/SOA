@@ -5,7 +5,9 @@ $ErrorActionPreference = 'silentlycontinue'
 
 $drive = ((Get-PSDrive -PSProvider FileSystem | Where-Object name -ne "C" | select root).root).count
 
+
 do {
+
 
 if (((Get-PSDrive -PSProvider FileSystem | Where-Object name -ne "C" | select root).root).count -ne $drive)
 {

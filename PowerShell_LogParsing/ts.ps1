@@ -87,7 +87,7 @@ $settings.Dispose()
 $principal.Dispose()
 
 
-
+<#
 
 # filter
 
@@ -133,7 +133,7 @@ $trigger.Dispose()
 $settings.Dispose()
 $principal.Dispose()
 
-
+#>
 
 
 # logonoff / OA

@@ -53,24 +53,32 @@ $mdatetime = get-date $mdatetime -format yyyy-MM-ddTHH:mm:ss+09:00
 
 if (!(Test-Path -Path 'C:\ProgramData\soalog\f.txt'))
 {
-$sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdatetime + ":::;" + $adatetime + ":::;" + $mdatetime + ":::;" + "{0:F2}" -f ($file.length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname.replace("\","\/") + ":::;" + $file.name + ":::;" + $file.basename + ":::;" + $file.extension + ":::;" + $file.attributes +":::;" | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_files.txt -Append -Encoding utf8
+$file = $sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdatetime + ":::;" + $adatetime + ":::;" + $mdatetime + ":::;" + "{0:F2}" -f ($file.length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname.replace("\","\/") + ":::;" + $file.name + ":::;" + $file.basename + ":::;" + $file.extension + ":::;" + $file.attributes +":::;"
+$file | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_files.txt -Append -Encoding utf8
+$file.Dispose()
 }
 else
 {
 $compare1 = Get-Content -Path 'C:\ProgramData\soalog\f.txt'
-$sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdatetime + ":::;" + $adatetime + ":::;" + $mdatetime + ":::;" + "{0:F2}" -f ($file.length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname.replace("\","\/") + ":::;" + $file.name + ":::;" + $file.basename + ":::;" + $file.extension + ":::;" + $file.attributes +":::;" | Where-Object {$_ -notin $compare1} | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_files.txt -Append -Encoding utf8
+$cfile = $sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdatetime + ":::;" + $adatetime + ":::;" + $mdatetime + ":::;" + "{0:F2}" -f ($file.length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname.replace("\","\/") + ":::;" + $file.name + ":::;" + $file.basename + ":::;" + $file.extension + ":::;" + $file.attributes +":::;" | Where-Object {$_ -notin $compare1}
+$cfile | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_files.txt -Append -Encoding utf8
+$cfile.Dispose()
 $compare1.Dispose()
 }
 if ($file -like "*.zip")
 {
 if (!(Test-Path -Path 'C:\ProgramData\soalog\z.txt'))
 {
-[IO.Compression.ZipFile]::OpenRead($file.FullName).Entries | %{$sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdatetime + ":::;" + $adatetime + ":::;" + $mdatetime + ":::;" + "{0:F2}" -f ($file.Length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname.replace("\","\/") + ":::;" + $file.Name + ":::;" + $file.BaseName + ":::;" + $file.Extension + ":::;" + $file.Attributes+ ":::;" + "$($_.FullName):::;$($_.fullname.split(".")[-1]):::;$("{0:F2}" -f ($_.Length/1kb)):::;" } | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_zip.txt -Append -Encoding utf8
+$zip = [IO.Compression.ZipFile]::OpenRead($file.FullName).Entries | %{$sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdatetime + ":::;" + $adatetime + ":::;" + $mdatetime + ":::;" + "{0:F2}" -f ($file.Length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname.replace("\","\/") + ":::;" + $file.Name + ":::;" + $file.BaseName + ":::;" + $file.Extension + ":::;" + $file.Attributes+ ":::;" + "$($_.FullName):::;$($_.fullname.split(".")[-1]):::;$("{0:F2}" -f ($_.Length/1kb)):::;" }
+$zip | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_zip.txt -Append -Encoding utf8
+$zip.Dispose()
 }
 else
 {
 $compare2 = Get-Content -Path 'C:\ProgramData\soalog\z.txt'
-[IO.Compression.ZipFile]::OpenRead($file.FullName).Entries | %{$sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdatetime + ":::;" + $adatetime + ":::;" + $mdatetime + ":::;" + "{0:F2}" -f ($file.Length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname.replace("\","\/") + ":::;" + $file.Name + ":::;" + $file.BaseName + ":::;" + $file.Extension + ":::;" + $file.Attributes+ ":::;" + "$($_.FullName):::;$($_.fullname.split(".")[-1]):::;$("{0:F2}" -f ($_.Length/1kb)):::;" } | Where-Object {$_ -notin $compare2} | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_zip.txt -Append -Encoding utf8
+$czip = [IO.Compression.ZipFile]::OpenRead($file.FullName).Entries | %{$sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdatetime + ":::;" + $adatetime + ":::;" + $mdatetime + ":::;" + "{0:F2}" -f ($file.Length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname.replace("\","\/") + ":::;" + $file.Name + ":::;" + $file.BaseName + ":::;" + $file.Extension + ":::;" + $file.Attributes+ ":::;" + "$($_.FullName):::;$($_.fullname.split(".")[-1]):::;$("{0:F2}" -f ($_.Length/1kb)):::;" } | Where-Object {$_ -notin $compare2}
+$czip | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_zip.txt -Append -Encoding utf8
+$czip.Dispose()
 $compare2.Dispose()
 }
 }

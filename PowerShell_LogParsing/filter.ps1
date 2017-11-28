@@ -1,4 +1,4 @@
-#$user = $env:USERNAME
+﻿#$user = $env:USERNAME
 #$path = "C:\Program Files", "C:\Program Files (x86)", "C:\ProgramData", "C:\Users\$user\IntelGraphicsProfiles", "C:\Windows"
 $ErrorActionPreference = 'silentlycontinue'
 if(!(test-path 'C:\ProgramData\soalog'))
@@ -16,14 +16,18 @@ $dpathhidden | out-file C:\ProgramData\soalog\path.txt -Encoding utf8 -Append
 $dpathhn = (Get-ChildItem -Path $dpathhidden -Recurse -Directory | select Fullname).FullName
 $dpathhn | out-file C:\ProgramData\soalog\path.txt -Encoding utf8 -Append
 
-$fpath = "C:\ProgramData\soalog", "C:\Windows\soa", "C:\Users\$env:username\AppData\Local\Kakao", "C:\Program Files (x86)\Kakao\KakaoTalk"
-(Get-ChildItem -Path $fpath -recurse -file | select Fullname).FullName | out-file C:\ProgramData\soalog\path.txt -Append -Encoding utf8
-(Get-ChildItem -Path $fpath -recurse -file -Hidden | select Fullname).FullName | out-file C:\ProgramData\soalog\path.txt -Append -Encoding utf8
+$fpath = "C:\ProgramData\soalog", "C:\Windows\soa", "C:\Users\$env:username\AppData\Local\Kakao", "C:\Program Files (x86)\Kakao\KakaoTalk", "C:\Users\$env:username\AppData\Local\Google\Chrome\User Data"
+$fpathout = (Get-ChildItem -Path $fpath -recurse -file | select Fullname).FullName
+$fpathout | out-file C:\ProgramData\soalog\path.txt -Append -Encoding utf8
+$fpathhout = (Get-ChildItem -Path $fpath -recurse -file -Hidden | select Fullname).FullName
+$fpathhout | out-file C:\ProgramData\soalog\path.txt -Append -Encoding utf8
 
 $dpath.Dispose()
 $dpathnohidden.Dispose()
 $dpathhidden.Dispose()
 $dpathhn.Dispose()
+$fpathout.Dispose()
+$fpathhout.Dispose()
 $fpath.Dispose()
 
 }
@@ -42,12 +46,17 @@ $dpathhn = (Get-ChildItem -Path $dpathhidden -Recurse -Directory | select Fullna
 $dpathhn | out-file C:\ProgramData\soalog\path.txt -Encoding utf8 -Append
 
 
-$fpath = "C:\ProgramData\soalog", "C:\Windows\soa", "C:\Users\$env:username\AppData\Local\Kakao", "C:\Program Files (x86)\Kakao\KakaoTalk"
-(Get-ChildItem -Path $fpath -recurse -file | select Fullname).FullName | Where-Object {$_ -notin $compare} | out-file C:\ProgramData\soalog\path.txt -Append -Encoding utf8
-(Get-ChildItem -Path $fpath -recurse -file -Hidden | select Fullname).FullName | Where-Object {$_ -notin $compare} | out-file C:\ProgramData\soalog\path.txt -Append -Encoding utf8
+$fpath = "C:\ProgramData\soalog", "C:\Windows\soa", "C:\Users\$env:username\AppData\Local\Kakao", "C:\Program Files (x86)\Kakao\KakaoTalk", "C:\Users\$env:username\AppData\Local\Google\Chrome\User Data"
+$fpathout = (Get-ChildItem -Path $fpath -recurse -file | select Fullname).FullName | Where-Object {$_ -notin $compare}
+$fpathout | out-file C:\ProgramData\soalog\path.txt -Append -Encoding utf8
+$fpathhout = (Get-ChildItem -Path $fpath -recurse -file -Hidden | select Fullname).FullName | Where-Object {$_ -notin $compare}
+$fapthhout | out-file C:\ProgramData\soalog\path.txt -Append -Encoding utf8
+
 $dpath.Dispose()
 $dpathnohidden.Dispose()
 $dpathhidden.Dispose()
 $dpathhn.Dispose()
+$fpathout.Dispose()
+$fpathhout.Dispose()
 $fpath.Dispose()
 }
