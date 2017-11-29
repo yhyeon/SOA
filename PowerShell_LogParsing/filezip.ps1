@@ -37,7 +37,7 @@ foreach ($root in $rootdrive)
 {
 $nhidden = Get-ChildItem -Path $root -file -recurse
 $hidden = Get-ChildItem -Path $root -file -recurse -hidden
-$files = $nhidden, $hidden
+$files = $nhidden + $hidden
 foreach ($file in $files)
 {
 $rootd = ($file.directoryname.Split(":"))[0]
