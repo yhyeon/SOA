@@ -230,11 +230,11 @@ for path, dir, files in os.walk(data_path):
 				rows2 = cur2.fetchall()
 				rows3 = cur3.fetchall()
 
-				nics = getMac()
-				for nic in nics :
-					for k, v in nic.items() :
-					    MAC = v
-					    MAC2 = MAC.replace(':', '-')
+				#nics = getMac()
+				#for nic in nics :
+				#	for k, v in nic.items() :
+				#	    MAC = v
+				#	    MAC2 = MAC.replace(':', '-')
 
 				for num,row in enumerate(rows2):
 					url1 = (match_url(row[0]))
@@ -284,8 +284,8 @@ for path, dir, files in os.walk(data_path):
 				f.close()
 				f2.close()
 				time.sleep(5)
-				os.rename("C:\\soa\\upload\\" + tmp[4] + '_'+ tmp[5] + '_ChromeHistoryb'+'.txt', "C:\\soa\\upload\\" + tmp[4] + '_'+ tmp[5] + '_ChromeHistoryc'+'.txt')
-				os.rename("C:\\soa\\upload\\" + tmp[4] + '_'+ tmp[5] + '_ChromeDownloadsb'+'.txt', "C:\\soa\\upload\\" + tmp[4] + '_'+ tmp[5] + '_ChromeDownloadc'+'.txt')
+				os.rename("C:\\soa\\upload\\" + tmp[4] + '_'+ tmp[5] + '_ChromeHistoryb'+'.txt', "C:\\soa\\upload\\" + tmp[4] + '_'+ tmp[5] + '_ChromeHistory'+'.txt')
+				os.rename("C:\\soa\\upload\\" + tmp[4] + '_'+ tmp[5] + '_ChromeDownloadsb'+'.txt', "C:\\soa\\upload\\" + tmp[4] + '_'+ tmp[5] + '_ChromeDownload'+'.txt')
 				time.sleep(3)
 
 				if os.path.exists("C:\\backlog"):
