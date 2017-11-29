@@ -1,4 +1,4 @@
-﻿$sw = [System.Diagnostics.Stopwatch]::startnew()
+$sw = [System.Diagnostics.Stopwatch]::startnew()
 if(!(test-path 'C:\ProgramData\soalog'))
 {new-item -Path "C:\ProgramData\soalog" -ItemType Directory -Force }
 $ErrorActionPreference = 'silentlycontinue'
@@ -35,7 +35,10 @@ $sn = $sn
 $rootdrive = (get-psdrive | where-object { $_.Provider.Name -eq "FileSystem" } | select root).root
 foreach ($root in $rootdrive)
 {
-foreach ($file in (Get-ChildItem $root -file -recurse))
+$nhidden = Get-ChildItem -Path $root -file -recurse
+$hidden = Get-ChildItem -Path $root -file -recurse -hidden
+$files = $nhidden, $hidden
+foreach ($file in $files)
 {
 $rootd = ($file.directoryname.Split(":"))[0]
 $cdatetime = ($file | select CreationTime).CreationTime
@@ -90,6 +93,9 @@ $file.Dispose()
 }
 $root.Dispose()
 }
+$files.Dispose()
+$hidden.Dispose()
+$nhidden.Dispose()
 $rootdrive.Dispose()
 $sn.Dispose()
 $MAC.Dispose()
