@@ -417,7 +417,7 @@ $eextension = "nls", "dll", "mui", "clb", "ini", "ttc", "xml", "tmp", "log", "ld
 
 
 #foreach ($security in (get-winevent -FilterHashtable @{path='C:\ProgramData\soalog\*Security*.evtx'; ID = 4656, 4659, 4660, 4662, 4663} | foreach {$_.toxml()}))
-$oalog = get-winevent -FilterHashtable @{path='C:\ProgramData\soalog\*Security*.evtx'; ID = 4656, 4659, 4660, 4662, 4663} | foreach {$_.toxml()}
+$oalog = get-winevent -FilterHashtable @{path='C:\ProgramData\soalog\*Security*.evtx'; ID = 4656, 4659, 4660, 4662, 4663; data=$env:username} | foreach {$_.toxml()}
 
 foreach ($security in $oalog)
 {
