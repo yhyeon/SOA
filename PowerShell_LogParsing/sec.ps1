@@ -1,4 +1,4 @@
-﻿do {
+do {
 $ErrorActionPreference = 'silentlycontinue'
 
 if(!(test-path 'C:\ProgramData\soalog'))
@@ -37,8 +37,9 @@ $sn = $sn
 
 $sw = [System.Diagnostics.Stopwatch]::startnew()
 
-Start-Process powershell.exe -ArgumentList 'C:\Windows\soa\filter.ps1' -Wait -PassThru -WindowStyle Hidden -Verb RunAs
+$proc = Start-Process powershell.exe -ArgumentList 'C:\Windows\soa\filter.ps1' -Wait -PassThru -WindowStyle Hidden -Verb RunAs
 
+$proc.dispose()
 $allname = (Get-ChildItem -path "C:\Windows\System32\winevt\Logs\*Archive-Security*.evtx" | select name).name | Select-Object -First 1
 foreach ($name in $allname)
 {
@@ -53,7 +54,7 @@ $sn.Dispose()
 }
 
 
-Start-Job -ScriptBlock {
+$job = Start-Job -ScriptBlock {
 $IP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress
 $MAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"} | Where-Object {$_.InterfaceDescription -notmatch "TEST"}).MacAddress
 $sn = (Get-WMIObject win32_physicalmedia | Where-Object {$_.tag -match "PHYSICALDRIVE0"} | select SerialNumber).SerialNumber
@@ -361,7 +362,8 @@ $ip.Dispose()
 $MAC.Dispose()
 $log.Dispose()
 }
-
+$jobname = $job.Name
+Remove-Job $jobname -Force
 
 $IP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress
 $MAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"} | Where-Object {$_.InterfaceDescription -notmatch "TEST"}).MacAddress
