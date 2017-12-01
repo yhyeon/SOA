@@ -362,8 +362,14 @@ $ip.Dispose()
 $MAC.Dispose()
 $log.Dispose()
 }
-$jobname = $job.Name
-Remove-Job $jobname -Force
+if ($job.State -eq "Completed")
+{
+Remove-Job $job
+}
+elseif ($job.State -eq "Running")
+{
+Sleep 10
+}
 
 $IP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress
 $MAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"} | Where-Object {$_.InterfaceDescription -notmatch "TEST"}).MacAddress
