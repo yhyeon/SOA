@@ -1,4 +1,4 @@
-﻿# reg
+# reg
 
 if (!(Test-Path "C:\Windows\soa\reg.ps1"))
 {
@@ -87,7 +87,7 @@ $settings.Dispose()
 $principal.Dispose()
 
 
-<#
+
 
 # filter
 
@@ -119,6 +119,7 @@ $dst.Dispose()
 $job.Dispose()
 }
 
+<#
 $jobname = "filter"
 $script =  "-ExecutionPolicy Bypass -windowstyle hidden -noexit -mta -noprofile -file C:\Windows\soa\filter.ps1"
 $action = New-ScheduledTaskAction –Execute "powershell.exe" -Argument "$script"
