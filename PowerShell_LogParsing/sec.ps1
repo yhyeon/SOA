@@ -51,9 +51,6 @@ foreach ($name in $allname)
 #Get-ChildItem -path "C:\Windows\System32\winevt\Logs\Archive-Security*" | Move-Item -Destination C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_$name
 "C:\Windows\System32\winevt\Logs\"+$name | Move-Item -Destination C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_$name -Force
 $name.Dispose()
-$allname.Dispose()
-$IP.Dispose()
-$MAC.Dispose()
 $sn.Dispose()
 }
 $allname.Dispose()
