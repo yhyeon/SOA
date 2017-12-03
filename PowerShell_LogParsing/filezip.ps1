@@ -37,8 +37,63 @@ foreach ($root in $rootdrive)
 {
 $nhidden = Get-ChildItem -Path $root -file -recurse
 $hidden = Get-ChildItem -Path $root -file -recurse -hidden
-$files = $nhidden + $hidden
-foreach ($file in $files)
+
+foreach ($file in $nhidden)
+{
+$rootd = ($file.directoryname.Split(":"))[0]
+$cdatetime = ($file | select CreationTime).CreationTime
+$cdatetime = get-date $cdatetime -format yyyy-MM-ddTHH:mm:ss+09:00
+#$cdate = $cdatetime.split("@")[0]
+#$ctime = $cdatetime.split("@")[1]
+$adatetime = ($file | select LastAccessTime).LastAccessTime
+$adatetime = get-date $adatetime -format yyyy-MM-ddTHH:mm:ss+09:00
+#$adate = $cdatetime.split("@")[0]
+#$atime = $cdatetime.split("@")[1]
+$mdatetime = ($file | select LastWriteTime).LastWriteTime
+$mdatetime = get-date $mdatetime -format yyyy-MM-ddTHH:mm:ss+09:00
+#$mdate = $mdatetime.split("@")[0]
+#$mtime = $mdatetime.split("@")[1]
+
+if (!(Test-Path -Path 'C:\ProgramData\soalog\f.txt'))
+{
+$file = $sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdatetime + ":::;" + $adatetime + ":::;" + $mdatetime + ":::;" + "{0:F2}" -f ($file.length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname.replace("\","\/") + ":::;" + $file.name + ":::;" + $file.basename + ":::;" + $file.extension + ":::;" + $file.attributes +":::;"
+$file | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_files.txt -Append -Encoding utf8
+$file.Dispose()
+}
+else
+{
+$compare1 = Get-Content -Path 'C:\ProgramData\soalog\f.txt'
+$cfile = $sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdatetime + ":::;" + $adatetime + ":::;" + $mdatetime + ":::;" + "{0:F2}" -f ($file.length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname.replace("\","\/") + ":::;" + $file.name + ":::;" + $file.basename + ":::;" + $file.extension + ":::;" + $file.attributes +":::;" | Where-Object {$_ -notin $compare1}
+$cfile | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_files.txt -Append -Encoding utf8
+$cfile.Dispose()
+$compare1.Dispose()
+}
+if ($file -like "*.zip")
+{
+if (!(Test-Path -Path 'C:\ProgramData\soalog\z.txt'))
+{
+$zip = [IO.Compression.ZipFile]::OpenRead($file.FullName).Entries | %{$sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdatetime + ":::;" + $adatetime + ":::;" + $mdatetime + ":::;" + "{0:F2}" -f ($file.Length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname.replace("\","\/") + ":::;" + $file.Name + ":::;" + $file.BaseName + ":::;" + $file.Extension + ":::;" + $file.Attributes+ ":::;" + "$($_.FullName):::;$($_.fullname.split(".")[-1]):::;$("{0:F2}" -f ($_.Length/1kb)):::;" }
+$zip | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_zip.txt -Append -Encoding utf8
+$zip.Dispose()
+}
+else
+{
+$compare2 = Get-Content -Path 'C:\ProgramData\soalog\z.txt'
+$czip = [IO.Compression.ZipFile]::OpenRead($file.FullName).Entries | %{$sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" +  $cdatetime + ":::;" + $adatetime + ":::;" + $mdatetime + ":::;" + "{0:F2}" -f ($file.Length/1kb) + ":::;" + $rootd + ":::;" + $file.directoryname.replace("\","\/") + ":::;" + $file.Name + ":::;" + $file.BaseName + ":::;" + $file.Extension + ":::;" + $file.Attributes+ ":::;" + "$($_.FullName):::;$($_.fullname.split(".")[-1]):::;$("{0:F2}" -f ($_.Length/1kb)):::;" } | Where-Object {$_ -notin $compare2}
+$czip | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_zip.txt -Append -Encoding utf8
+$czip.Dispose()
+$compare2.Dispose()
+}
+}
+$mdatetime.Dispose()
+$adatetime.Dispose()
+$cdatetime.Dispose()
+$rootd.Dispose()
+$file.Dispose()
+}
+
+
+foreach ($file in $hidden)
 {
 $rootd = ($file.directoryname.Split(":"))[0]
 $cdatetime = ($file | select CreationTime).CreationTime
