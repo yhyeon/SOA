@@ -613,7 +613,7 @@ Remove-Item "C:\ProgramData\soalog\*_logon.txt", "C:\ProgramData\soalog\*_oa.txt
 while (Test-Path $($_.FullName))
 {
 Remove-Item $($_.FullName)
-skeeo 10
+sleep 10
 }
 }
 
