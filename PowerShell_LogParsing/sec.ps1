@@ -396,8 +396,7 @@ $PSObject | Add-Member NoteProperty $_.Name $_."#text"
         if ($oa.ProcessName |  where-object {$_ -notin $eprocess})
         {
 
-        if ($objectname | Where-Object {$_ -notin $dpath, $dpathnohidden, $dpathhidden, $fpath, $fpathout, $fpathhout})
-        {
+
         if($file | Where-Object {$_ -ne $null})
         {
         $directory = $oa.ObjectName.Split("\") |  select -SkipLast 1
@@ -528,7 +527,7 @@ $sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "WriteOwner" + ":::;" + $eventid +
 
 
 }
-}
+
 }
 }
 
@@ -560,13 +559,6 @@ $oalog.Dispose()
 $oa.Dispose()
 
 
-$dpath.Dispose()
-$dpathnohidden.Dispose()
-$dpathhidden.Dispose()
-$dpathhn.Dispose()
-$fpathout.Dispose()
-$fpathhout.Dispose()
-$fpath.Dispose()
 
 }
 $eprocess.Dispose()
