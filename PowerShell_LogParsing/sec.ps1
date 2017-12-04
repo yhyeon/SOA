@@ -32,7 +32,18 @@ $sn = $sn
 }
 }
 
-
+if (Test-Path 'C:\ProgramData\soalog\*.evtx')
+{
+if (Test-Path 'C:\ProgramData\soalog\*_oa.txt')
+{
+Remove-Item 'C:\ProgramData\soalog\*_oa.txt' -Force
+Remove-Item 'C:\ProgramData\soalog\*_logon.txt' -Force
+}
+elseif (!(Test-Path 'C:\ProgramData\soalog\*_oa.txt'))
+{
+Remove-Item 'C:\ProgramData\soalog\*.evtx' -Force
+}
+}
 
 
 $sw = [System.Diagnostics.Stopwatch]::startnew()
@@ -336,6 +347,14 @@ $eprocess = "C:\/Windows\/System32\/svchost.exe", "C:\/Program Files (x86)\/Goog
 "C:\/Windows\/System32\/InputMethod\/CHS\/ChsIME.exe", "C:\/Program Files\/WindowsApps\/Microsoft.Windows.Photos_2017.35071.16410.0_x64__8wekyb3d8bbwe\/Microsoft.Photos.exe", "C:\/Program Files\/NVIDIA Corporation\/NvContainer\/nvcontainer.exe", "C:\/Windows\/System32\/WindowsPowerShell\/v1.0\/powershell.exe", "C:\/Windows\/System32\/WindowsPowerShell\/v1.0\/Modules\/BitsTransfer", "C:\/Program Files\/ESTsoft\/ALYac\/AYHost.aye", "C:\/Windows\/System32\/WindowsPowerShell\/v1.0\/powershell_ise.exe",`
 "C:\/Program Files\/ESTsoft\/ALYac\/AYPop.aye"
 
+$dpath = "C:\"
+$dpathnohidden = (Get-ChildItem -Path $dpath -recurse -Directory | select Fullname).FullName
+$dpathhidden = (Get-ChildItem -Path $dpath -recurse -Directory -Hidden | select Fullname).FullName
+$dpathhn = (Get-ChildItem -Path $dpathhidden -Recurse -Directory | select Fullname).FullName
+$fpath = "C:\ProgramData\soalog", "C:\Windows\soa", "C:\Users\$env:username\AppData\Local\Kakao", "C:\Program Files (x86)\Kakao\KakaoTalk", "C:\Users\$env:username\AppData\Local\Google\Chrome\User Data"
+$fpathout = (Get-ChildItem -Path $fpath -recurse -file | select Fullname).FullName
+$fpathhout = (Get-ChildItem -Path $fpath -recurse -file -Hidden | select Fullname).FullName
+
 
 get-winevent -FilterHashtable @{path = 'C:\ProgramData\soalog\*.evtx'; ID = 4656, 4659, 4660, 4662, 4663; data=$env:username} | foreach {
 $oalog = [xml] $_.toxml()
@@ -377,7 +396,8 @@ $PSObject | Add-Member NoteProperty $_.Name $_."#text"
         if ($oa.ProcessName |  where-object {$_ -notin $eprocess})
         {
 
-
+        if ($objectname | Where-Object {$_ -notin $dpath, $dpathnohidden, $dpathhidden, $fpath, $fpathout, $fpathhout})
+        {
         if($file | Where-Object {$_ -ne $null})
         {
         $directory = $oa.ObjectName.Split("\") |  select -SkipLast 1
@@ -504,7 +524,7 @@ elseif($oa.AccessMask -eq "0x800000")
 $sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "WriteOwner" + ":::;" + $eventid + ":::;" + $oa.Computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 }
-
+}
 
 
 }
@@ -538,6 +558,15 @@ $datetime.Dispose()
 $eventid.Dispose()
 $oalog.Dispose()
 $oa.Dispose()
+
+
+$dpath.Dispose()
+$dpathnohidden.Dispose()
+$dpathhidden.Dispose()
+$dpathhn.Dispose()
+$fpathout.Dispose()
+$fpathhout.Dispose()
+$fpath.Dispose()
 
 }
 $eprocess.Dispose()
@@ -581,6 +610,11 @@ if ($job.JobState -eq "Transferred")
 {
 Remove-Item $($_.FullName)
 Remove-Item "C:\ProgramData\soalog\*_logon.txt", "C:\ProgramData\soalog\*_oa.txt"
+while (Test-Path $($_.FullName))
+{
+Remove-Item $($_.FullName)
+skeeo 10
+}
 }
 
 Switch($job.jobstate)
