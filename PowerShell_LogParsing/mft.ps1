@@ -2,10 +2,12 @@
 
 $sw = [System.Diagnostics.Stopwatch]::startnew()
 
+<#
 if (!(Get-Module -name PowerForensics))
 {
 Install-Module -Name PowerForensics -Force
 }
+#>
 
 $IP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress
 $MAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"} | Where-Object {$_.InterfaceDescription -notmatch "TEST"}).MacAddress
