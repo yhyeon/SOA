@@ -396,7 +396,8 @@ $PSObject | Add-Member NoteProperty $_.Name $_."#text"
         if ($oa.ProcessName |  where-object {$_ -notin $eprocess})
         {
 
-
+  <#      if ($objectname | Where-Object {$_ -notin $dpath, $dpathnohidden, $dpathhidden, $fpath, $fpathout, $fpathhout})
+        {#>
         if($file | Where-Object {$_ -ne $null})
         {
         $directory = $oa.ObjectName.Split("\") |  select -SkipLast 1
@@ -523,23 +524,23 @@ elseif($oa.AccessMask -eq "0x800000")
 $sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "WriteOwner" + ":::;" + $eventid + ":::;" + $oa.Computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 }
-}
+#}
 
 
 }
-
 }
 }
+}
 
-elseif ($objectserver -match "MTP")
+elseif ($oa.ObjectServer -match "MTP")
 {
-if($accessmask -eq "0x120116")
+if($oa.AccessMask -eq "0x120116")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x120116","Write") + ":::;" + $eventid + ":::;" + $oa.Computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.AdditionalInfo2 + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa_mtp.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $oa.AccessMask.replace("0x120116","Write") + ":::;" + $eventid + ":::;" + $oa.Computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $oa.ObjectName + ":::;" + $oa.ObjectName.split(".")[-1] + ":::;" + $oa.AdditionalInfo2 + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa_mtp.txt -Append -encoding utf8
 }
-elseif($accessmask -eq "0x120089")
+elseif($oa.AccessMask -eq "0x120089")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $accessmask.replace("0x120089","READ") + ":::;" + $eventid + ":::;" + $oa.Computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.AdditionalInfo2 + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa_mtp.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $oa.AccessMask.replace("0x120089","READ") + ":::;" + $eventid + ":::;" + $oa.Computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $oa.ObjectName + ":::;" + $oa.ObjectName.split(".")[-1] + ":::;" + $oa.AdditionalInfo2 + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa_mtp.txt -Append -encoding utf8
 }
 
 }
@@ -558,8 +559,15 @@ $eventid.Dispose()
 $oalog.Dispose()
 $oa.Dispose()
 
-
-
+<#
+$dpath.Dispose()
+$dpathnohidden.Dispose()
+$dpathhidden.Dispose()
+$dpathhn.Dispose()
+$fpathout.Dispose()
+$fpathhout.Dispose()
+$fpath.Dispose()
+#>
 }
 $eprocess.Dispose()
 $eextension.Dispose()
