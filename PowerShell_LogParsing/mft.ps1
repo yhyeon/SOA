@@ -41,12 +41,17 @@ $rootdrive = (get-psdrive | where-object { $_.Provider.Name -eq "FileSystem" } |
 foreach ($root in $rootdrive)
 {
 $r = $root.split("\")[0]
+
+get-date -Format yyyy-MM-dd-HH-mm-ss | out-file C:\ProgramData\soalog\mstart.txt -Encoding utf8
+
+if (!(Test-Path -Path 'C:\ProgramData\soalog\mtime.txt'))
+{
+
 $mft = Get-ForensicFileRecord -VolumeName $r
+
 $mfts = $mft | select FullName, Name, SequenceNumber, RecordNumber, ParentSequenceNumber, ParentRecordNumber, Directory, Deleted, ModifiedTime, AccessedTime, ChangedTime, BornTime, FNModifiedTime, FNAccessedTime, FNChangedTime, FNBornTime
 $count = $mft.count
 
-if (!(Test-Path -Path 'C:\ProgramData\soalog\mt.txt'))
-{
 for($i = 0; $i -lt $count; $i++)
 {
 $mtime = $mfts[$i].ModifiedTime | Get-Date -Format yyyy-MM-ddTHH:mm:ss+09:00
@@ -74,12 +79,29 @@ $fatime.Dispose()
 $fctime.Dispose()
 $fbtime.Dispose()
 }
+
 }
 
 
 else
 {
-$compare = Get-Content -Path 'C:\ProgramData\soalog\mt.txt'
+
+$start = Get-Content C:\ProgramData\soalog\mtime.txt
+$start = $start.Replace("-",",").Split(",")
+$sy = $start[0]
+$sm = $start[1]
+$sd = $start[2]
+$sh = $start[3]
+$smi = $start[4]
+$ss = $start[5]
+$start = New-Object datetime($sy,$sm,$sd,$sh,$smi,$ss)
+
+$mft = Get-ForensicFileRecord -VolumeName $r | ? {($_.ModifiedTime -gt $start)}
+
+$mfts = $mft | select FullName, Name, SequenceNumber, RecordNumber, ParentSequenceNumber, ParentRecordNumber, Directory, Deleted, ModifiedTime, AccessedTime, ChangedTime, BornTime, FNModifiedTime, FNAccessedTime, FNChangedTime, FNBornTime
+$count = $mft.count
+
+
 for($i = 0; $i -lt $count; $i++)
 {
 $mtime = $mfts[$i].ModifiedTime | Get-Date -Format yyyy-MM-ddTHH:mm:ss+09:00
@@ -92,7 +114,7 @@ $fatime = $mfts[$i].FNAccessedTime | Get-Date -Format yyyy-MM-ddTHH:mm:ss+09:00
 $fctime = $mfts[$i].FNChangedTime | Get-Date -Format yyyy-MM-ddTHH:mm:ss+09:00
 $fbtime = $mfts[$i].FNBornTime | Get-Date -Format yyyy-MM-ddTHH:mm:ss+09:00
 
-$sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" + ([string]($mfts[$i].FullName)).Replace("\","\/") + ":::;" + [string]($mfts[$i].Name) + ":::;" + [string]($mfts[$i].SequenceNumber) + ":::;" + [string]($mfts[$i].RecordNumber) + ":::;" + [string]($mfts[$i].ParentSequenceNumber) + ":::;" + [string]($mfts[$i].ParentRecordNumber) + ":::;" + [string]($mfts[$i].Directory) + ":::;" + [string]($mfts[$i].Deleted) + ":::;" + $mtime + ":::;" + $atime + ":::;" + $ctime + ":::;" + $btime + ":::;" + $fmtime + ":::;" + $fatime + ":::;" + $fctime + ":::;" + $fbtime + ":::;" | select -Unique | Where-Object {$_ -notin $compare} | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmm)_mft.txt -Append -Encoding utf8
+$sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" + ([string]($mfts[$i].FullName)).Replace("\","\/") + ":::;" + [string]($mfts[$i].Name) + ":::;" + [string]($mfts[$i].SequenceNumber) + ":::;" + [string]($mfts[$i].RecordNumber) + ":::;" + [string]($mfts[$i].ParentSequenceNumber) + ":::;" + [string]($mfts[$i].ParentRecordNumber) + ":::;" + [string]($mfts[$i].Directory) + ":::;" + [string]($mfts[$i].Deleted) + ":::;" + $mtime + ":::;" + $atime + ":::;" + $ctime + ":::;" + $btime + ":::;" + $fmtime + ":::;" + $fatime + ":::;" + $fctime + ":::;" + $fbtime + ":::;" | select -Unique | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmm)_mft.txt -Append -Encoding utf8
 
 $i.Dispose()
 $sn.Dispose()
@@ -129,8 +151,13 @@ while (($job.jobstate -eq "Transferring") -or ($job.jobstate -eq "Connecting")) 
 {sleep 20;}
 if ($job.JobState -eq "Transferred")
 {
-get-content $($_.FullName) | Out-File "C:\ProgramData\soalog\mt.txt" -Append -Encoding UTF8
 Remove-Item $($_.FullName)
+$today = get-date -Format yyyy-MM-dd
+$startdate = (Get-Content C:\ProgramData\soalog\mstart.txt).Split("-")[0,1,2] -join "-"
+if ($startdate -eq $today)
+{
+Get-Content -Path "C:\ProgramData\soalog\mstart.txt" | out-file C:\ProgramData\soalog\mtime.txt -encoding utf8
+}
 }
 
 Switch($job.jobstate)
