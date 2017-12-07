@@ -2,12 +2,10 @@ $ErrorActionPreference = 'silentlycontinue'
 
 $sw = [System.Diagnostics.Stopwatch]::startnew()
 
-<#
 if (!(Get-Module -name PowerForensics))
 {
 Install-Module -Name PowerForensics -Force
 }
-#>
 
 $IP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress
 $MAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"} | Where-Object {$_.InterfaceDescription -notmatch "TEST"}).MacAddress
@@ -47,7 +45,7 @@ if (!(Test-Path -Path 'C:\ProgramData\soalog\uj.txt'))
 for($i = 0; $i -lt $count; $i++)
 {
 $timestamp = $ujs[$i].timestamp | Get-Date -Format yyyy-MM-ddTHH:mm:ss+09:00
-$sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" + [string]($ujs[$i].VolumePath) + ":::;" + [string]($ujs[$i].RecordNumber)  + ":::;" + [string]($ujs[$i].FileSequenceNumber) + ":::;" + [string]($ujs[$i].ParentFileRecordNumber) + ":::;" + [string]($ujs[$i].ParentFileSequenceNumber) + ":::;" + [string]($ujs[$i].Usn) + ":::;" + $timestamp + ":::;" + [string]($ujs[$i].Reason) + ":::;" + [string]($ujs[$i].FileName) + ":::;" + [string]($ujs[$i].FileAttributes) + ":::;" | select -Unique | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmm)_usnjrnl.txt -Append -Encoding utf8
+$sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" + ([string]($ujs[$i].VolumePath)).Replace("\\.","") + ":::;" + [string]($ujs[$i].RecordNumber)  + ":::;" + [string]($ujs[$i].FileSequenceNumber) + ":::;" + [string]($ujs[$i].ParentFileRecordNumber) + ":::;" + [string]($ujs[$i].ParentFileSequenceNumber) + ":::;" + [string]($ujs[$i].Usn) + ":::;" + $timestamp + ":::;" + [string]($ujs[$i].Reason) + ":::;" + [string]($ujs[$i].FileName) + ":::;" + [string]($ujs[$i].FileAttributes) + ":::;" | select -Unique | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmm)_usnjrnl.txt -Append -Encoding utf8
 $i.Dispose()
 $sn.Dispose()
 $IP.Dispose()
@@ -62,7 +60,7 @@ $compare = Get-Content -Path 'C:\ProgramData\soalog\uj.txt'
 for($i = 0; $i -lt $count; $i++)
 {
 $timestamp = $ujs[$i].timestamp | Get-Date -Format yyyy-MM-ddTHH:mm:ss+09:00
-$sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" + [string]($ujs[$i].VolumePath) + ":::;" + [string]($ujs[$i].RecordNumber)  + ":::;" + [string]($ujs[$i].FileSequenceNumber) + ":::;" + [string]($ujs[$i].ParentFileRecordNumber) + ":::;" + [string]($ujs[$i].ParentFileSequenceNumber) + ":::;" + [string]($ujs[$i].Usn) + ":::;" + $timestamp + ":::;" + [string]($ujs[$i].Reason) + ":::;" + [string]($ujs[$i].FileName) + ":::;" + [string]($ujs[$i].FileAttributes) + ":::;" | select -Unique | Where-Object {$_ -notin $compare} | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmm)_usnjrnl.txt -Append -Encoding utf8
+$sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" + ([string]($ujs[$i].VolumePath)).Replace("\\.","") + ":::;" + [string]($ujs[$i].RecordNumber)  + ":::;" + [string]($ujs[$i].FileSequenceNumber) + ":::;" + [string]($ujs[$i].ParentFileRecordNumber) + ":::;" + [string]($ujs[$i].ParentFileSequenceNumber) + ":::;" + [string]($ujs[$i].Usn) + ":::;" + $timestamp + ":::;" + [string]($ujs[$i].Reason) + ":::;" + [string]($ujs[$i].FileName) + ":::;" + [string]($ujs[$i].FileAttributes) + ":::;" | select -Unique | Where-Object {$_ -notin $compare} | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmm)_usnjrnl.txt -Append -Encoding utf8
 $i.Dispose()
 $sn.Dispose()
 $IP.Dispose()
