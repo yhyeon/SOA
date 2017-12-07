@@ -1,13 +1,11 @@
-﻿$ErrorActionPreference = 'silentlycontinue'
+$ErrorActionPreference = 'silentlycontinue'
 
 $sw = [System.Diagnostics.Stopwatch]::startnew()
 
-<#
 if (!(Get-Module -name PowerForensics))
 {
 Install-Module -Name PowerForensics -Force
 }
-#>
 
 $IP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress
 $MAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"} | Where-Object {$_.InterfaceDescription -notmatch "TEST"}).MacAddress
@@ -61,7 +59,7 @@ $fatime = $mfts[$i].FNAccessedTime | Get-Date -Format yyyy-MM-ddTHH:mm:ss+09:00
 $fctime = $mfts[$i].FNChangedTime | Get-Date -Format yyyy-MM-ddTHH:mm:ss+09:00
 $fbtime = $mfts[$i].FNBornTime | Get-Date -Format yyyy-MM-ddTHH:mm:ss+09:00
 
-$sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" + [string]($mfts[$i].FullName) + ":::;" + [string]($mfts[$i].Name) + ":::;" + [string]($mfts[$i].SequenceNumber) + ":::;" + [string]($mfts[$i].RecordNumber) + ":::;" + [string]($mfts[$i].ParentSequenceNumber) + ":::;" + [string]($mfts[$i].ParentRecordNumber) + ":::;" + [string]($mfts[$i].Directory) + ":::;" + [string]($mfts[$i].Deleted) + ":::;" + $mtime + ":::;" + $atime + ":::;" + $ctime + ":::;" + $btime + ":::;" + $fmtime + ":::;" + $fatime + ":::;" + $fctime + ":::;" + $fbtime + ":::;" | select -Unique | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmm)_mft.txt -Append -Encoding utf8
+$sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" + ([string]($mfts[$i].FullName)).Replace("\","\/") + ":::;" + [string]($mfts[$i].Name) + ":::;" + [string]($mfts[$i].SequenceNumber) + ":::;" + [string]($mfts[$i].RecordNumber) + ":::;" + [string]($mfts[$i].ParentSequenceNumber) + ":::;" + [string]($mfts[$i].ParentRecordNumber) + ":::;" + [string]($mfts[$i].Directory) + ":::;" + [string]($mfts[$i].Deleted) + ":::;" + $mtime + ":::;" + $atime + ":::;" + $ctime + ":::;" + $btime + ":::;" + $fmtime + ":::;" + $fatime + ":::;" + $fctime + ":::;" + $fbtime + ":::;" | select -Unique | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmm)_mft.txt -Append -Encoding utf8
 
 $i.Dispose()
 $sn.Dispose()
@@ -94,7 +92,7 @@ $fatime = $mfts[$i].FNAccessedTime | Get-Date -Format yyyy-MM-ddTHH:mm:ss+09:00
 $fctime = $mfts[$i].FNChangedTime | Get-Date -Format yyyy-MM-ddTHH:mm:ss+09:00
 $fbtime = $mfts[$i].FNBornTime | Get-Date -Format yyyy-MM-ddTHH:mm:ss+09:00
 
-$sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" + [string]($mfts[$i].FullName) + ":::;" + [string]($mfts[$i].Name) + ":::;" + [string]($mfts[$i].SequenceNumber) + ":::;" + [string]($mfts[$i].RecordNumber) + ":::;" + [string]($mfts[$i].ParentSequenceNumber) + ":::;" + [string]($mfts[$i].ParentRecordNumber) + ":::;" + [string]($mfts[$i].Directory) + ":::;" + [string]($mfts[$i].Deleted) + ":::;" + $mtime + ":::;" + $atime + ":::;" + $ctime + ":::;" + $btime + ":::;" + $fmtime + ":::;" + $fatime + ":::;" + $fctime + ":::;" + $fbtime + ":::;" | select -Unique | Where-Object {$_ -notin $compare} | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmm)_mft.txt -Append -Encoding utf8
+$sn + ":::;" + $env:userdomain+ ":::;" + $env:COMPUTERNAME + ":::;" + $IP + ":::;" + $MAC + ":::;" + $env:username + ":::;" + ([string]($mfts[$i].FullName)).Replace("\","\/") + ":::;" + [string]($mfts[$i].Name) + ":::;" + [string]($mfts[$i].SequenceNumber) + ":::;" + [string]($mfts[$i].RecordNumber) + ":::;" + [string]($mfts[$i].ParentSequenceNumber) + ":::;" + [string]($mfts[$i].ParentRecordNumber) + ":::;" + [string]($mfts[$i].Directory) + ":::;" + [string]($mfts[$i].Deleted) + ":::;" + $mtime + ":::;" + $atime + ":::;" + $ctime + ":::;" + $btime + ":::;" + $fmtime + ":::;" + $fatime + ":::;" + $fctime + ":::;" + $fbtime + ":::;" | select -Unique | Where-Object {$_ -notin $compare} | Out-File C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmm)_mft.txt -Append -Encoding utf8
 
 $i.Dispose()
 $sn.Dispose()
