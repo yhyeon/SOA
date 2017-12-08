@@ -107,8 +107,13 @@ while (($job.jobstate -eq "Transferring") -or ($job.jobstate -eq "Connecting")) 
 {sleep 20;}
 if ($job.JobState -eq "Transferred")
 {
-get-content $($_.FullName) | Out-File "C:\ProgramData\soalog\uj.txt" -Append -Encoding UTF8
 Remove-Item $($_.FullName)
+$today = get-date -Format yyyy-MM-dd
+$startdate = (Get-Content C:\ProgramData\soalog\mstart.txt).Split("-")[0,1,2] -join "-"
+if ($startdate -eq $today)
+{
+Get-Content -Path "C:\ProgramData\soalog\mstart.txt" | out-file C:\ProgramData\soalog\mtime.txt -encoding utf8
+}
 }
 
 Switch($job.jobstate)
