@@ -84,7 +84,6 @@ $i.Dispose()
 $sn.Dispose()
 $IP.Dispose()
 $MAC.Dispose()
-$compare.Dispose()
 $timestamp.Dispose()
 }
 }
