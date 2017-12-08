@@ -2,10 +2,12 @@ $ErrorActionPreference = 'silentlycontinue'
 
 $sw = [System.Diagnostics.Stopwatch]::startnew()
 
+<#
 if (!(Get-Module -name PowerForensics))
 {
 Install-Module -Name PowerForensics -Force
 }
+#>
 
 $IP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress
 $MAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"} | Where-Object {$_.InterfaceDescription -notmatch "TEST"}).MacAddress
@@ -36,12 +38,15 @@ $sn = $sn
 
 
 Import-Module PowerForensics
+
+get-date -Format yyyy-MM-dd-HH-mm-ss | out-file C:\ProgramData\soalog\ustart.txt -Encoding utf8
+
+if (!(Test-Path -Path 'C:\ProgramData\soalog\utime.txt'))
+{
 $uj = (Get-ForensicUsnJrnl -VolumeName C:)
 $ujs = $uj | select volumepath, recordnumber, filesequencenumber, parentfilerecordnumber, parentfilesequencenumber, usn, timestamp, reason, filename, fileattributes
 $count = $uj.Count
 
-if (!(Test-Path -Path 'C:\ProgramData\soalog\uj.txt'))
-{
 for($i = 0; $i -lt $count; $i++)
 {
 $timestamp = $ujs[$i].timestamp | Get-Date -Format yyyy-MM-ddTHH:mm:ss+09:00
@@ -56,7 +61,21 @@ $timestamp.Dispose()
 
 else
 {
-$compare = Get-Content -Path 'C:\ProgramData\soalog\uj.txt'
+
+$start = Get-Content C:\ProgramData\soalog\utime.txt
+$start = $start.Replace("-",",").Split(",")
+$sy = $start[0]
+$sm = $start[1]
+$sd = $start[2]
+$sh = $start[3]
+$smi = $start[4]
+$ss = $start[5]
+$start = New-Object datetime($sy,$sm,$sd,$sh,$smi,$ss)
+
+$uj = Get-ForensicUsnJrnl -VolumeName C: | ? {($_.TimeStamp -gt $start)}
+$ujs = $uj | select volumepath, recordnumber, filesequencenumber, parentfilerecordnumber, parentfilesequencenumber, usn, timestamp, reason, filename, fileattributes
+$count = $uj.Count
+
 for($i = 0; $i -lt $count; $i++)
 {
 $timestamp = $ujs[$i].timestamp | Get-Date -Format yyyy-MM-ddTHH:mm:ss+09:00
