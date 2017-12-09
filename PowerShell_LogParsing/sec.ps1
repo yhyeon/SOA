@@ -114,13 +114,13 @@ $logonofflog = [xml] $_.toxml()
 $PSObject = New-Object PSObject
 $datetime = $logonofflog.Event.System.TimeCreated.SystemTime.Split(".")[0]+"+09:00"
 $eventid = $logonofflog.Event.System.EventID
-$logonoff = "" | select Computer, SubjectUserSid, SubjectUserName, SubjectDomainName, SubjectLogonId, TargetUserName, TargetDomainName, TargetUserSid, TargetLogonId, Status, LogonType
+$computer = $logonofflog.Event.System.Computer
+$logonoff = "" | select SubjectUserSid, SubjectUserName, SubjectDomainName, SubjectLogonId, TargetUserName, TargetDomainName, TargetUserSid, TargetLogonId, Status, LogonType
 
 $logonofflog.Event.EventData.Data | foreach {
             $PSObject | Add-Member NoteProperty $_.Name $_."#text"
 }        
              
-        $logonoff.Computer = $PSObject.Computer
         $logonoff.SubjectUserSid = $PSObject.SubjectUserSid
         $logonoff.SubjectUserName = $PSObject.SubjectUserName
         $logonoff.SubjectDomainName = $PSObject.SubjectDomainName
@@ -136,35 +136,35 @@ $logonofflog.Event.EventData.Data | foreach {
  if (($eventid -eq "4624") -or ($eventid -eq "528") -or ($eventid -eq "540"))
 {
 $log = 'An account was successfully logged on'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $log.Dispose()
 }
 
 elseif (($eventid -eq "4648") -or ($eventid -eq "552"))
 {
 $log = 'A logon was attempted using explicit credentials'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $log.Dispose()
 }
 
 elseif (($eventid -eq "4634") -or ($eventid -eq "538"))
 {
 $log = 'An account was logged off'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" +  ":::;" +  ":::;" +  ":::;" +  ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + $logonoff.TargetLogonId+ ":::;" + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" +  ":::;" +  ":::;" +  ":::;" +  ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + $logonoff.TargetLogonId+ ":::;" + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $log.Dispose()
 }
 
 elseif (($eventid -eq "4647") -or ($eventid -eq "551"))
 {
 $log = 'User initiated logoff'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + ":::;" + ":::;" + ":::;" + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + ":::;" + ":::;" + ":::;" + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $log.Dispose()
 }
 
 elseif (($eventid -eq "4608") -or ($eventid -eq "512"))
 {
 $log = 'Windows is starting up'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + ":::;" + ":::;" +  ":::;" +  ":::;" + ":::;" +  ":::;" +  ":::;" + ":::;" + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + ":::;" + ":::;" +  ":::;" +  ":::;" + ":::;" +  ":::;" +  ":::;" + ":::;" + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $log.Dispose()
 }
 
@@ -175,121 +175,121 @@ $log = 'An account failed to log on'
 if($logonoff.Status -eq '0XC000005E')
 {
 $FailureReason = 'Currently no logon servers available'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 elseif($logonoff.Status -eq '0xC0000064')
 {
 $FailureReason = 'User logon with misspelled or bad user account '
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 elseif($logonoff.Status -eq '0xC000006A')
 {
 $FailureReason = 'User logon with misspelled or bad password'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 elseif($logonoff.Status -eq '0XC000006D')
 {
 $FailureReason = 'Either due to a bad username or authentication information'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 elseif($logonoff.Status -eq '0XC000006E')
 {
 $FailureReason = 'Unknown user name or bad password'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 elseif($logonoff.Status -eq '0xC000006F')
 {
 $FailureReason = 'User logon outside authorized hours'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 elseif($logonoff.Status -eq '0xC0000070')
 {
 $FailureReason = 'User logon from unauthroized workstation'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 elseif($logonoff.Status -eq '0xC0000071')
 {
 $FailureReason = 'User logon with expired password'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 elseif($logonoff.Status -eq '0xC0000072')
 {
 $FailureReason = 'User logon to account disabled by administrator'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 elseif($logonoff.Status -eq '0xC00000DC')
 {
 $FailureReason = 'Sam Server was in the wrong state to perform the desired operation'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;"  | out-file C:\ProgramData\soalog\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;"  | out-file C:\ProgramData\soalog\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 elseif($logonoff.Status -eq '0xC0000133')
 {
 $FailureReason = 'Clocks between DC and other computer too far out of sync'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason  + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason  + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${env:COMPUTERNAME}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 elseif($logonoff.Status -eq '0xC000015B')
 {
 $FailureReason = 'The user has not been granted the requested logon right at this machine'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 elseif($logonoff.Status -eq '0xC000018C')
 {
 $FailureReason = 'Due to the trust relationship between the primary domain and the trusted domain failed'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 elseif($logonoff.Status -eq '0xC0000192')
 {
 $FailureReason = 'Netlogon service was not started'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 elseif($logonoff.Status -eq '0xC0000193')
 {
 $FailureReason = 'User logon with expired account'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 elseif($logonoff.Status -eq '0xC0000224')
 {
 $FailureReason = 'User is required to change password at next logon'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $time + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $time + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 elseif($logonoff.Status -eq '0xC0000225')
 {
 $FailureReason = 'Evidently a bug in Windows and not a risk'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 elseif($logonoff.Status -eq '0xC0000234')
 {
 $FailureReason = 'User logon with account locked'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 elseif($logonoff.Status -eq '0xC00002EE')
 {
 $FailureReason = 'An Error occured during Logon'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 elseif($logonoff.Status -eq '0xC0000413')
 {
 $FailureReason = 'The specified account is not allowed to authenticate to this machine under the protection of authentication firewall'
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $logonoff.Computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + $log + ":::;" + $eventid + ":::;" + $datetime + ":::;" + $computer + ":::;" + $logonoff.SubjectUserSid + ":::;" + $logonoff.SubjectUserName + ":::;" + $logonoff.SubjectDomainName + ":::;" + $logonoff.SubjectLogonId + ":::;" + $logonoff.TargetUserSid + ":::;" + $logonoff.TargetUserName + ":::;" + $logonoff.TargetDomainName + ":::;" + ":::;" + $FailureReason + ":::;" + $logonoff.LogonType + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_logon.txt -Append -encoding utf8
 $FailureReason.Dispose()
 }
 
@@ -366,7 +366,7 @@ $datetime = $oalog.Event.System.TimeCreated.SystemTime.Split(".")[0]+"+09:00"
 $eventid = $oalog.Event.System.EventID
 $computer = $oalog.Event.System.Computer
 
-$oa = "" | select ObjectType, ObjectServer, ObjectName, Computer, SubjectUserSid, SubjectUserName, SubjectLogonId, SubjectDomainName, AccessMask, AccessList, HandleID, ProcessName, AdditionalInfo2
+$oa = "" | select ObjectType, ObjectServer, ObjectName, SubjectUserSid, SubjectUserName, SubjectLogonId, SubjectDomainName, AccessMask, AccessList, HandleID, ProcessName, AdditionalInfo2
 $oalog.Event.EventData.Data | foreach {
 $PSObject | Add-Member NoteProperty $_.Name $_."#text"
 }
