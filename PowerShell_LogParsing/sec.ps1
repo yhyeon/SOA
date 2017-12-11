@@ -112,7 +112,8 @@ $sn = $sn
 get-winevent -FilterHashtable @{path ='C:\ProgramData\soalog\*.evtx'; ID = 4624, 528, 540, 4648, 552, 4634, 538, 4647, 551, 4608, 512, 4625, 529, 530, 531, 532, 533, 534, 536, 537, 539} | foreach {
 $logonofflog = [xml] $_.toxml()
 $PSObject = New-Object PSObject
-$datetime = $logonofflog.Event.System.TimeCreated.SystemTime.Split(".")[0]+"+09:00"
+$datetime = ($logonofflog.Event.System.TimeCreated.SystemTime.Split(".")[0] | Get-Date).AddHours(9)
+$datetime = $datetime | Get-Date -Format yyyy-MM-ddTHH:mm:ss+09:00
 $eventid = $logonofflog.Event.System.EventID
 $computer = $logonofflog.Event.System.Computer
 $logonoff = "" | select SubjectUserSid, SubjectUserName, SubjectDomainName, SubjectLogonId, TargetUserName, TargetDomainName, TargetUserSid, TargetLogonId, Status, LogonType
@@ -362,7 +363,8 @@ $eprocess = "C:\/Windows\/System32\/svchost.exe", "C:\/Program Files (x86)\/Goog
 get-winevent -FilterHashtable @{path = 'C:\ProgramData\soalog\*.evtx'; ID = 4656, 4659, 4660, 4662, 4663; data=$env:username} | foreach {
 $oalog = [xml] $_.toxml()
 $PSObject = New-Object PSObject
-$datetime = $oalog.Event.System.TimeCreated.SystemTime.Split(".")[0]+"+09:00"
+$datetime = ($oalog.Event.System.TimeCreated.SystemTime.Split(".")[0] | Get-Date).AddHours(9)
+$datetime = $datetime | Get-Date -Format yyyy-MM-ddTHH:mm:ss+09:00
 $eventid = $oalog.Event.System.EventID
 $computer = $oalog.Event.System.Computer
 
