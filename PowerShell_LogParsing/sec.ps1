@@ -390,6 +390,7 @@ $PSObject | Add-Member NoteProperty $_.Name $_."#text"
 
         $root = $oa.ObjectName.Split(":")[0]
         $file = $oa.ObjectName.Split("\")[-1]
+        $ps = $oa.ProcessName.split("/")[-1]
 
          if ($oa.ObjectType -eq "File")
         {
@@ -416,56 +417,56 @@ $PSObject | Add-Member NoteProperty $_.Name $_."#text"
             
             if($oa.AccessMask -eq "0x1")
             {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" +"ReadData (or ListDirectory)" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" +"ReadData (or ListDirectory)" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x2")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "WriteData (or AddFile)" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "WriteData (or AddFile)" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x4")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "AppendData (or AddSubdirectory)" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "AppendData (or AddSubdirectory)" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x40")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "DeleteChild" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "DeleteChild" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x80")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "ReadAttributes" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "ReadAttributes" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x100")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "WriteAttributes" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "WriteAttributes" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x10000")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "DELETE" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "DELETE" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x20000")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "READ_CONTROL" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "READ_CONTROL" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x20")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "Execute (or Traverse)" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "Execute (or Traverse)" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 
 elseif($oa.AccessMask -eq "0x100000")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "Synchronize" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "Synchronize" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x200000")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "ReadControl" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "ReadControl" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x400000")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "WriteDAC" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "WriteDAC" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x800000")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "WriteOwner" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "WriteOwner" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $next + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 }
 
@@ -475,56 +476,56 @@ $ext = "."+$file.split(".")[-1]
 
 if($oa.AccessMask -eq "0x1")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "ReadData (or ListDirectory)" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "ReadData (or ListDirectory)" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x2")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "WriteData (or AddFile)" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "WriteData (or AddFile)" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x4")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "AppendData (or AddSubdirectory)" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "AppendData (or AddSubdirectory)" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x40")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "DeleteChild" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "DeleteChild" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x80")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "ReadAttributes" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "ReadAttributes" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x100")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "WriteAttributes" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "WriteAttributes" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x10000")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "DELETE" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "DELETE" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x20000")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "READ_CONTROL" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "READ_CONTROL" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 
 elseif($oa.AccessMask -eq "0x20")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "FileExecute (or FileTraverse)" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "FileExecute (or FileTraverse)" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x100000")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "Synchronize" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "Synchronize" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x200000")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "ReadControl" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "ReadControl" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x400000")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "WriteDAC" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "WriteDAC" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 elseif($oa.AccessMask -eq "0x800000")
 {
-$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "WriteOwner" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
+$sn + ":::;" + $ip + ":::;" + $MAC + ":::;" + "WriteOwner" + ":::;" + $eventid + ":::;" + $computer + ":::;" + $oa.SubjectUserName + ":::;" + $datetime + ":::;" + $oa.SubjectUserSid + ":::;" + $oa.SubjectLogonID + ":::;" + $oa.SubjectDomainName + ":::;" + $oa.ObjectServer + ":::;" + $root + ":::;" + $directory + ":::;" + $file + ":::;" + $ext + ":::;" + $oa.ProcessName + ":::;" + $ps + ":::;" | out-file C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHH)_oa.txt -Append -encoding utf8
 }
 }
 
@@ -596,7 +597,7 @@ $src = "C:\ProgramData\soalog\*_logonoff.txt", "C:\ProgramData\soalog\*_oa_mtp.t
 #$src = "C:\ProgramData\soalog\*_logonoff.txt", "C:\ProgramData\soalog\*_oa_mtp.txt", "C:\ProgramData\soalog\*_oa_filtered.txt"
 Get-ChildItem -path $src |
 foreach {
-$dst = "http://cdisc.co.kr:1024/soa/upload/$($_.name)" # server directory with write permissions
+$dst = "https://cdisc.co.kr/soa/upload/$($_.name)" # server directory with write permissions
 $job = Start-BitsTransfer -source $($_.FullName) -Destination $dst -Credential $cred -TransferType Upload -Asynchronous
 while (($job.jobstate -eq "Transferring") -or ($job.jobstate -eq "Connecting")) `
 {sleep 20;}
