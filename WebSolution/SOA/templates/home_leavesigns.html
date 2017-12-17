@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+
+{% block content %}
+    <nav class="dash-menu">
+        <ul>
+            <li><a href="{% url 'home' 'outact' %}">유출 행위</a></li>
+            <li><a href="{% url 'home' 'outsigns' %}">유출 징후</a></li>
+            <li><a href="{% url 'home' 'leavesigns' %}">퇴사 징후</a></li>
+        </ul>
+    </nav>
+
+    <div class="dashboard">
+        <iframe src="http://cdisc.co.kr:5601/app/kibana#/dashboard/e0ef4740-e2c2-11e7-9865-dd0c870c9b6b?embed=true&_g=(refreshInterval:(display:Off,pause:!f,value:0),time:(from:'Thu+Jun+29+2017+07:18:18+GMT%2B0900',mode:absolute,to:'Wed+Nov+01+2017+13:26:45+GMT%2B0900'))&_a=(description:'',filters:!(),fullScreenMode:!f,options:(darkTheme:!f),panels:!((col:1,id:a490df30-df8d-11e7-9eed-275794a89f04,panelIndex:1,row:1,size_x:6,size_y:3,type:visualization),(col:1,id:'5a65d320-e069-11e7-9eed-275794a89f04',panelIndex:5,row:4,size_x:6,size_y:3,type:visualization),(col:7,id:'66232ab0-e130-11e7-9eed-275794a89f04',panelIndex:7,row:4,size_x:6,size_y:6,type:visualization),(col:7,id:'75170d40-e1d8-11e7-9eed-275794a89f04',panelIndex:8,row:1,size_x:6,size_y:3,type:visualization),(col:1,id:d8bce820-e06f-11e7-9eed-275794a89f04,panelIndex:9,row:7,size_x:6,size_y:3,type:visualization)),query:(language:lucene,query:''),timeRestore:!f,title:'%ED%87%B4%EC%82%AC+%EC%A7%95%ED%9B%84',uiState:(P-7:(vis:(params:(sort:(columnIndex:!n,direction:!n))))),viewMode:view)"></iframe>
+    </div>
+{% endblock %}

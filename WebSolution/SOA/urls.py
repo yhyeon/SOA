@@ -4,7 +4,8 @@ from . import views
 urlpatterns = [
     url(r'^login/', views.user_login, name='login'),
     url(r'^logout/', views.user_logout, name='logout'),
-    url(r'^home/', views.home, name='home'),
+
+    url(r'^home/(?P<dash_id>\w+)/', views.home, name='home'),
 
     url(r'^logs/beginning/file_log/', views.b_file_log, name='b_file_log'),
     url(r'^logs/beginning/driver/', views.b_driver, name='b_driver'),

@@ -751,3 +751,33 @@ Sidebar
   width: 100%;
   height: 690px;
 }
+
+.dash-menu {
+    width: 100%;
+}
+
+.dash-menu a {
+    text-decoration:none;
+    color:#000000;
+}
+
+.dash-menu a:hover {
+    color:#ff0000;
+}
+
+.dash-menu ul {
+    padding-top: 10px;
+    padding-left: 10px;
+    margin-bottom: 10px;
+}
+
+.dash-menu ul li {
+    display:inline;
+    border-left: 1px solid #999;
+    font: bold 12px Dotum;
+    padding: 0 10px;
+}
+
+.dash-menu li:first-child {
+    border-left: none !important;
+}

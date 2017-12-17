@@ -29,8 +29,8 @@ class Detection:
         self.extension_pattern = re.compile("\.txt$|\.pdf$|\.doc$|\.docx$|\.ppt$|\.pptx$|\.xls$|\.xlsx$|\.hwp$")
 
         # Set users for gmail
-        self.sender = "seojuni.kim@gmail.com" # Set Sender Gmail ID
-        self.sender_pw = "dkffjqbdfjqm04!!" # Set Sender Gmail Password
+        self.sender = "" # Set Sender Gmail ID
+        self.sender_pw = "" # Set Sender Gmail Password
         self.recipient = ""
 
         # Set subject and text

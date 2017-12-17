@@ -15,7 +15,7 @@
 </head>
 <body>
     <header class="main-header">
-		<a href="{% url 'home' %}" class="logo"><img src="{% static 'img/logo_1.png' %}" alt="Logo"></a>
+		<a href="{% url 'home' 'outact' %}" class="logo"><img src="{% static 'img/logo_1.png' %}" alt="Logo"></a>
 
         <!--
 		<div class="cd-search is-hidden">
@@ -25,7 +25,7 @@
 		</div>
         --><!-- cd-search -->
 
-		<a href="{% url 'home' %}" class="nav-trigger">Menu<span></span></a>
+		<a href="{% url 'home' 'outact' %}" class="nav-trigger">Menu<span></span></a>
 
 		<nav class="nav">
 			<ul class="top-nav">
@@ -51,7 +51,7 @@
 				<li class="label">Main</li>
 
 				<li class="has-children dashboard">
-					<a href="{% url 'home' %}">대시보드</a>
+					<a href="{% url 'home' 'outact' %}">대시보드</a>
 				</li>
             </ul>
 

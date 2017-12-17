@@ -101,7 +101,7 @@ def user_login(request):
                     login(request, user)
                     request.session['username'] = cd['username']
 
-                    return redirect('home')
+                    return redirect('/home/outact/')
                 else:
                     return HttpResponse('Disabled account')
             else:
@@ -115,9 +115,14 @@ def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/login/')
 
-def home(request):
+def home(request, dash_id):
     if request.user.is_authenticated():
-        return render(request, 'home.html', {'username':request.session['username']})
+        if dash_id == 'outact':
+            return render(request, 'home_outact.html', {'username':request.session['username']})
+        elif dash_id == 'outsigns':
+            return render(request, 'home_outsigns.html', {'username': request.session['username']})
+        elif dash_id == 'leavesigns':
+            return render(request, 'home_leavesigns.html', {'username': request.session['username']})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -1065,7 +1070,7 @@ def process(request):
 
         else:
             totalCnt = UactivReportSaves.objects.filter(violation = None).count()
-            dataList = UactivReportSaves.objects.filter(violation = None)[start_pos:end_pos]
+            dataList = UactivReportSaves.objects.filter(violation = None).order_by('-id')[start_pos:end_pos]
 
             totalPageList, prev, next = paging(totalCnt, currentPage)
 
@@ -1176,7 +1181,7 @@ def report(request):
 
         else:
             totalCnt = WeekReportSaves.objects.all().count()
-            dataList = WeekReportSaves.objects.all()[start_pos:end_pos]
+            dataList = WeekReportSaves.objects.all().order_by('-id')[start_pos:end_pos]
 
             totalPageList, prev, next = paging(totalCnt, currentPage)
 
