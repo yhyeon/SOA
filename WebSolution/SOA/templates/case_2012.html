@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/guideline.css' %}">{% endblock %}
+{% block js %}<script src={% static 'js/jquery-2.1.4.js' %}></script>{% endblock %}
+
+{% block content %}
+    <nav class="table-menu">
+        <ul>
+            <li><a href="{% url 'guideline_case' '2013' %}">2013</a></li>
+            <li><a href="{% url 'guideline_case' '2012' %}">2012</a></li>
+            <li><a href="{% url 'guideline_case' '2011' %}">2011</a></li>
+            <li><a href="{% url 'guideline_case' '2010' %}">2010</a></li>
+            <li><a href="{% url 'guideline_case' '2009' %}">2009</a></li>
+            <li><a href="{% url 'guideline_case' '2008' %}">2008</a></li>
+            <li><a href="{% url 'guideline_case' '2007' %}">2007</a></li>
+            <li><a href="{% url 'guideline_case' '2006' %}">2006</a></li>
+            <li><a href="{% url 'guideline_case' '2005' %}">2005</a></li>
+            <li><a href="{% url 'guideline_case' '2004' %}">2004</a></li>
+            <li><a href="{% url 'guideline_case' '2003' %}">2003</a></li>
+        </ul>
+    </nav>
+
+    <hr class="style3">
+
+    <center>
+    <div class="case-title">
+        <span>2012년 10월</span> 세계 최대용량 빌딩용 첨단 에어콘 핵심기술 중국 유출 기도 사건
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>D社 기술마케팅부서 K부장과 P팀장은 2009.06부터 기술개발을 담당하며 연구비 공금횡령사실이 자체 감사에서 적발되자</li>
+            <li>회사 PC에 접속, 연구결과물을 노트북에 전량 복사한 후 연구자료가 담긴 파일박스와 함께 불법 반툴 한데 이어 중국으로 기술유출을 기도하다 적발</li>
+        </ul>
+        <center><img src="{% static 'img/case/2012_10.png' %}"></center>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2012년 06월</span> 태양전지 생산장비 제조기술 해외 유출 사건
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>A社의 부사장 K모씨는 2011.06 개인노트북 등에 기밀자료 무단저장사실 적발로 징계받은 이후, 同社 임직원 3명을 포섭, 설계도면 등 핵심자료 지속수집</li>
+            <li>또한, 협력업체(B社) L모 대표 등과 11월 ~ 12월 中 H社 소주 LCD사업장 방문, 필요한 기술을 지원키로 합의 후 귀국하였으며 2012.03 중 임직원 3명과 동반 퇴사 후 중국 출국을 기도중인 사실 적발</li>
+        </ul>
+        <center><img src="{% static 'img/case/2012_06.png' %}"></center>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2012년 05월</span> 선박 부품 설계기술 중국 유출 사건
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>국가 R&D자금 수십억원을 투입하여 개발한 H社의 선박부품 설계기술을 전 설계부장 최모씨 등 3명이 퇴직하면서 관련기술 일체의 외장형 하드에 담아 유출한 후, 동종업체를 설립하고 관련 기술을 중국에 불법 유출하다 적발</li>
+        </ul>
+        <center><img src="{% static 'img/case/2012_05.png' %}"></center>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2012년 04월</span> 차세대 디스플레이기술 해외 유출 사건
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>디스플레이패널 검사장비 업체 이스라엘업계기업 O社의 L부장 등 6명은 국내 디스플레이업체 A社와 B社에 납품한 '광학검사 장비' 운용ㆍ기술지원 등을 위해 파견 근무하면서</li>
+            <li>자체 제작한 신용카드형 USB메모리 또는 신발ㆍ벨트 등에 은닉해 반입한 USB메모리를 이용, 55인치 AMOLED패널 극비자료와 몰래 촬영한 다수의 국가핵심기술을 저장, 불법 유출 상용화에 성공한 대용 OLED TV기술을 海外 유출 중인 사실 적발ㆍ유출 자료를 이스라엘 소재 本社 서버로 전송, 해외경쟁사와 공유토록 하는 등 A社와 B社가 막대한 개발비를 투입, 세계최초 상용화에 성공한 대용 OLED TV기술을 海外 유출 중인 사실 적발</li>
+        </ul>
+        <center><img src="{% static 'img/case/2012_04.png' %}"></center>
+    </div>
+    </center>
+
+    <hr class="style3">
+
+    <div class="whence">
+        <img src="{% static 'img/whence_logo.png' %}">
+    </div>
+
+    <div class="move_top">
+        <a id="MOVE_TOP_BTN" href="#"><img src="{% static 'img/Top-Button.png' %}" width="50" height="50"></a>
+    </div>
+
+    <script>
+    $(function() {
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                $('.move_top').fadeIn();
+            } else {
+                $('.move_top').fadeOut();
+            }
+        });
+
+        $("#MOVE_TOP_BTN").click(function() {
+            $('html, body').animate({
+                scrollTop : 0
+            }, 400);
+            return false;
+        });
+    });
+    </script>
+{% endblock %}

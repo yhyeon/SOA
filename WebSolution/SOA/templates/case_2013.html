@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/guideline.css' %}">{% endblock %}
+{% block js %}<script src={% static 'js/jquery-2.1.4.js' %}></script>{% endblock %}
+
+{% block content %}
+    <nav class="table-menu">
+        <ul>
+            <li><a href="{% url 'guideline_case' '2013' %}">2013</a></li>
+            <li><a href="{% url 'guideline_case' '2012' %}">2012</a></li>
+            <li><a href="{% url 'guideline_case' '2011' %}">2011</a></li>
+            <li><a href="{% url 'guideline_case' '2010' %}">2010</a></li>
+            <li><a href="{% url 'guideline_case' '2009' %}">2009</a></li>
+            <li><a href="{% url 'guideline_case' '2008' %}">2008</a></li>
+            <li><a href="{% url 'guideline_case' '2007' %}">2007</a></li>
+            <li><a href="{% url 'guideline_case' '2006' %}">2006</a></li>
+            <li><a href="{% url 'guideline_case' '2005' %}">2005</a></li>
+            <li><a href="{% url 'guideline_case' '2004' %}">2004</a></li>
+            <li><a href="{% url 'guideline_case' '2003' %}">2003</a></li>
+        </ul>
+    </nav>
+
+    <hr class="style3">
+
+    <center>
+    <div class="case-title">
+        <span>2013년 08월</span> 전략물자 ㆍ 기술 해외 불법 유출 사건
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>A社의 K모 대표는 국내 방산업체 출신 기술자들과 공모, 미얀마에 수백억 원대 규모의 포탄 제조 설비 및 기술(전략물자 기술)을 불법 유출하다 적발</li>
+            <li>검찰은 同대표를 구속 기소하고 방산업체 출신 직원 2명 및 회사를 불구속 기소</li>
+        </ul>
+        <center><img src="{% static 'img/case/2013_08.png' %}"></center>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2013년 04월</span> AM-OLED 핵심기술 중국 유출 기도 사건
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>중국인 S모씨는 국내 OLED 핵심 공정기술 보유업체 B社에 계획적으로 입사, 국책과제로 개발한 기술을 퇴직 직전 개인 이메일 ㆍ 인터넷 메신저 ㆍ USB를 활용하여 유출</li>
+            <li>또한 디스플레이 장비 개발업체 C社에서 근무하는 내국인 남편을 통해 차세대 군사용 디스플레이 기술을 유출, 중국 K社에 유출 기도하다 적발</li>
+        </ul>
+    <center><img src="{% static 'img/case/2013_04.png' %}"></center>
+    </div>
+    </center>
+
+    <hr class="style3">
+
+    <div class="whence">
+        <img src="{% static 'img/whence_logo.png' %}">
+    </div>
+
+    <div class="move_top">
+        <a id="MOVE_TOP_BTN" href="#"><img src="{% static 'img/Top-Button.png' %}" width="50" height="50"></a>
+    </div>
+
+    <script>
+    $(function() {
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                $('.move_top').fadeIn();
+            } else {
+                $('.move_top').fadeOut();
+            }
+        });
+
+        $("#MOVE_TOP_BTN").click(function() {
+            $('html, body').animate({
+                scrollTop : 0
+            }, 400);
+            return false;
+        });
+    });
+    </script>
+{% endblock %}

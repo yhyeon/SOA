@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'SOA.apps.SoaConfig',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -111,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
@@ -127,3 +128,6 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = '/home/'
 
+RECAPTCHA_PUBLIC_KEY = '6Lf-cDoUAAAAAM8ctMmJBTAtZrcEJ15C1D5ceWuc'
+RECAPTCHA_PRIVATE_KEY = '6Lf-cDoUAAAAAL6FyNJuyfB25MglWFYlqnXE5hb2'
+NOCAPTCHA = True

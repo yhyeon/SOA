@@ -93,6 +93,15 @@ hr.style3{
     color: #D2E2FF;
 }
 
+.password_ch span {
+    background-color: #de4f6e;
+    color: #000000;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+
+}
+
 .account_create{
     max-width:100% !important;
     background:#fff !important;
@@ -168,6 +177,21 @@ hr.style3{
     border-bottom: 3px solid #17364c;
     border-radius: 3px;
     color: #D2E2FF;
+}
+
+.account_create span {
+    background-color: #de4f6e;
+    color: #000000;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+
+}
+
+.captcha input[type="text"] {
+    width: 153px;
+    height: 26.8px;
+    display: inline;
 }
 
 .account_delete{
@@ -247,4 +271,27 @@ hr.style3{
     border-bottom: 3px solid #17364c;
     border-radius: 3px;
     color: #D2E2FF;
+}
+
+.commu_title {
+    width: 100%;
+    margin-top: 20px;
+    margin-left: 50px;
+    margin-bottom: 20px;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: #000000;
+}
+
+.commu_title>a:link, a:visited, a:hover, a:active{
+    text-decoration: none;
+}
+
+.commu_content ul {
+    padding-left: 50px;
+    margin-bottom: 20px;
+    line-height: 1.5em;
+    list-style-type: circle;
+    text-align: left;
 }

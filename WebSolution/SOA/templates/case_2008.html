@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/guideline.css' %}">{% endblock %}
+{% block js %}<script src={% static 'js/jquery-2.1.4.js' %}></script>{% endblock %}
+
+{% block content %}
+    <nav class="table-menu">
+        <ul>
+            <li><a href="{% url 'guideline_case' '2013' %}">2013</a></li>
+            <li><a href="{% url 'guideline_case' '2012' %}">2012</a></li>
+            <li><a href="{% url 'guideline_case' '2011' %}">2011</a></li>
+            <li><a href="{% url 'guideline_case' '2010' %}">2010</a></li>
+            <li><a href="{% url 'guideline_case' '2009' %}">2009</a></li>
+            <li><a href="{% url 'guideline_case' '2008' %}">2008</a></li>
+            <li><a href="{% url 'guideline_case' '2007' %}">2007</a></li>
+            <li><a href="{% url 'guideline_case' '2006' %}">2006</a></li>
+            <li><a href="{% url 'guideline_case' '2005' %}">2005</a></li>
+            <li><a href="{% url 'guideline_case' '2004' %}">2004</a></li>
+            <li><a href="{% url 'guideline_case' '2003' %}">2003</a></li>
+        </ul>
+    </nav>
+
+    <hr class="style3">
+
+    <center>
+    <div class="case-title">
+        <span>2008년 09월</span> 신호소자 반도체 공정기술 대만 유출 사건
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>반도체 생산업체 K社 기술부장 배OO는 2007.12 퇴직 후 대만 A社로 전직하면서 동사가 개발한 첨단 신호소자 공정기술을 불법 유출</li>
+            <li>추가적인 기술유출을 위해 국내 K社, T社 등 반도체 회사 현직 연구원들을 접촉하며 포섭을 기도하다 적발</li>
+        </ul>
+        <center><img src="{% static 'img/case/2008_09.png' %}"></center>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2008년 07월</span> 태양광 차단 신소재기술 일본 유출 기도 사건
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>대일무역업자 성OO 등 3명이 국내 벤처기업 M社의 '태양광 차단 신소재' 제조 핵심기술을 뻬돌려 일본 A社에 유출 기도하다 적발된 사건</li>
+            <li>성OO는 M社 개발기술의 상품화에 투자하겠다며 접근, 자신의 지인을 M社 연구원으로 취업시킨 후 제품 생산에 필요한 설계도와 사업계획서 등 핵심기술ㆍ영업 비밀자료를 빼돌려 일본 A社에 매각을 기도하다 적발</li>
+        </ul>
+        <center><img src="{% static 'img/case/2008_07.png' %}"></center>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2008년 03월</span> L社 첨단 PDP 제조기술 중국 유출 사건
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>前 L社 생산기술부장 정OO는 2005.09 인사에 불만을 품고 퇴사하면서 다면취(多面取) 제조공법 등 세계 선도의 PDP 관련 기술자료 다량을 유출한 후,</li>
+            <li>2007.03 중국최대 TV 제조업체인 C社가 중국정부 지원 하에 설립한 신설 PDP 업체 「C Display」社 기술고문으로 전직하였으며</li>
+            <li>공장 설계도 등 유출 자료를 활용, 신규 생산 라인 셋업을 주도하면서 전,현직 L社 연구원이 기술자문을 받는 등 지속적인 기술유출 기도타 적발</li>
+        </ul>
+        <center><img src="{% static 'img/case/2008_03.png' %}"></center>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2008년 01월</span> K社 아연 제련공법 호주 유출 기도 사건
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>K社 이사 김OO는 2007.09 퇴사직전에 K社가 자체 개발한 첨단 아연 제련공법을 웹하드를 통해 유출한 후, 경쟁사인 호주 A社로 전직 및 이민 기도타 적발</li>
+            <li>K社는 同공법이 경쟁업체로 넘어 갔을 경우, 약 800억원의 손실 예상</li>
+        </ul>
+        <center><img src="{% static 'img/case/2008_01.png' %}"></center>
+    </div>
+    </center>
+
+    <hr class="style3">
+
+    <div class="whence">
+        <img src="{% static 'img/whence_logo.png' %}">
+    </div>
+
+    <div class="move_top">
+        <a id="MOVE_TOP_BTN" href="#"><img src="{% static 'img/Top-Button.png' %}" width="50" height="50"></a>
+    </div>
+
+    <script>
+    $(function() {
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                $('.move_top').fadeIn();
+            } else {
+                $('.move_top').fadeOut();
+            }
+        });
+
+        $("#MOVE_TOP_BTN").click(function() {
+            $('html, body').animate({
+                scrollTop : 0
+            }, 400);
+            return false;
+        });
+    });
+    </script>
+{% endblock %}

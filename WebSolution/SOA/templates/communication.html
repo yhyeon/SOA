@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/account.css' %}">
+    <link rel="stylesheet" href="{% static 'css/tablestyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/guideline.css' %}">
+{% endblock %}
+{% block js %}<script src={% static 'js/jquery-2.1.4.js' %}></script>{% endblock %}
+
+{% block content %}
+    <div class="title">
+        <h1>연락망</h1>
+    </div>
+
+    <hr class="style3">
+
+    <div class="table-title">
+        <h3>사내 연락망 (Current Page : {{ currentPage }})</h3>
+    </div>
+
+    <div class="table-wrapper">
+        <div class="table-content">
+            <table class="table-fill">
+                <thead>
+                    <tr>
+                        <th class="text-left">No</th>
+                        <th class="text-left">부서번호</th>
+                        <th class="text-left">부서명</th>
+                        <th class="text-left">담당자명</th>
+                        <th class="text-left">전화번호</th>
+                    </tr>
+                </thead>
+
+                <tbody class="table-hover">
+                    {% if dataList %}
+                        {% for dataRow in dataList %}
+                            <tr>
+                                <td class="text-left">{{ dataRow.pk }}</td>
+                                <td class="text-left">{{ dataRow.disksn }}</td>
+                                <td class="text-left">{{ dataRow.udname }}</td>
+                                <td class="text-left">{{ dataRow.cname }}</td>
+                                <td class="text-left">{{ dataRow.ip }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <td class="text-center" colspan="5" width="1300">No Data</td>
+                    {% endif %}
+                </tbody>
+            </table> <!-- Content Table END -->
+        </div>
+
+        <hr class="style3">
+
+        <div class="table-number-cover">
+            <span>
+                {% ifequal 1 prev %}
+                    <form class="table-number" method="post" action="./">{% csrf_token %}
+                        <input type="hidden" name="prev" value={{ currentPage }} />
+                        <input type="submit" value="<" />
+                    </form>
+                {% endifequal %}
+                {% for page in totalPageList %}
+                    <form class="table-number" method="post" action="./">{% csrf_token %}
+                        <input type="hidden" name="page" value={{ page }} />
+                        <input type="submit" value="[{{ page }}]" />
+                    </form>
+                {% endfor %}
+                {% ifequal 1 next %}
+                    <form class="table-number" method="post" action="./">{% csrf_token %}
+                        <input type="hidden" name="next" value={{ currentPage }} />
+                        <input type="submit" value=">" />
+                    </form>
+                {% endifequal %}
+            </span>
+        </div><!-- Table Number END -->
+    </div>
+
+    <div class="table-title">
+        <h3>외부 연락망</h3>
+    </div>
+
+    <div class="commu_title">
+        <a href="https://www.privacy.go.kr/" target="_blank">개인정보보호 종합 포털</a>
+        <a href="https://www.privacy.go.kr/" target="_blank"><img src="{% static 'img/commu/commu1.gif' %}"></a>
+    </div>
+
+    <div class="commu_content">
+        <ul>
+            <li>자료마당에 개인정보 관련 법령 자료와 지침 자료, 교육 자료, 참고 자료 등 개인정보 보호와 관련된 많은 정보가 있다. 또한, 개인정보 보호활동과 보호 수칙, 기술 지원 등이 안내되어 있다.</li>
+        </ul>
+    </div>
+
+    <div class="commu_title">
+        <a href="http://www.nis.go.kr/AF/1_5.do" target="_blank">국가정보원 산업기밀보호 센터</a>
+        <a href="http://www.nis.go.kr/AF/1_5.do" target="_blank"><img src="{% static 'img/commu/commu2.png' %}"></a>
+    </div>
+
+    <div class="commu_content">
+        <ul>
+            <li>산업보안에 관련된 기술유출현황과 국가 핵심기술, 법령 정보, 산업스파이 식별요령, 업무 시 산업보안 행동수칙, 해외출장 시 산업보안 행동수칙 등이 안내되어 있다.</li>
+        </ul>
+    </div>
+
+    <div class="commu_title">
+        <a href="http://www.kipo.go.kr/kpo/user.tdf?a=user.main.MainApp" target="_blank">특허청</a>
+        <a href="http://www.kipo.go.kr/kpo/user.tdf?a=user.main.MainApp" target="_blank"><img src="{% static 'img/commu/commu3.gif' %}"></a>
+    </div>
+
+    <div class="commu_content">
+        <ul>
+            <li>기업의 기술에 관한 특허 정보를 확인 할 수 있다. 특허검색서비스와 특허출원가이드 등 기술 특허에 관련된 서비스를 안내 받을 수 있다.</li>
+        </ul>
+    </div>
+
+    <div class="commu_title">
+        <a href="http://www.kipo.go.kr/adr/about.html" target="_blank">산업재산권 분쟁조정위원회</a>
+        <a href="http://www.kipo.go.kr/adr/about.html" target="_blank"><img src="{% static 'img/commu/commu4.png' %}"></a>
+    </div>
+
+    <div class="commu_content">
+        <ul>
+            <li>산업재산권과 직무발명, 영업비밀과 관련된 분쟁을 심의, 조정하기 위하여 만들어진 위원회이다. 분쟁조정신청서와 답변서, 조정위원 제척기피신청서, 위임장 등 각종 양식을 다운로드 받을 수 있다.</li>
+        </ul>
+    </div>
+
+    <div class="commu_title">
+        <a href="http://www.mss.go.kr/site/smba/main.do" target="_blank">중소벤처기업부</a>
+        <a href="http://www.mss.go.kr/site/smba/main.do" target="_blank"><img src="{% static 'img/commu/commu5.png' %}"></a>
+    </div>
+
+    <div class="commu_content">
+        <ul>
+            <li>국가의 중소기업 관련 주요 정책과 중소기업에 관련된 각종 통계 자료, 뉴스, 지표, 관련 기관 소개 등 중소기업에 관련된 정보를 얻을 수 있다. 또한, 소관법률(중소기업기본법, 중소기업협동조합법, 전통시장 및 상점가 육성을 위한 특별법 등) 많은 법률에 대한 정보를 확인할 수 있다.</li>
+        </ul>
+    </div>
+
+    <div class="commu_title">
+        <a href="https://www.ultari.go.kr/portal/ptm/main.do" target="_blank">중소기업 기술보호 울타리</a>
+        <a href="https://www.ultari.go.kr/portal/ptm/main.do" target="_blank"><img src="{% static 'img/commu/commu6.png' %}"></a>
+    </div>
+
+    <div class="commu_content">
+        <ul>
+            <li>기술보호 상담 자문, 분쟁 조정, 중재, 방지 시스템 구축 지원, 지킴 서비스, 자가진단, 지침 등 중소기업을 위한 정보를 제공한다.</li>
+        </ul>
+    </div>
+
+    <div class="move_top">
+        <a id="MOVE_TOP_BTN" href="#"><img src="{% static 'img/Top-Button.png' %}" width="50" height="50"></a>
+    </div>
+
+    <script>
+    $(function() {
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                $('.move_top').fadeIn();
+            } else {
+                $('.move_top').fadeOut();
+            }
+        });
+
+        $("#MOVE_TOP_BTN").click(function() {
+            $('html, body').animate({
+                scrollTop : 0
+            }, 400);
+            return false;
+        });
+    });
+    </script>
+
+{% endblock %}

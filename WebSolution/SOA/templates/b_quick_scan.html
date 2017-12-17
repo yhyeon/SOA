@@ -23,6 +23,10 @@
             <li><a href="{% url 'b_quick_scan' %}">Quick Scan</a></li>
             <li><a href="{% url 'b_registry' %}">Registry</a></li>
             <li><a href="{% url 'b_zip_scan' %}">Zip Scan</a></li>
+            <li><a href="{% url 'b_mft' %}">MFT</a></li>
+            <li><a href="{% url 'b_usnjrnl' %}">Usnjrnl</a></li>
+            <li><a href="{% url 'b_archive' %}">Archive</a></li>
+            <li><a href="{% url 'b_rfile' %}">R File</a></li>
         </ul>
     </nav>
 
@@ -30,8 +34,34 @@
         <form id="search-form" method="post" action=".">{% csrf_token %}
             {% if search_data %}
                 <input type="search" name="search_data" placeholder="{{ search_data }}" />
+                <select name="col_type">
+                    <option value="id">No</option>
+                    <option value="disksn">Disk Serial Number</option>
+                    <option value="udname">User Domain Name</option>
+                    <option value="cname">Computer Name</option>
+                    <option value="ip">IP</option>
+                    <option value="mac">MAC</option>
+                    <option value="uname">User Name</option>
+                    <option value="fname">File Name</option>
+                    <option value="ext">EXT</option>
+                    <option value="fnum">File Num</option>
+                    <option value="datetime">Date Time</option>
+                </select>
             {% else %}
                 <input type="search" name="search_data" placeholder="Search..." />
+                <select name="col_type">
+                    <option value="id">No</option>
+                    <option value="disksn">Disk Serial Number</option>
+                    <option value="udname">User Domain Name</option>
+                    <option value="cname">Computer Name</option>
+                    <option value="ip">IP</option>
+                    <option value="mac">MAC</option>
+                    <option value="uname">User Name</option>
+                    <option value="fname">File Name</option>
+                    <option value="ext">EXT</option>
+                    <option value="fnum">File Num</option>
+                    <option value="datetime">Date Time</option>
+                </select>
             {% endif %}
         </form>
     </div> <!-- Search From END -->
@@ -56,24 +86,46 @@
                 </thead>
 
                 <tbody class="table-hover">
-                    {% if dataList %}
-                        {% for dataRow in dataList %}
-                            <tr>
-                                <td class="text-left">{{ dataRow.pk }}</td>
-                                <td class="text-left">{{ dataRow.disksn }}</td>
-                                <td class="text-left">{{ dataRow.udname }}</td>
-                                <td class="text-left">{{ dataRow.cname }}</td>
-                                <td class="text-left">{{ dataRow.ip }}</td>
-                                <td class="text-left">{{ dataRow.mac }}</td>
-                                <td class="text-left">{{ dataRow.uname }}</td>
-                                <td class="text-left">{{ dataRow.fname }}</td>
-                                <td class="text-left">{{ dataRow.ext }}</td>
-                                <td class="text-left">{{ dataRow.fnum }}</td>
-                                <td class="text-left">{{ dataRow.datetime }}</td>
-                            </tr>
-                        {% endfor %}
+                    {% if search_data %}
+                        {% if dataList %}
+                            {% for dataRow in dataList %}
+                                <tr>
+                                    <td class="text-left">{{ dataRow.0 }}</td>
+                                    <td class="text-left">{{ dataRow.1 }}</td>
+                                    <td class="text-left">{{ dataRow.2 }}</td>
+                                    <td class="text-left">{{ dataRow.3 }}</td>
+                                    <td class="text-left">{{ dataRow.4 }}</td>
+                                    <td class="text-left">{{ dataRow.5 }}</td>
+                                    <td class="text-left">{{ dataRow.6 }}</td>
+                                    <td class="text-left">{{ dataRow.7 }}</td>
+                                    <td class="text-left">{{ dataRow.8 }}</td>
+                                    <td class="text-left">{{ dataRow.9 }}</td>
+                                    <td class="text-left">{{ dataRow.10 }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <td class="text-center" colspan="11" width="1300">No Data</td>
+                        {% endif %}
                     {% else %}
-                        <td class="text-center" colspan="11" width="1300">No Data</td>
+                        {% if dataList %}
+                            {% for dataRow in dataList %}
+                                <tr>
+                                    <td class="text-left">{{ dataRow.pk }}</td>
+                                    <td class="text-left">{{ dataRow.disksn }}</td>
+                                    <td class="text-left">{{ dataRow.udname }}</td>
+                                    <td class="text-left">{{ dataRow.cname }}</td>
+                                    <td class="text-left">{{ dataRow.ip }}</td>
+                                    <td class="text-left">{{ dataRow.mac }}</td>
+                                    <td class="text-left">{{ dataRow.uname }}</td>
+                                    <td class="text-left">{{ dataRow.fname }}</td>
+                                    <td class="text-left">{{ dataRow.ext }}</td>
+                                    <td class="text-left">{{ dataRow.fnum }}</td>
+                                    <td class="text-left">{{ dataRow.datetime }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <td class="text-center" colspan="11" width="1300">No Data</td>
+                        {% endif %}
                     {% endif %}
                 </tbody>
             </table> <!-- Content Table END -->
@@ -86,6 +138,7 @@
                     <form class="table-number" method="post" action="./">{% csrf_token %}
                         {% if search_data %}
                             <input type="hidden" name="search_data" value={{ search_data }} />
+                            <input type="hidden" name="col_type" value={{ col_type }} />
                             <input type="hidden" name="prev" value={{ currentPage }} />
                             <input type="submit" value="<" />
                         {% else %}
@@ -98,6 +151,7 @@
                     <form class="table-number" method="post" action="./">{% csrf_token %}
                         {% if search_data %}
                             <input type="hidden" name="search_data" value={{ search_data }} />
+                            <input type="hidden" name="col_type" value={{ col_type }} />
                             <input type="hidden" name="page" value={{ page }} />
                             <input type="submit" value="[{{ page }}]" />
                         {% else %}
@@ -110,6 +164,7 @@
                     <form class="table-number" method="post" action="./">{% csrf_token %}
                         {% if search_data %}
                             <input type="hidden" name="search_data" value={{ search_data }} />
+                            <input type="hidden" name="col_type" value={{ col_type }} />
                             <input type="hidden" name="next" value={{ currentPage }} />
                             <input type="submit" value=">" />
                         {% else %}

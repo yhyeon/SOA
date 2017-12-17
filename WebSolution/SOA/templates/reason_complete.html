@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load app_filters %}
 
 {% block title %}SOA WebSolution{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/tablestyle.css' %}">{% endblock %}
@@ -38,7 +39,7 @@
             <tbody class="table-hover">
                 {% if dataList %}
                     {% for dataRow in dataList %}
-                        <tr>
+                        <tr style="color: {{ dataRow.id|get_color }};">
                             <td class="text-left">{{ dataRow.id }}</td>
                             <td class="text-left">{{ dataRow.center_team }}</td>
                             <td class="text-left">{{ dataRow.empname }}</td>

@@ -25,6 +25,10 @@
 {% endblock %}
 
 {% block content %}
+    <div class="account-title">
+        <h3>현재 비밀번호 입력</h3>
+    </div>
+    <hr class="style3">
     <div class="account_login">
         <center>
             <form name="account_form" method="post" action=".">{% csrf_token %}

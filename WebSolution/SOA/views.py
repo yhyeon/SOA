@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.conf import settings
 from .forms import *
 from SOA.models import *
 from django.db.models import Q
@@ -20,7 +21,6 @@ from django.contrib import messages
 import pandas
 import matplotlib.pylab as plt
 from matplotlib import font_manager, rc
-from pylab import figure, axes, pie, title, savefig
 import os
 
 # Make Report PDF
@@ -36,7 +36,13 @@ from reportlab.graphics.shapes import Image, Drawing
 import pyotp
 from random import randint, choice
 import base64
-import qrcode
+
+# ReCaptcha
+import urllib.parse
+import urllib.request
+
+from .createPy.searchData import Search
+from .createPy.pyDB import DB
 
 # Create your views here.
 @register.filter
@@ -94,14 +100,12 @@ def user_login(request):
                 if user.is_active:
                     login(request, user)
                     request.session['username'] = cd['username']
-                    #return HttpResponse('Authenticated', 'successfully') #성공
-                    #return render(request, 'home.html', {'username':cd['username']})
+
                     return redirect('home')
                 else:
                     return HttpResponse('Disabled account')
             else:
-                #return HttpResponse('Invalid login') #실패
-                return render(request, 'login.html', {'message': 'Login File!'})
+                return render(request, 'login.html', {'message': 'Login Fail!'})
         else:
             form = LoginForm()
     return render(request, 'login.html', {})
@@ -145,13 +149,21 @@ def b_file_log(request):
         end_pos = start_pos + rowsPerData
 
         if request.POST.get('search_data'):
+            col_type = '%s' % request.POST.get('col_type')
             search_data = '%s' % request.POST.get('search_data')
-            totalCnt = Fscan.objects.filter(Q(id=search_data) | Q(udname=search_data) | Q(cname=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(uname=search_data) | Q(cdatetime=search_data) | Q(adatetime=search_data) | Q(mdatetime=search_data) | Q(size_kb=search_data) | Q(rootdir=search_data) | Q(dirname=search_data) | Q(fname=search_data) | Q(basename=search_data) | Q(ext=search_data) | Q(attrib=search_data)).count()
-            dataList = Fscan.objects.filter(Q(id=search_data) | Q(udname=search_data) | Q(cname=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(uname=search_data) | Q(cdatetime=search_data) | Q(adatetime=search_data) | Q(mdatetime=search_data) | Q(size_kb=search_data) | Q(rootdir=search_data) | Q(dirname=search_data) | Q(fname=search_data) | Q(basename=search_data) | Q(ext=search_data) | Q(attrib=search_data))[start_pos:end_pos]
+
+            searchEng = Search()
+            db = DB()
+
+            sql = searchEng._search('fscan', col_type, search_data)
+            dataList = db.execute(sql)
+            totalCnt = len(dataList)
+
+            dataList = list(dataList[start_pos:end_pos])
 
             totalPageList, prev, next = paging(totalCnt, currentPage)
 
-            return render_to_response('b_file_scan.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data}, RequestContext(request))
+            return render_to_response('b_file_scan.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data, 'col_type': col_type}, RequestContext(request))
 
         else:
             totalCnt = Fscan.objects.all().count()
@@ -189,13 +201,21 @@ def b_driver(request):
         end_pos = start_pos + rowsPerData
 
         if request.POST.get('search_data'):
+            col_type = '%s' % request.POST.get('col_type')
             search_data = '%s' % request.POST.get('search_data')
-            totalCnt = DriverWin7.objects.filter(Q(id=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(cname=search_data) | Q(sid=search_data) | Q(datetime=search_data) | Q(eventid=search_data) | Q(lifetime=search_data) | Q(hostguid=search_data) | Q(device=search_data) | Q(statuinfo=search_data)).count()
-            dataList = DriverWin7.objects.filter(Q(id=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(cname=search_data) | Q(sid=search_data) | Q(datetime=search_data) | Q(eventid=search_data) | Q(lifetime=search_data) | Q(hostguid=search_data) | Q(device=search_data) | Q(statuinfo=search_data))[start_pos:end_pos]
+
+            searchEng = Search()
+            db = DB()
+
+            sql = searchEng._search('driver_win7', col_type, search_data)
+            dataList = db.execute(sql)
+            totalCnt = len(dataList)
+
+            dataList = list(dataList[start_pos:end_pos])
 
             totalPageList, prev, next = paging(totalCnt, currentPage)
 
-            return render_to_response('b_driver.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data}, RequestContext(request))
+            return render_to_response('b_driver.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data, 'col_type': col_type}, RequestContext(request))
 
         else:
             totalCnt = DriverWin7.objects.all().count()
@@ -233,13 +253,21 @@ def b_download_chrome(request):
         end_pos = start_pos + rowsPerData
 
         if request.POST.get('search_data'):
+            col_type = '%s' % request.POST.get('col_type')
             search_data = '%s' % request.POST.get('search_data')
-            totalCnt = DownChrome.objects.filter(Q(id=search_data) | Q(cname=search_data) | Q(uname=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(guid=search_data) | Q(current_path=search_data) | Q(target_path=search_data) | Q(datetime=search_data) | Q(received_bytes=search_data) | Q(total_bytes=search_data) | Q(state=search_data) | Q(danger_type=search_data) | Q(interrupt_reason=search_data) | Q(uri=search_data) | Q(url=search_data) | Q(fname=search_data) | Q(ext=search_data)).count()
-            dataList = DownChrome.objects.filter(Q(id=search_data) | Q(cname=search_data) | Q(uname=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(guid=search_data) | Q(current_path=search_data) | Q(target_path=search_data) | Q(datetime=search_data) | Q(received_bytes=search_data) | Q(total_bytes=search_data) | Q(state=search_data) | Q(danger_type=search_data) | Q(interrupt_reason=search_data) | Q(uri=search_data) | Q(url=search_data) | Q(fname=search_data) | Q(ext=search_data))[start_pos:end_pos]
+
+            searchEng = Search()
+            db = DB()
+
+            sql = searchEng._search('down_chrome', col_type, search_data)
+            dataList = db.execute(sql)
+            totalCnt = len(dataList)
+
+            dataList = list(dataList[start_pos:end_pos])
 
             totalPageList, prev, next = paging(totalCnt, currentPage)
 
-            return render_to_response('b_download_chrome.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data}, RequestContext(request))
+            return render_to_response('b_download_chrome.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data, 'col_type': col_type}, RequestContext(request))
 
         else:
             totalCnt = DownChrome.objects.all().count()
@@ -277,13 +305,21 @@ def b_history_chrome(request):
         end_pos = start_pos + rowsPerData
 
         if request.POST.get('search_data'):
+            col_type = '%s' % request.POST.get('col_type')
             search_data = '%s' % request.POST.get('search_data')
-            totalCnt = HistChrome.objects.filter(Q(id=search_data) | Q(cname=search_data) | Q(uname=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(datetime=search_data) | Q(lvdatetime=search_data) | Q(uri=search_data) | Q(url=search_data) | Q(site_name=search_data) | Q(vcount=search_data)).count()
-            dataList = HistChrome.objects.filter(Q(id=search_data) | Q(cname=search_data) | Q(uname=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(datetime=search_data) | Q(lvdatetime=search_data) | Q(uri=search_data) | Q(url=search_data) | Q(site_name=search_data) | Q(vcount=search_data))[start_pos:end_pos]
+
+            searchEng = Search()
+            db = DB()
+
+            sql = searchEng._search('hist_chrome', col_type, search_data)
+            dataList = db.execute(sql)
+            totalCnt = len(dataList)
+
+            dataList = list(dataList[start_pos:end_pos])
 
             totalPageList, prev, next = paging(totalCnt, currentPage)
 
-            return render_to_response('b_history_chrome.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data}, RequestContext(request))
+            return render_to_response('b_history_chrome.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data, 'col_type': col_type}, RequestContext(request))
 
         else:
             totalCnt = HistChrome.objects.all().count()
@@ -321,13 +357,21 @@ def b_history_ie(request):
         end_pos = start_pos + rowsPerData
 
         if request.POST.get('search_data'):
+            col_type = '%s' % request.POST.get('col_type')
             search_data = '%s' % request.POST.get('search_data')
-            totalCnt = HistIe.objects.filter(Q(id=search_data) | Q(cname=search_data) | Q(uname=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(datetime=search_data) | Q(uri=search_data) | Q(url=search_data) | Q(sname=search_data)).count()
-            dataList = HistIe.objects.filter(Q(id=search_data) | Q(cname=search_data) | Q(uname=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(datetime=search_data) | Q(uri=search_data) | Q(url=search_data) | Q(sname=search_data))[start_pos:end_pos]
+
+            searchEng = Search()
+            db = DB()
+
+            sql = searchEng._search('hist_ie', col_type, search_data)
+            dataList = db.execute(sql)
+            totalCnt = len(dataList)
+
+            dataList = list(dataList[start_pos:end_pos])
 
             totalPageList, prev, next = paging(totalCnt, currentPage)
 
-            return render_to_response('b_history_ie.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data}, RequestContext(request))
+            return render_to_response('b_history_ie.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data, 'col_type': col_type}, RequestContext(request))
 
         else:
             totalCnt = HistIe.objects.all().count()
@@ -365,13 +409,21 @@ def b_log_on_off(request):
         end_pos = start_pos + rowsPerData
 
         if request.POST.get('search_data'):
+            col_type = '%s' % request.POST.get('col_type')
             search_data = '%s' % request.POST.get('search_data')
-            totalCnt = Logonoff.objects.filter(Q(id=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(logtype=search_data) | Q(eventid=search_data) | Q(datetime=search_data) | Q(cname=search_data) | Q(ssid=search_data) | Q(suname=search_data) | Q(sdname=search_data) | Q(slogonid=search_data) | Q(tsid=search_data) | Q(tuname=search_data) | Q(tdname=search_data) | Q(tlogonid=search_data) | Q(failurecode=search_data)).count()
-            dataList = Logonoff.objects.filter(Q(id=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(logtype=search_data) | Q(eventid=search_data) | Q(datetime=search_data) | Q(cname=search_data) | Q(ssid=search_data) | Q(suname=search_data) | Q(sdname=search_data) | Q(slogonid=search_data) | Q(tsid=search_data) | Q(tuname=search_data) | Q(tdname=search_data) | Q(tlogonid=search_data) | Q(failurecode=search_data))[start_pos:end_pos]
+
+            searchEng = Search()
+            db = DB()
+
+            sql = searchEng._search('logonoff', col_type, search_data)
+            dataList = db.execute(sql)
+            totalCnt = len(dataList)
+
+            dataList = list(dataList[start_pos:end_pos])
 
             totalPageList, prev, next = paging(totalCnt, currentPage)
 
-            return render_to_response('b_log_on_off.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data}, RequestContext(request))
+            return render_to_response('b_log_on_off.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data, 'col_type': col_type}, RequestContext(request))
 
         else:
             totalCnt = Logonoff.objects.all().count()
@@ -409,13 +461,21 @@ def b_oa_file(request):
         end_pos = start_pos + rowsPerData
 
         if request.POST.get('search_data'):
+            col_type = '%s' % request.POST.get('col_type')
             search_data = '%s' % request.POST.get('search_data')
-            totalCnt = Oafile.objects.filter(Q(id=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(accessmask=search_data) | Q(eventid=search_data) | Q(cname=search_data) | Q(uname=search_data) | Q(datetime=search_data) | Q(sid=search_data) | Q(logonid=search_data) | Q(dname=search_data) | Q(objserver=search_data) | Q(root=search_data) | Q(directory=search_data) | Q(file=search_data) | Q(ext=search_data) | Q(psname=search_data)).count()
-            dataList = Oafile.objects.filter(Q(id=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(accessmask=search_data) | Q(eventid=search_data) | Q(cname=search_data) | Q(uname=search_data) | Q(datetime=search_data) | Q(sid=search_data) | Q(logonid=search_data) | Q(dname=search_data) | Q(objserver=search_data) | Q(root=search_data) | Q(directory=search_data) | Q(file=search_data) | Q(ext=search_data) | Q(psname=search_data))[start_pos:end_pos]
+
+            searchEng = Search()
+            db = DB()
+
+            sql = searchEng._search('oafile', col_type, search_data)
+            dataList = db.execute(sql)
+            totalCnt = len(dataList)
+
+            dataList = list(dataList[start_pos:end_pos])
 
             totalPageList, prev, next = paging(totalCnt, currentPage)
 
-            return render_to_response('b_oa_file.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data}, RequestContext(request))
+            return render_to_response('b_oa_file.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data, 'col_type': col_type}, RequestContext(request))
 
         else:
             totalCnt = Oafile.objects.all().count()
@@ -453,13 +513,21 @@ def b_oa_mtp(request):
         end_pos = start_pos + rowsPerData
 
         if request.POST.get('search_data'):
+            col_type = '%s' % request.POST.get('col_type')
             search_data = '%s' % request.POST.get('search_data')
-            totalCnt = Oamtp.objects.filter(Q(id=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(accessmask=search_data) | Q(eventid=search_data) | Q(cname=search_data) | Q(uname=search_data) | Q(datetime=search_data) | Q(sid=search_data) | Q(logonid=search_data) | Q(dname=search_data) | Q(objserver=search_data) | Q(objname=search_data) | Q(ext=search_data) | Q(psname=search_data)).count()
-            dataList = Oamtp.objects.filter(Q(id=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(accessmask=search_data) | Q(eventid=search_data) | Q(cname=search_data) | Q(uname=search_data) | Q(datetime=search_data) | Q(sid=search_data) | Q(logonid=search_data) | Q(dname=search_data) | Q(objserver=search_data) | Q(objname=search_data) | Q(ext=search_data) | Q(psname=search_data))[start_pos:end_pos]
+
+            searchEng = Search()
+            db = DB()
+
+            sql = searchEng._search('oamtp', col_type, search_data)
+            dataList = db.execute(sql)
+            totalCnt = len(dataList)
+
+            dataList = list(dataList[start_pos:end_pos])
 
             totalPageList, prev, next = paging(totalCnt, currentPage)
 
-            return render_to_response('b_oa_mtp.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data}, RequestContext(request))
+            return render_to_response('b_oa_mtp.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data, 'col_type': col_type}, RequestContext(request))
 
         else:
             totalCnt = Oamtp.objects.all().count()
@@ -497,13 +565,21 @@ def b_partition_win10(request):
         end_pos = start_pos + rowsPerData
 
         if request.POST.get('search_data'):
+            col_type = '%s' % request.POST.get('col_type')
             search_data = '%s' % request.POST.get('search_data')
-            totalCnt = PartWin10.objects.filter(Q(id=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(cname=search_data) | Q(sid=search_data) | Q(datetime=search_data) | Q(eventid=search_data) | Q(disknum=search_data) | Q(diskid=search_data) | Q(characteristics=search_data) | Q(bustype=search_data) | Q(manufacturer=search_data) | Q(model=search_data) | Q(modelversion=search_data) | Q(serialnum=search_data) | Q(parentid=search_data) | Q(registryid=search_data)).count()
-            dataList = PartWin10.objects.filter(Q(id=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(cname=search_data) | Q(sid=search_data) | Q(datetime=search_data) | Q(eventid=search_data) | Q(disknum=search_data) | Q(diskid=search_data) | Q(characteristics=search_data) | Q(bustype=search_data) | Q(manufacturer=search_data) | Q(model=search_data) | Q(modelversion=search_data) | Q(serialnum=search_data) | Q(parentid=search_data) | Q(registryid=search_data))[start_pos:end_pos]
+
+            searchEng = Search()
+            db = DB()
+
+            sql = searchEng._search('part_win10', col_type, search_data)
+            dataList = db.execute(sql)
+            totalCnt = len(dataList)
+
+            dataList = list(dataList[start_pos:end_pos])
 
             totalPageList, prev, next = paging(totalCnt, currentPage)
 
-            return render_to_response('b_partition_win10.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data}, RequestContext(request))
+            return render_to_response('b_partition_win10.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data, 'col_type': col_type}, RequestContext(request))
 
         else:
             totalCnt = PartWin10.objects.all().count()
@@ -541,13 +617,21 @@ def b_quick_scan(request):
         end_pos = start_pos + rowsPerData
 
         if request.POST.get('search_data'):
+            col_type = '%s' % request.POST.get('col_type')
             search_data = '%s' % request.POST.get('search_data')
-            totalCnt = Qscan.objects.filter(Q(id=search_data) | Q(udname=search_data) | Q(cname=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(uname=search_data) | Q(fname=search_data) | Q(ext=search_data) | Q(fnum=search_data) | Q(datetime=search_data)).count()
-            dataList = Qscan.objects.filter(Q(id=search_data) | Q(udname=search_data) | Q(cname=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(uname=search_data) | Q(fname=search_data) | Q(ext=search_data) | Q(fnum=search_data) | Q(datetime=search_data))[start_pos:end_pos]
+
+            searchEng = Search()
+            db = DB()
+
+            sql = searchEng._search('qscan', col_type, search_data)
+            dataList = db.execute(sql)
+            totalCnt = len(dataList)
+
+            dataList = list(dataList[start_pos:end_pos])
 
             totalPageList, prev, next = paging(totalCnt, currentPage)
 
-            return render_to_response('b_quick_scan.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data}, RequestContext(request))
+            return render_to_response('b_quick_scan.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data, 'col_type': col_type}, RequestContext(request))
 
         else:
             totalCnt = Qscan.objects.all().count()
@@ -585,13 +669,21 @@ def b_registry(request):
         end_pos = start_pos + rowsPerData
 
         if request.POST.get('search_data'):
+            col_type = '%s' % request.POST.get('col_type')
             search_data = '%s' % request.POST.get('search_data')
-            totalCnt = Reg.objects.filter(Q(id=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(devicedesc=search_data) | Q(hardwareid=search_data) | Q(compatibleids=search_data) | Q(driver=search_data) | Q(mfg=search_data) | Q(service=search_data) | Q(friendlyname=search_data)).count()
-            dataList = Reg.objects.filter(Q(id=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(devicedesc=search_data) | Q(hardwareid=search_data) | Q(compatibleids=search_data) | Q(driver=search_data) | Q(mfg=search_data) | Q(service=search_data) | Q(friendlyname=search_data))[start_pos:end_pos]
+
+            searchEng = Search()
+            db = DB()
+
+            sql = searchEng._search('reg', col_type, search_data)
+            dataList = db.execute(sql)
+            totalCnt = len(dataList)
+
+            dataList = list(dataList[start_pos:end_pos])
 
             totalPageList, prev, next = paging(totalCnt, currentPage)
 
-            return render_to_response('b_registry.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data}, RequestContext(request))
+            return render_to_response('b_registry.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data, 'col_type': col_type}, RequestContext(request))
 
         else:
             totalCnt = Reg.objects.all().count()
@@ -629,13 +721,23 @@ def b_zip_scan(request):
         end_pos = start_pos + rowsPerData
 
         if request.POST.get('search_data'):
+            col_type = '%s' % request.POST.get('col_type')
             search_data = '%s' % request.POST.get('search_data')
-            totalCnt = Zscan.objects.filter(Q(id=search_data) | Q(udname=search_data) | Q(cname=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(uname=search_data) | Q(cdatetime=search_data) | Q(adatetime=search_data) | Q(mdatetime=search_data) | Q(size_kb=search_data) | Q(rootdir=search_data) | Q(dirname=search_data) | Q(fname=search_data) | Q(basename=search_data) | Q(ext=search_data) | Q(attrib=search_data) | Q(srcname=search_data) | Q(srcext=search_data) | Q(srcsize=search_data)).count()
-            dataList = Zscan.objects.filter(Q(id=search_data) | Q(udname=search_data) | Q(cname=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(uname=search_data) | Q(cdatetime=search_data) | Q(adatetime=search_data) | Q(mdatetime=search_data) | Q(size_kb=search_data) | Q(rootdir=search_data) | Q(dirname=search_data) | Q(fname=search_data) | Q(basename=search_data) | Q(ext=search_data) | Q(attrib=search_data) | Q(srcname=search_data) | Q(srcext=search_data) | Q(srcsize=search_data))[start_pos:end_pos]
+            #totalCnt = Zscan.objects.filter(Q(id=search_data) | Q(udname=search_data) | Q(cname=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(uname=search_data) | Q(cdatetime=search_data) | Q(adatetime=search_data) | Q(mdatetime=search_data) | Q(size_kb=search_data) | Q(rootdir=search_data) | Q(dirname=search_data) | Q(fname=search_data) | Q(basename=search_data) | Q(ext=search_data) | Q(attrib=search_data) | Q(srcname=search_data) | Q(srcext=search_data) | Q(srcsize=search_data)).count()
+            #dataList = Zscan.objects.filter(Q(id=search_data) | Q(udname=search_data) | Q(cname=search_data) | Q(ip=search_data) | Q(mac=search_data) | Q(uname=search_data) | Q(cdatetime=search_data) | Q(adatetime=search_data) | Q(mdatetime=search_data) | Q(size_kb=search_data) | Q(rootdir=search_data) | Q(dirname=search_data) | Q(fname=search_data) | Q(basename=search_data) | Q(ext=search_data) | Q(attrib=search_data) | Q(srcname=search_data) | Q(srcext=search_data) | Q(srcsize=search_data))[start_pos:end_pos]
+
+            searchEng = Search()
+            db = DB()
+
+            sql = searchEng._search('zscan', col_type, search_data)
+            dataList = db.execute(sql)
+            totalCnt = len(dataList)
+
+            dataList = list(dataList[start_pos:end_pos])
 
             totalPageList, prev, next = paging(totalCnt, currentPage)
 
-            return render_to_response('b_zip_scan.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data}, RequestContext(request))
+            return render_to_response('b_zip_scan.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data, 'col_type': col_type}, RequestContext(request))
 
         else:
             totalCnt = Zscan.objects.all().count()
@@ -647,14 +749,231 @@ def b_zip_scan(request):
     else:
         return HttpResponseRedirect('/login/')
 
+@csrf_exempt
+def b_rfile(request):
+    if request.user.is_authenticated():
+        if request.POST.get('page'):
+            currentPage = int(request.POST.get('page'))
+        else:
+            currentPage = 1
+        rowsPerData = 15
+        rowsPerPage = 10
+        totalCnt = 0
+        dataList = []
+        totalPageList = []
+
+        if request.POST.get('prev'):
+            currentPage = int(request.POST.get('prev'))
+            currentBlock = math.ceil(currentPage / rowsPerPage) - 1
+            currentPage = ((currentBlock - 1) * rowsPerPage) + 1
+        if request.POST.get('next'):
+            currentPage = int(request.POST.get('next'))
+            currentBlock = math.ceil(currentPage / rowsPerPage) - 1
+            currentPage = ((currentBlock + 1) * rowsPerPage) + 1
+
+        start_pos = (currentPage - 1) * rowsPerData
+        end_pos = start_pos + rowsPerData
+
+        if request.POST.get('search_data'):
+            col_type = '%s' % request.POST.get('col_type')
+            search_data = '%s' % request.POST.get('search_data')
+
+            searchEng = Search()
+            db = DB()
+
+            sql = searchEng._search('rfile', col_type, search_data)
+            dataList = db.execute(sql)
+            totalCnt = len(dataList)
+
+            dataList = list(dataList[start_pos:end_pos])
+
+            totalPageList, prev, next = paging(totalCnt, currentPage)
+
+            return render_to_response('b_rfile.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data, 'col_type': col_type}, RequestContext(request))
+
+        else:
+            totalCnt = Rfile.objects.all().count()
+            dataList = Rfile.objects.all()[start_pos:end_pos]
+
+            totalPageList, prev, next = paging(totalCnt, currentPage)
+
+            return render_to_response('b_rfile.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
+    else:
+        return HttpResponseRedirect('/login/')
+
+@csrf_exempt
+def b_mft(request):
+    if request.user.is_authenticated():
+        if request.POST.get('page'):
+            currentPage = int(request.POST.get('page'))
+        else:
+            currentPage = 1
+        rowsPerData = 15
+        rowsPerPage = 10
+        totalCnt = 0
+        dataList = []
+        totalPageList = []
+
+        if request.POST.get('prev'):
+            currentPage = int(request.POST.get('prev'))
+            currentBlock = math.ceil(currentPage / rowsPerPage) - 1
+            currentPage = ((currentBlock - 1) * rowsPerPage) + 1
+        if request.POST.get('next'):
+            currentPage = int(request.POST.get('next'))
+            currentBlock = math.ceil(currentPage / rowsPerPage) - 1
+            currentPage = ((currentBlock + 1) * rowsPerPage) + 1
+
+        start_pos = (currentPage - 1) * rowsPerData
+        end_pos = start_pos + rowsPerData
+
+        if request.POST.get('search_data'):
+            col_type = '%s' % request.POST.get('col_type')
+            search_data = '%s' % request.POST.get('search_data')
+
+            searchEng = Search()
+            db = DB()
+
+            sql = searchEng._search('mft', col_type, search_data)
+            dataList = db.execute(sql)
+            totalCnt = len(dataList)
+
+            dataList = list(dataList[start_pos:end_pos])
+
+            totalPageList, prev, next = paging(totalCnt, currentPage)
+
+            return render_to_response('b_mft.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data, 'col_type': col_type}, RequestContext(request))
+
+        else:
+            totalCnt = Mft.objects.all().count()
+            dataList = Mft.objects.all()[start_pos:end_pos]
+
+            totalPageList, prev, next = paging(totalCnt, currentPage)
+
+            return render_to_response('b_mft.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
+    else:
+        return HttpResponseRedirect('/login/')
+
+@csrf_exempt
+def b_usnjrnl(request):
+    if request.user.is_authenticated():
+        if request.POST.get('page'):
+            currentPage = int(request.POST.get('page'))
+        else:
+            currentPage = 1
+        rowsPerData = 15
+        rowsPerPage = 10
+        totalCnt = 0
+        dataList = []
+        totalPageList = []
+
+        if request.POST.get('prev'):
+            currentPage = int(request.POST.get('prev'))
+            currentBlock = math.ceil(currentPage / rowsPerPage) - 1
+            currentPage = ((currentBlock - 1) * rowsPerPage) + 1
+        if request.POST.get('next'):
+            currentPage = int(request.POST.get('next'))
+            currentBlock = math.ceil(currentPage / rowsPerPage) - 1
+            currentPage = ((currentBlock + 1) * rowsPerPage) + 1
+
+        start_pos = (currentPage - 1) * rowsPerData
+        end_pos = start_pos + rowsPerData
+
+        if request.POST.get('search_data'):
+            col_type = '%s' % request.POST.get('col_type')
+            search_data = '%s' % request.POST.get('search_data')
+
+            searchEng = Search()
+            db = DB()
+
+            sql = searchEng._search('usnjrnl', col_type, search_data)
+            dataList = db.execute(sql)
+            totalCnt = len(dataList)
+
+            dataList = list(dataList[start_pos:end_pos])
+
+            totalPageList, prev, next = paging(totalCnt, currentPage)
+
+            return render_to_response('b_usnjrnl.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data, 'col_type': col_type}, RequestContext(request))
+
+        else:
+            totalCnt = Usnjrnl.objects.all().count()
+            dataList = Usnjrnl.objects.all()[start_pos:end_pos]
+
+            totalPageList, prev, next = paging(totalCnt, currentPage)
+
+            return render_to_response('b_usnjrnl.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
+    else:
+        return HttpResponseRedirect('/login/')
+
+@csrf_exempt
+def b_archive(request):
+    if request.user.is_authenticated():
+        if request.POST.get('page'):
+            currentPage = int(request.POST.get('page'))
+        else:
+            currentPage = 1
+        rowsPerData = 15
+        rowsPerPage = 10
+        totalCnt = 0
+        dataList = []
+        totalPageList = []
+
+        if request.POST.get('prev'):
+            currentPage = int(request.POST.get('prev'))
+            currentBlock = math.ceil(currentPage / rowsPerPage) - 1
+            currentPage = ((currentBlock - 1) * rowsPerPage) + 1
+        if request.POST.get('next'):
+            currentPage = int(request.POST.get('next'))
+            currentBlock = math.ceil(currentPage / rowsPerPage) - 1
+            currentPage = ((currentBlock + 1) * rowsPerPage) + 1
+
+        start_pos = (currentPage - 1) * rowsPerData
+        end_pos = start_pos + rowsPerData
+
+        if request.POST.get('search_data'):
+            col_type = '%s' % request.POST.get('col_type')
+            search_data = '%s' % request.POST.get('search_data')
+
+            searchEng = Search()
+            db = DB()
+
+            sql = searchEng._search('archive', col_type, search_data)
+            dataList = db.execute(sql)
+            totalCnt = len(dataList)
+
+            dataList = list(dataList[start_pos:end_pos])
+
+            totalPageList, prev, next = paging(totalCnt, currentPage)
+
+            return render_to_response('b_archive.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next, 'search_data': search_data, 'col_type': col_type}, RequestContext(request))
+
+        else:
+            totalCnt = Archive.objects.all().count()
+            dataList = Archive.objects.all()[start_pos:end_pos]
+
+            totalPageList, prev, next = paging(totalCnt, currentPage)
+
+            return render_to_response('b_archive.html', {'username':request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
+    else:
+        return HttpResponseRedirect('/login/')
+
 def outflowsign(request):
-    pass
+    if request.user.is_authenticated():
+        return render_to_response('checking.html', {'username': request.session['username']}, RequestContext(request))
+    else:
+        return HttpResponseRedirect('/login/')
 
 def outflowaction(request):
-    pass
+    if request.user.is_authenticated():
+        return render_to_response('checking.html', {'username': request.session['username']}, RequestContext(request))
+    else:
+        return HttpResponseRedirect('/login/')
 
 def leavesign(request):
-    pass
+    if request.user.is_authenticated():
+        return render_to_response('checking.html', {'username': request.session['username']}, RequestContext(request))
+    else:
+        return HttpResponseRedirect('/login/')
 
 # Reason tab
 @csrf_exempt
@@ -796,7 +1115,7 @@ def complete(request):
         if request.POST.get('search_data'):
             search_data = '%s' % request.POST.get('search_data')
             totalCnt = UactivReportSaves.objects.filter((Q(id=int(search_data)) | Q(center_team=search_data) | Q(empname=search_data) | Q(empnum=int(search_data)) | Q(reasontype=search_data) | Q(lognum=search_data) | Q(wdate=search_data)) & Q(violation=None)).count()
-            dataList = UactivReportSaves.objects.filter((Q(id=int(search_data)) | Q(center_team=search_data) | Q(empname=search_data) | Q(empnum=int(search_data)) | Q(reasontype=search_data) | Q(lognum=search_data) | Q(wdate=search_data)) & Q(violation=None)).all()[start_pos:end_pos]
+            dataList = UactivReportSaves.objects.filter((Q(id=int(search_data)) | Q(center_team=search_data) | Q(empname=search_data) | Q(empnum=int(search_data)) | Q(reasontype=search_data) | Q(lognum=search_data) | Q(wdate=search_data)) & Q(violation=None)).all().order_by('-id')[start_pos:end_pos]
 
             totalPageList, prev, next = paging(totalCnt, currentPage)
 
@@ -804,7 +1123,7 @@ def complete(request):
 
         else:
             totalCnt = UactivReportSaves.objects.filter(~Q(violation = None)).count()
-            dataList = UactivReportSaves.objects.filter(~Q(violation = None))[start_pos:end_pos]
+            dataList = UactivReportSaves.objects.filter(~Q(violation = None)).order_by('-id')[start_pos:end_pos]
 
             totalPageList, prev, next = paging(totalCnt, currentPage)
 
@@ -1195,17 +1514,83 @@ def statute_puc(request):
     else:
         return HttpResponseRedirect('/login/')
 
-def case(request):
+def case(request, year):
     if request.user.is_authenticated():
-        return render(request, 'home.html', {'username': request.session['username']})
+        if year == '2013':
+            return render(request, 'case_2013.html', {'username': request.session['username']})
+        elif year == '2012':
+            return render(request, 'case_2012.html', {'username': request.session['username']})
+        elif year == '2011':
+            return render(request, 'case_2011.html', {'username': request.session['username']})
+        elif year == '2010':
+            return render(request, 'case_2010.html', {'username': request.session['username']})
+        elif year == '2009':
+            return render(request, 'case_2009.html', {'username': request.session['username']})
+        elif year == '2008':
+            return render(request, 'case_2008.html', {'username': request.session['username']})
+        elif year == '2007':
+            return render(request, 'case_2007.html', {'username': request.session['username']})
+        elif year == '2006':
+            return render(request, 'case_2006.html', {'username': request.session['username']})
+        elif year == '2005':
+            return render(request, 'case_2005.html', {'username': request.session['username']})
+        elif year == '2004':
+            return render(request, 'case_2004.html', {'username': request.session['username']})
+        elif year == '2003':
+            return render(request, 'case_2003.html', {'username': request.session['username']})
     else:
         return HttpResponseRedirect('/login/')
 
-def preventive(request):
-    pass
+def preventive_spy(request):
+    if request.user.is_authenticated():
+        return render(request, 'preventive_spy.html', {'username': request.session['username']})
+    else:
+        return HttpResponseRedirect('/login/')
+
+def preventive_task(request):
+    if request.user.is_authenticated():
+        return render(request, 'preventive_task.html', {'username': request.session['username']})
+    else:
+        return HttpResponseRedirect('/login/')
+
+def preventive_overseas(request):
+    if request.user.is_authenticated():
+        return render(request, 'preventive_overseas.html', {'username': request.session['username']})
+    else:
+        return HttpResponseRedirect('/login/')
 
 def communication(request):
-    pass
+    if request.user.is_authenticated():
+        if request.POST.get('page'):
+            currentPage = int(request.POST.get('page'))
+        else:
+            currentPage = 1
+        rowsPerData = 15
+        rowsPerPage = 10
+        totalCnt = 0
+        dataList = []
+        totalPageList = []
+
+        if request.POST.get('prev'):
+            currentPage = int(request.POST.get('prev'))
+            currentBlock = math.ceil(currentPage / rowsPerPage) - 1
+            currentPage = ((currentBlock - 1) * rowsPerPage) + 1
+        if request.POST.get('next'):
+            currentPage = int(request.POST.get('next'))
+            currentBlock = math.ceil(currentPage / rowsPerPage) - 1
+            currentPage = ((currentBlock + 1) * rowsPerPage) + 1
+
+        start_pos = (currentPage - 1) * rowsPerData
+        end_pos = start_pos + rowsPerData
+
+        totalCnt = ConNet.objects.all().count()
+        dataList = ConNet.objects.all()[start_pos:end_pos]
+
+        totalPageList, prev, next = paging(totalCnt, currentPage)
+
+        return render_to_response('communication.html', {'username': request.session['username'], 'dataList': dataList, 'currentPage': currentPage, 'totalPageList': totalPageList, 'prev': prev, 'next': next}, RequestContext(request))
+    else:
+        return HttpResponseRedirect('/login/')
 
 # Employee tab
 @csrf_exempt
@@ -1253,6 +1638,22 @@ def employee(request):
         return HttpResponseRedirect('/login/')
 
 # Setting tab
+def recaptcha(request, postdata):
+    rc_challenge = postdata.get('recaptcha_challenge_field','')
+    rc_user_input = postdata.get('recaptcha_response_field','')
+    url = 'http://www.google.com/recaptcha/api/verify'
+    values = {'privatekey':settings.RECAPTCHA_PRIVATE_KEY,
+              'remoteip':request.META['REMOTE_ADDR'],
+              'challenge':rc_challenge,
+              'response':rc_user_input,}
+    data = urllib.parse.urlencode(values).encode('utf-8')
+    req = urllib.request.Request(url, data)
+    response = urllib.request.urlopen(req)
+    answer = response.read().split()[0]
+    response.close()
+
+    return answer
+
 @csrf_exempt
 def account(request):
     if request.user.is_authenticated():
@@ -1275,14 +1676,25 @@ def account(request):
 def account_add(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
-            usr = User.objects.create_superuser(request.POST.get('userid'), request.POST.get('email'), request.POST.get('password'))
-            usr.first_name = request.POST.get('first_name')
-            usr.last_name = request.POST.get('last_name')
-            usr.save()
+            edit_form = EditForm(request.POST)
 
-            return HttpResponseRedirect('/home/', {'username': request.session['username'], 'message': '계정 추가가 완료되었습니다.'})
+            postdata = request.POST.copy()
+            captcha = recaptcha(request, postdata)
+            if captcha.decode('utf-8') == 'true':
+                usr = User.objects.create_superuser(request.POST.get('userid'), request.POST.get('email'), request.POST.get('password'))
+                usr.first_name = request.POST.get('first_name')
+                usr.last_name = request.POST.get('last_name')
+                usr.save()
+
+                return HttpResponseRedirect('/home/', {'username': request.session['username'], 'message': '계정 추가가 완료되었습니다.'})
+            else:
+                captcha_response = 'CAPTCHA 문자가 일치하지 않습니다.'
+
+                return render_to_response('account_add.html', {'username': request.session['username'], 'edit_fprm': edit_form, 'captcha_response': captcha_response})
         else:
-            return render_to_response('account_add.html', {'username': request.session['username']})
+            edit_form = EditForm()
+
+            return render_to_response('account_add.html', {'username': request.session['username'], 'edit_fprm': edit_form})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -1305,22 +1717,41 @@ def account_del(request):
 def account_change(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
-            usr = User.objects.get(username=request.session['username'])
-            usr.set_password(request.POST.get('chpw'))
-            usr.save()
+            edit_form = EditForm(request.POST)
 
-            return render_to_response('login.html', {'message': '비밀번호가 변경되었습니다. 다시 로그인하십시오.'})
+            postdata = request.POST.copy()
+            captcha = recaptcha(request, postdata)
+
+            if captcha.decode('utf-8') == 'true':
+                usr = User.objects.get(username=request.session['username'])
+                usr.set_password(request.POST.get('chpw'))
+                usr.save()
+
+                return render_to_response('login.html', {'message': '비밀번호가 변경되었습니다. 다시 로그인하십시오.'})
+            else:
+                captcha_response = 'CAPTCHA 문자가 일치하지 않습니다.'
+
+                return render_to_response('account_change.html', {'username': request.session['username'], 'edit_form': edit_form, 'captcha_response': captcha_response})
+
         else:
-            return render_to_response('account_change.html', {'username': request.session['username']})
+            edit_form = EditForm()
+
+            return render_to_response('account_change.html', {'username': request.session['username'], 'edit_form': edit_form})
     else:
         return HttpResponseRedirect('/login/')
 
 def solution(request):
-    pass
+    if request.user.is_authenticated():
+        return render_to_response('checking.html', {'username': request.session['username']}, RequestContext(request))
+    else:
+        return HttpResponseRedirect('/login/')
 
 # Support tab
 def support(request):
-    pass
+    if request.user.is_authenticated():
+        return render_to_response('support.html', {'username': request.session['username']}, RequestContext(request))
+    else:
+        return HttpResponseRedirect('/login/')
 
 # Employees reason
 def e_login(request):
@@ -1355,7 +1786,7 @@ def e_new(request):
         secretKey = request.POST.get('sck')
         uotp = request.POST.get('otp')
 
-        if pyotp.TOTP(base64.b32encode(secretKey.encode())).now() == uotp:
+        if pyotp.TOTP(secretKey).now() == uotp:
             if request.session['reasontype'] == 'USB':
                 return redirect('usb')
             elif request.session['reasontype'] == 'WEB':
@@ -1364,26 +1795,17 @@ def e_new(request):
                 return HttpResponseRedirect('/application/')
 
         else:
-            print(secretKey)
-            totp = pyotp.TOTP(base64.b32encode(secretKey.encode())).provisioning_uri('SOA Auth (' + request.session['empname'] + ')')
+            totp = pyotp.TOTP(secretKey).provisioning_uri('SOA Auth (' + request.session['empname'] + ')')
 
             return render_to_response('e_new.html', {'totp': totp, 'secretKey': secretKey, 'message': '다시 확인해주세요.'})
 
     secretKey = pyotp.random_base32()
 
-    '''
-    for i in range(0, 16):
-        secretKey += choice([chr(randint(ord('A'), ord('Z'))), chr(randint(ord('1'), ord('9')))])
-    '''
-    print(secretKey)
-
     hr = Hrdb.objects.get(empnum=request.session['empnum'])
     hr.secretkey = secretKey
     hr.save()
 
-    totp = pyotp.TOTP(base64.b32encode(secretKey.encode())).provisioning_uri('SOA Auth (' + request.session['empname'] + ')')
-    otp = pyotp.TOTP(base64.b32encode(secretKey.encode())).now()
-    print(otp)
+    totp = pyotp.TOTP(secretKey).provisioning_uri('SOA Auth (' + request.session['empname'] + ')')
 
     return render_to_response('e_new.html', {'totp': totp, 'secretKey': secretKey})
 
@@ -1393,28 +1815,22 @@ def e_qr(request):
         secretKey = request.POST.get('sck')
         uotp = request.POST.get('otp')
 
-        if pyotp.TOTP(base64.b32encode(secretKey.encode())).now() == uotp:
+        if pyotp.TOTP(secretKey).now() == uotp:
             if request.session['reasontype'] == 'USB':
                 return redirect('usb')
             elif request.session['reasontype'] == 'WEB':
                 return redirect('web')
             elif request.session['reasontype'] == 'APP':
-                return HttpResponseRedirect('/application/')
+                return redirect('/application/')
             
         else:
-            print(secretKey)
-            totp = pyotp.TOTP(base64.b32encode(secretKey.encode())).provisioning_uri('SOA Auth (' + request.session['empname'] + ')')
+            totp = pyotp.TOTP(secretKey).provisioning_uri('SOA Auth (' + request.session['empname'] + ')')
 
             return render_to_response('qr_auth.html', {'totp': totp, 'secretKey': secretKey, 'message': '다시 확인해주세요.'})
 
     secretKey = Hrdb.objects.get(empnum = request.session['empnum']).secretkey
 
-    print(secretKey)
-    totp = pyotp.TOTP(base64.b32encode(secretKey.encode())).provisioning_uri('SOA Auth (' + request.session['empname'] + ')')
-    otp = pyotp.TOTP(base64.b32encode(secretKey.encode())).now()
-    print(otp)
-
-    return render_to_response('qr_auth.html', {'totp': totp, 'secretKey': secretKey})
+    return render_to_response('qr_auth.html', {'secretKey': secretKey})
 
 @csrf_exempt
 def e_usb(request):
@@ -1443,65 +1859,70 @@ def e_web(request):
 
 @csrf_exempt
 def e_application(request):
-    if request.user.is_authenticated():
-        dt = datetime.now()
-        dt.isoformat()
-        nowdate = str(dt).split(' ')[0]
+    dt = datetime.now()
+    dt.isoformat()
+    nowdate = str(dt).split(' ')[0]
 
-        employee = Hrdb.objects.get(empnum=request.session['empnum'])
-        log_id = request.session['lognum']
-        logData = Oafile.objects.get(id=int(log_id))
+    employee = Hrdb.objects.get(empnum=request.session['empnum'])
+    log_id = request.session['lognum']
+    logData = Oafile.objects.get(id=int(log_id))
 
-        return render(request, 'e_application.html', {'nowdate':nowdate, 'employee':employee, 'logData':logData}, RequestContext(request))
-    else:
-        return HttpResponseRedirect('/employee_login/')
+    return render(request, 'e_application.html', {'nowdate':nowdate, 'employee':employee, 'logData':logData}, RequestContext(request))
+
 
 @csrf_exempt
 def e_success(request):
-    if request.user.is_authenticated():
-        dt = datetime.now()
-        dt.isoformat()
-        nowdate = str(dt).split(' ')[0]
+    dt = datetime.now()
+    dt.isoformat()
+    nowdate = str(dt).split(' ')[0]
 
-        if request.method == 'POST':
-            if request.FILES:
-                files = request.FILES['file']
-                if request.POST.get('site'):
-                    new = UactivReportSaves(wdate=nowdate, center_team=request.POST.get('belong'), empname=request.POST.get('empname'), empnum=int(request.POST.get('empnum')), position=request.POST.get('position'), ip=request.POST.get('ip'), mac=request.POST.get('mac'), outflow_file=request.POST.get('outflow_file'), url_link=request.POST.get('site'), rf_outflow_file=request.POST.get('reason'), rf_outflow_file_detail=request.POST.get('detail'), upfilename=files, lognum=int(request.session['lognum']), logtable=request.session['logtable'], reasontype=request.session['reasontype'])
-                elif request.POST.get('model'):
-                    new = UactivReportSaves(wdate=nowdate, center_team=request.POST.get('belong'), empname=request.POST.get('empname'), empnum=int(request.POST.get('empnum')), position=request.POST.get('position'), ip=request.POST.get('ip'), mac=request.POST.get('mac'), outflow_file=request.POST.get('outflow_file'), model=request.POST.get('model'), owner=request.POST.get('owner'), source=request.POST.get('source'), rf_outflow_file=request.POST.get('reason'), rf_outflow_file_detail=request.POST.get('detail'), upfilename=files, lognum=int(request.session['lognum']), logtable=request.session['logtable'], reasontype=request.session['reasontype'])
-                elif request.POST.get('application'):
-                    new = UactivReportSaves(wdate=nowdate, center_team=request.POST.get('belong'), empname=request.POST.get('empname'), empnum=int(request.POST.get('empnum')), position=request.POST.get('position'), ip=request.POST.get('ip'), mac=request.POST.get('mac'), outflow_file=request.POST.get('outflow_file'), application=request.POST.get('application'), receiver=request.POST.get('receiver'), rf_outflow_file=request.POST.get('reason'), rf_outflow_file_detail=request.POST.get('detail'), upfilename=files, lognum=int(request.session['lognum']), logtable=request.session['logtable'], reasontype=request.session['reasontype'])
+    if request.method == 'POST':
+        if request.FILES:
+            files = request.FILES['file']
+            if request.POST.get('site'):
+                new = UactivReportSaves(wdate=nowdate, center_team=request.POST.get('belong'), empname=request.POST.get('empname'), empnum=int(request.POST.get('empnum')), position=request.POST.get('position'), ip=request.POST.get('ip'), mac=request.POST.get('mac'), outflow_file=request.POST.get('outflow_file'), url_link=request.POST.get('site'), rf_outflow_file=request.POST.get('reason'), rf_outflow_file_detail=request.POST.get('detail'), upfilename=files, lognum=int(request.session['lognum']), logtable=request.session['logtable'], reasontype=request.session['reasontype'])
+            elif request.POST.get('model'):
+                new = UactivReportSaves(wdate=nowdate, center_team=request.POST.get('belong'), empname=request.POST.get('empname'), empnum=int(request.POST.get('empnum')), position=request.POST.get('position'), ip=request.POST.get('ip'), mac=request.POST.get('mac'), outflow_file=request.POST.get('outflow_file'), model=request.POST.get('model'), owner=request.POST.get('owner'), source=request.POST.get('source'), rf_outflow_file=request.POST.get('reason'), rf_outflow_file_detail=request.POST.get('detail'), upfilename=files, lognum=int(request.session['lognum']), logtable=request.session['logtable'], reasontype=request.session['reasontype'])
+            elif request.POST.get('application'):
+                new = UactivReportSaves(wdate=nowdate, center_team=request.POST.get('belong'), empname=request.POST.get('empname'), empnum=int(request.POST.get('empnum')), position=request.POST.get('position'), ip=request.POST.get('ip'), mac=request.POST.get('mac'), outflow_file=request.POST.get('outflow_file'), application=request.POST.get('application'), receiver=request.POST.get('receiver'), rf_outflow_file=request.POST.get('reason'), rf_outflow_file_detail=request.POST.get('detail'), upfilename=files, lognum=int(request.session['lognum']), logtable=request.session['logtable'], reasontype=request.session['reasontype'])
 
-                new.save()
+            new.save()
 
-                delReasonMember = UactivReportSend.objects.get(empnum=int(request.POST.get('empnum')), lognum=request.session['lognum'])
-                delReasonMember.delete()
-            else:
-                if request.POST.get('site'):
-                    new = UactivReportSaves(wdate=nowdate, center_team=request.POST.get('belong'), empname=request.POST.get('empname'), empnum=int(request.POST.get('empnum')), position=request.POST.get('position'), ip=request.POST.get('ip'), mac=request.POST.get('mac'), outflow_file=request.POST.get('outflow_file'), url_link=request.POST.get('site'), rf_outflow_file=request.POST.get('reason'), rf_outflow_file_detail=request.POST.get('detail'), lognum=int(request.session['lognum']), logtable=request.session['logtable'], reasontype=request.session['reasontype'])
-                elif request.POST.get('model'):
-                    new = UactivReportSaves(wdate=nowdate, center_team=request.POST.get('belong'), empname=request.POST.get('empname'), empnum=int(request.POST.get('empnum')), position=request.POST.get('position'), ip=request.POST.get('ip'), mac=request.POST.get('mac'), outflow_file=request.POST.get('outflow_file'), model=request.POST.get('model'), owner=request.POST.get('owner'), source=request.POST.get('source'), rf_outflow_file=request.POST.get('reason'), rf_outflow_file_detail=request.POST.get('detail'), lognum=int(request.session['lognum']), logtable=request.session['logtable'], reasontype=request.session['reasontype'])
-                elif request.POST.get('application'):
-                    new = UactivReportSaves(wdate=nowdate, center_team=request.POST.get('belong'), empname=request.POST.get('empname'), empnum=int(request.POST.get('empnum')), position=request.POST.get('position'), ip=request.POST.get('ip'), mac=request.POST.get('mac'), outflow_file=request.POST.get('outflow_file'), application=request.POST.get('application'), receiver=request.POST.get('receiver'), rf_outflow_file=request.POST.get('reason'), rf_outflow_file_detail=request.POST.get('detail'), lognum=int(request.session['lognum']), logtable=request.session['logtable'], reasontype=request.session['reasontype'])
+            delReasonMember = UactivReportSend.objects.get(empnum=int(request.POST.get('empnum')), lognum=request.session['lognum'])
+            delReasonMember.delete()
+        else:
+            if request.POST.get('site'):
+                new = UactivReportSaves(wdate=nowdate, center_team=request.POST.get('belong'), empname=request.POST.get('empname'), empnum=int(request.POST.get('empnum')), position=request.POST.get('position'), ip=request.POST.get('ip'), mac=request.POST.get('mac'), outflow_file=request.POST.get('outflow_file'), url_link=request.POST.get('site'), rf_outflow_file=request.POST.get('reason'), rf_outflow_file_detail=request.POST.get('detail'), lognum=int(request.session['lognum']), logtable=request.session['logtable'], reasontype=request.session['reasontype'])
+            elif request.POST.get('model'):
+                new = UactivReportSaves(wdate=nowdate, center_team=request.POST.get('belong'), empname=request.POST.get('empname'), empnum=int(request.POST.get('empnum')), position=request.POST.get('position'), ip=request.POST.get('ip'), mac=request.POST.get('mac'), outflow_file=request.POST.get('outflow_file'), model=request.POST.get('model'), owner=request.POST.get('owner'), source=request.POST.get('source'), rf_outflow_file=request.POST.get('reason'), rf_outflow_file_detail=request.POST.get('detail'), lognum=int(request.session['lognum']), logtable=request.session['logtable'], reasontype=request.session['reasontype'])
+            elif request.POST.get('application'):
+                new = UactivReportSaves(wdate=nowdate, center_team=request.POST.get('belong'), empname=request.POST.get('empname'), empnum=int(request.POST.get('empnum')), position=request.POST.get('position'), ip=request.POST.get('ip'), mac=request.POST.get('mac'), outflow_file=request.POST.get('outflow_file'), application=request.POST.get('application'), receiver=request.POST.get('receiver'), rf_outflow_file=request.POST.get('reason'), rf_outflow_file_detail=request.POST.get('detail'), lognum=int(request.session['lognum']), logtable=request.session['logtable'], reasontype=request.session['reasontype'])
 
-                new.save()
+            new.save()
 
-                delReasonMember = UactivReportSend.objects.get(empnum=int(request.POST.get('empnum')), lognum=request.session['lognum'])
-                delReasonMember.delete()
+            delReasonMember = UactivReportSend.objects.get(empnum=int(request.POST.get('empnum')), lognum=request.session['lognum'])
+            delReasonMember.delete()
 
-        return render(request, 'e_success.html', {})
-    else:
-        return HttpResponseRedirect('/employee_login/')
-
-def qrtest(request):
-    totp = pyotp.TOTP('JBSWY3DPEHPK3PXP').provisioning_uri('SOA Auth')
-    print(totp)
-    totp2 = pyotp.TOTP('JBSWY3DPEHPK3PXP').now()
-    print(totp2)
-
-    return render(request, 'qr_auth.html', {'totp':totp})
+    return render(request, 'e_success.html', {})
 
 def test(request):
     dataList = ['a','b']
     return render(request, 'clip.html', {'username':request.session['username'], 'dataList':dataList})
+
+@csrf_exempt
+def test3(request):
+    if request.method == 'POST':
+        edit_form = EditForm(request.POST)
+
+        postdata = request.POST.copy()
+        captcha = recaptcha(request, postdata)
+        if captcha.decode('utf-8') == 'true':
+            captcha_response = 'YOU ARE HUMAN'
+        else:
+            captcha_response = 'YOU MUST BE A ROBOT'
+
+        return render_to_response('test_captcha.html', {'edit_form': edit_form, 'captcha_response': captcha_response})
+    else:
+        edit_form = EditForm()
+
+        return render_to_response('test_captcha.html', {'edit_form': edit_form})

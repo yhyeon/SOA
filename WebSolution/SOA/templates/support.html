@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/account.css' %}">
+    <link rel="stylesheet" href="{% static 'css/guideline.css' %}">
+{% endblock %}
+{% block js %}<script src={% static 'js/jquery-2.1.4.js' %}></script>{% endblock %}
+
+{% block content %}
+    <div class="title">
+        <h1>Support</h1>
+    </div>
+
+    <hr class="style3">
+
+    <center>
+        <img src="{% static 'img/support.png' %}">
+    </center>
+
+    <div class="move_top">
+        <a id="MOVE_TOP_BTN" href="#"><img src="{% static 'img/Top-Button.png' %}" width="50" height="50"></a>
+    </div>
+
+    <script>
+    $(function() {
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                $('.move_top').fadeIn();
+            } else {
+                $('.move_top').fadeOut();
+            }
+        });
+
+        $("#MOVE_TOP_BTN").click(function() {
+            $('html, body').animate({
+                scrollTop : 0
+            }, 400);
+            return false;
+        });
+    });
+    </script>
+{% endblock %}

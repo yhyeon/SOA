@@ -18,6 +18,10 @@ urlpatterns = [
     url(r'^logs/beginning/quick_scan/', views.b_quick_scan, name='b_quick_scan'),
     url(r'^logs/beginning/registry/', views.b_registry, name='b_registry'),
     url(r'^logs/beginning/zip_scan/', views.b_zip_scan, name='b_zip_scan'),
+    url(r'^logs/beginning/r_file/', views.b_rfile, name='b_rfile'),
+    url(r'^logs/beginning/mft/', views.b_mft, name='b_mft'),
+    url(r'^logs/beginning/usnjrnl/', views.b_usnjrnl, name='b_usnjrnl'),
+    url(r'^logs/beginning/archive/', views.b_archive, name='b_archive'),
 
     url(r'^logs/outflowsign/', views.outflowsign, name='logs_outflowsign'),
     url(r'^logs/outflowaction/', views.outflowaction, name='logs_outflowaction'),
@@ -41,8 +45,10 @@ urlpatterns = [
     url(r'^guideline/statute/itp/', views.statute_itp, name='guideline_statute_itp'),
     url(r'^guideline/statute/puc/', views.statute_puc, name='guideline_statute_puc'),
 
-    url(r'^guideline/case/', views.case, name='guideline_case'),
-    url(r'^guideline/preventive/', views.preventive, name='guideline_preventive'),
+    url(r'^guideline/case/(?P<year>\d{4})/$', views.case, name='guideline_case'),
+    url(r'^guideline/preventive/spy', views.preventive_spy, name='guideline_preventive_spy'),
+    url(r'^guideline/preventive/task', views.preventive_task, name='guideline_preventive_task'),
+    url(r'^guideline/preventive/overseas', views.preventive_overseas, name='guideline_preventive_overseas'),
     url(r'^guideline/communication/', views.communication, name='guideline_communication'),
 
     url(r'^setting/account/$', views.account, name='setting_account'),
@@ -64,5 +70,5 @@ urlpatterns = [
     url(r'^application/', views.e_application, name='application'),
     url(r'^success/', views.e_success, name='success'),
 
-    url(r'^test/', views.test, name='test'),
+    url(r'^test/', views.test3, name='test'),
 ]

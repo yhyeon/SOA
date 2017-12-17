@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/guideline.css' %}">{% endblock %}
+{% block js %}<script src={% static 'js/jquery-2.1.4.js' %}></script>{% endblock %}
+
+{% block content %}
+    <nav class="table-menu">
+        <ul>
+            <li><a href="{% url 'guideline_case' '2013' %}">2013</a></li>
+            <li><a href="{% url 'guideline_case' '2012' %}">2012</a></li>
+            <li><a href="{% url 'guideline_case' '2011' %}">2011</a></li>
+            <li><a href="{% url 'guideline_case' '2010' %}">2010</a></li>
+            <li><a href="{% url 'guideline_case' '2009' %}">2009</a></li>
+            <li><a href="{% url 'guideline_case' '2008' %}">2008</a></li>
+            <li><a href="{% url 'guideline_case' '2007' %}">2007</a></li>
+            <li><a href="{% url 'guideline_case' '2006' %}">2006</a></li>
+            <li><a href="{% url 'guideline_case' '2005' %}">2005</a></li>
+            <li><a href="{% url 'guideline_case' '2004' %}">2004</a></li>
+            <li><a href="{% url 'guideline_case' '2003' %}">2003</a></li>
+        </ul>
+    </nav>
+
+    <hr class="style3">
+
+    <center>
+    <div class="case-title">
+        <span>2006년 03월</span> 첨단 휴대폰 제조기술 카자흐스탄 유출 기도
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>S社 선임 연구원 이아무개는 러시아/CIS권 전문 컨설팅업체 F社 장모씨와 공모하여 S社가 개발한 이동통신 기술자료 및 프로그램, 최신 휴대폰 회로도 등 영업비밀을 유출하고 L社 휴대폰 제조분야 연구원 5명을 포섭하여 카자흐스탄 업체와 기술이전 계약체결을 통해 현지에 휴대폰 제조공장 설립을 추진하다가 적발</li>
+        </ul>
+        <center><img src="{% static 'img/case/2006_03.png' %}"></center>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2006년 01월</span> TFT-LCD 컬러필터 제조기술 중국 유출 기도
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>S社 퇴직 연구원인 박아무개는 재직 시 친분이 있던 S社 LCD 공정/설비/제조 등 공정별 연구원 12명을 고액 연봉으로 유인해서 S社가 주력 제품으로 집중 투자중인 컬러필터를 유출하여 심천에 중국측 투자금으로 TFT-LCD 라인/클린룸 등 全 공정이 가능한 공장 설립을 추진하다가 적발</li>
+        </ul>
+        <center><img src="{% static 'img/case/2006_01.png' %}"></center>
+    </div>
+    </center>
+
+    <hr class="style3">
+
+    <div class="whence">
+        <img src="{% static 'img/whence_logo.png' %}">
+    </div>
+
+    <div class="move_top">
+        <a id="MOVE_TOP_BTN" href="#"><img src="{% static 'img/Top-Button.png' %}" width="50" height="50"></a>
+    </div>
+
+    <script>
+    $(function() {
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                $('.move_top').fadeIn();
+            } else {
+                $('.move_top').fadeOut();
+            }
+        });
+
+        $("#MOVE_TOP_BTN").click(function() {
+            $('html, body').animate({
+                scrollTop : 0
+            }, 400);
+            return false;
+        });
+    });
+    </script>
+{% endblock %}

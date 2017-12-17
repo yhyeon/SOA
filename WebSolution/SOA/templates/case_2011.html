@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/guideline.css' %}">{% endblock %}
+{% block js %}<script src={% static 'js/jquery-2.1.4.js' %}></script>{% endblock %}
+
+{% block content %}
+    <nav class="table-menu">
+        <ul>
+            <li><a href="{% url 'guideline_case' '2013' %}">2013</a></li>
+            <li><a href="{% url 'guideline_case' '2012' %}">2012</a></li>
+            <li><a href="{% url 'guideline_case' '2011' %}">2011</a></li>
+            <li><a href="{% url 'guideline_case' '2010' %}">2010</a></li>
+            <li><a href="{% url 'guideline_case' '2009' %}">2009</a></li>
+            <li><a href="{% url 'guideline_case' '2008' %}">2008</a></li>
+            <li><a href="{% url 'guideline_case' '2007' %}">2007</a></li>
+            <li><a href="{% url 'guideline_case' '2006' %}">2006</a></li>
+            <li><a href="{% url 'guideline_case' '2005' %}">2005</a></li>
+            <li><a href="{% url 'guideline_case' '2004' %}">2004</a></li>
+            <li><a href="{% url 'guideline_case' '2003' %}">2003</a></li>
+        </ul>
+    </nav>
+
+    <hr class="style3">
+
+    <center>
+    <div class="case-title">
+        <span>2011년 12월</span> 국내 첨단 디스플레이기술 중국 유출 사건
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>국내 디스플레이업체 A社 前연구원 조모씨는 퇴사 前 비인가 USB등을 이용하여 CELL장비 관련 기술자료를 무단유출 후 중국 C社로 전직하여 기술자료 유출</li>
+            <li>또한 중국 C社 김모 부장은 A社 출신 조모씨와 김모씨와 다른 국내 디스플레이업체 B社 전 책임 연구원 이모씨와도 공모하여 A社 및 B社 차세대 공정기술자료를 유출하다 적발</li>
+            <li>이 사건은 외국업체가 금전제공 대가로 국내 경쟁업체 연구원을 포섭해 세계 최고 수준인 국내 디스플레이 제작 기술을 빼낸 사건으로 기업의 내부 직원대상 기술유출 경각심 제고 및 보안 시스템 강화가 지속적으로 필요함을 입증해주는 사건임</li>
+        </ul>
+        <center><img src="{% static 'img/case/2011_12.png' %}"></center>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2011년 08월</span> 의약품 원료 제조기술 중국 유출 기도
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>국가 R&D자금 등 수십억원을 투입ㆍ개발한 C社의 '의약품 원료 제조기술'이 제조시설 담당 계약직 직원 이모씨가 원료를 제조ㆍ수출시 수익성이 높아질 것이라고 판단</li>
+            <li>설비담당직원 김모, 최모씨와 공모하여 공정시설 설계도면 제조기술 영업비밀을 불법 유출한 후 유출한 자료를 이용, 동종업계 G社를 설립하고 중국 등 해외업체에 투자자를 모집하다 적발</li>
+        </ul>
+        <center><img src="{% static 'img/case/2011_08.png' %}"></center>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2011년 04월</span> 중국인 연구원 A전자 가전기술 해외 유출 기도 사건
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>국내 A전자 연구소에서 근무하던 중국인 연구원 C모씨는 A전자의 가전제품 소음방지 기술 및 경영전략 등 핵심영업기밀 자료를 출력, 디지털카메라로 촬영한 뒤 노트북에 담아 중국 최대 가전업체인 H社로 전직시 해당 자료를 유출 기도하다 적발</li>
+            <li>이 사건은 외국인 연구원에 의한 대표적인 사건으로 기술유출을 사전에 차단하여 국내 핵심 기밀 자료가 중국으로 유출ㆍ활용되었을 경우 발생할 기술격차 단축 등 막대한 피해를 사전 예방</li>
+        </ul>
+        <center><img src="{% static 'img/case/2011_04.png' %}"></center>
+    </div>
+    </center>
+
+    <hr class="style3">
+
+    <div class="whence">
+        <img src="{% static 'img/whence_logo.png' %}">
+    </div>
+
+    <div class="move_top">
+        <a id="MOVE_TOP_BTN" href="#"><img src="{% static 'img/Top-Button.png' %}" width="50" height="50"></a>
+    </div>
+
+    <script>
+    $(function() {
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                $('.move_top').fadeIn();
+            } else {
+                $('.move_top').fadeOut();
+            }
+        });
+
+        $("#MOVE_TOP_BTN").click(function() {
+            $('html, body').animate({
+                scrollTop : 0
+            }, 400);
+            return false;
+        });
+    });
+    </script>
+{% endblock %}

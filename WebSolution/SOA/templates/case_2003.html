@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/guideline.css' %}">{% endblock %}
+{% block js %}<script src={% static 'js/jquery-2.1.4.js' %}></script>{% endblock %}
+
+{% block content %}
+    <nav class="table-menu">
+        <ul>
+            <li><a href="{% url 'guideline_case' '2013' %}">2013</a></li>
+            <li><a href="{% url 'guideline_case' '2012' %}">2012</a></li>
+            <li><a href="{% url 'guideline_case' '2011' %}">2011</a></li>
+            <li><a href="{% url 'guideline_case' '2010' %}">2010</a></li>
+            <li><a href="{% url 'guideline_case' '2009' %}">2009</a></li>
+            <li><a href="{% url 'guideline_case' '2008' %}">2008</a></li>
+            <li><a href="{% url 'guideline_case' '2007' %}">2007</a></li>
+            <li><a href="{% url 'guideline_case' '2006' %}">2006</a></li>
+            <li><a href="{% url 'guideline_case' '2005' %}">2005</a></li>
+            <li><a href="{% url 'guideline_case' '2004' %}">2004</a></li>
+            <li><a href="{% url 'guideline_case' '2003' %}">2003</a></li>
+        </ul>
+    </nav>
+
+    <hr class="style3">
+
+    <center>
+    <div class="case-title">
+        <span>2003년 10월</span> PDP 핵심기술 대만 유출 기도
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>A社 부장인 정 아무개는 임원 승진에서 탈락 한데 불만을 품고 있던 중 前 A社 직원이었던 재미 대학후배인 김아무개로부터 'PDP 다면취 공법'에 관한 기술매매 제안을 받고 대만 디스플레이 제조회사인 Z社에 'PDP 다면취 제조공정'관련 기술자료 일부를 2억원에 양도하기로 한 후 관련 자료를 플로피디스켓에 저장하여 회사 뒷문을 통해 자택으로 가져가 Z社로 송부하려다 적발</li>
+        </ul>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2003년 09월</span> 미생물 발효장비 제작기술 유출 기도
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>전략물자/기술로 지정되어 있는 미생물 발효장비 제조업체인 K社에 근무하던 이 아무개 등 4명은 미생물 발효장비 제조기술과 영업 관련 정보를 빼내어 사업화하기로 공모하고 퇴직후 업체를 설립, 빼내 온 설계도면을 활용하여 미생물 발효장비를 제작/판매하였으나 사업이 여의치 않자 설계도면 등 기술자료를 중국 J社에 판매하려다 적발</li>
+        </ul>
+    </div>
+    </center>
+
+    <hr class="style3">
+
+    <div class="whence">
+        <img src="{% static 'img/whence_logo.png' %}">
+    </div>
+
+    <div class="move_top">
+        <a id="MOVE_TOP_BTN" href="#"><img src="{% static 'img/Top-Button.png' %}" width="50" height="50"></a>
+    </div>
+
+    <script>
+    $(function() {
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                $('#MOVE_TOP_BTN').fadeIn();
+            } else {
+                $('#MOVE_TOP_BTN').fadeOut();
+            }
+        });
+
+        $("#MOVE_TOP_BTN").click(function() {
+            $('html, body').animate({
+                scrollTop : 0
+            }, 400);
+            return false;
+        });
+    });
+    </script>
+
+{% endblock %}

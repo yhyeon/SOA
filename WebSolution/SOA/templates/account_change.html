@@ -81,6 +81,21 @@
                         <span>변경하실 비밀번호를 다시 입력해주세요.</span>
                     </li><br>
 
+                    <div class="captcha">
+                        {% if captcha_response %}
+                            <span>{{ captcha_response }}</span>
+                        {% endif %}
+
+                        <script type="text/javascript" src="http://api.recaptcha.net/challenge?k=6Lf-cDoUAAAAAM8ctMmJBTAtZrcEJ15C1D5ceWuc"></script>
+
+                        <noscript>
+                            <iframe src="http://api.recaptcha.net/noscript?k=6Lf-cDoUAAAAAM8ctMmJBTAtZrcEJ15C1D5ceWuc" height="300" width="500" frameborder="0"></iframe><br>
+                            <textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
+                            <input type="hidden" name="recaptcha_response_field" value="manual_challenge">
+                        </noscript>
+                    </div>
+
+                    <br>
                     <input type="button" value="취소" onclick="history.back();">
                     <input type="button" value="확인" onclick="chk();">
                 </center>

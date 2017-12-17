@@ -7,3 +7,6 @@ class LoginForm(forms.Form):
 class ELoginForm(forms.Form):
     empnum = forms.CharField(label='empnum')
     lognum = forms.CharField(label='lognum')
+
+class EditForm(forms.Form):
+    data_field = forms.CharField()

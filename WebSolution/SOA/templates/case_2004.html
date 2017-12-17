@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/guideline.css' %}">{% endblock %}
+{% block js %}<script src={% static 'js/jquery-2.1.4.js' %}></script>{% endblock %}
+
+
+{% block content %}
+    <nav class="table-menu">
+        <ul>
+            <li><a href="{% url 'guideline_case' '2013' %}">2013</a></li>
+            <li><a href="{% url 'guideline_case' '2012' %}">2012</a></li>
+            <li><a href="{% url 'guideline_case' '2011' %}">2011</a></li>
+            <li><a href="{% url 'guideline_case' '2010' %}">2010</a></li>
+            <li><a href="{% url 'guideline_case' '2009' %}">2009</a></li>
+            <li><a href="{% url 'guideline_case' '2008' %}">2008</a></li>
+            <li><a href="{% url 'guideline_case' '2007' %}">2007</a></li>
+            <li><a href="{% url 'guideline_case' '2006' %}">2006</a></li>
+            <li><a href="{% url 'guideline_case' '2005' %}">2005</a></li>
+            <li><a href="{% url 'guideline_case' '2004' %}">2004</a></li>
+            <li><a href="{% url 'guideline_case' '2003' %}">2003</a></li>
+        </ul>
+    </nav>
+
+    <hr class="style3">
+
+    <center>
+    <div class="case-title">
+        <span>2004년 11월</span> TFT-LCD 제조기술 해외 유출 기도
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>2004.08 C社의 TFT-LCD 컬러필터 연구원 3명은 대만 투자기업인 M社 대표로부터 억대 고액연봉과 함께 대만으로 전직을 권유 받고 동시에 퇴직하면 의심을 받을 수 있다는 것을 알고, 차례로 퇴직하기로 공모한 후 회사 노트북에 저장된 TFT-LCD 제조와 관련된 기술자료를 USB메모리에 무단 복제하여 자택에 보관하고 09.22 ~ 25간 3명이 함께 대만을 방문하여 M社 측과 기술면접 후 고용계약을 체결하고 기술유출을 시도하다가 적발</li>
+        </ul>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2004년 09월</span> 반도체 웨이퍼 검사장비 운용기술 해외 유출 기도
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>2004.05 A社의 반도체개발본부에서 근무하던 박 아무개는 회사에 알리지 않은 채 경쟁사인 I社에 취업하기로 합의하고 퇴직 前 社內 主서버에 침투하여 5회에 걸쳐 512메가 DDR램, 32메가램, 126/256메가램용 웨이퍼 검사장비 운용 핵심 프로그램 340여개를 무단으로 내려 받아 개인 이메일로 불법 전송하여 빼낸 후 2004.09 A社를 퇴사한 후 외국 경쟁사인 I社에 근무하기 위해 빼낸 기술자료를 가지고 출국하려다가 적발</li>
+        </ul>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2004년 09월</span> 초음파 진단기 제조기술 해외 유출 기도
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>국내 의료기기 제조업체인 K社에 근무하던 Y아무개 등 3명은 회사가 경영난으로 법정관리에 들어가자, 순차적으로 퇴직한 후 독일에 본사를 둔 S社의 국내 연구소로 전직하면서 K社가 2,100억원을 투자/개발하여 세계시장 1위를 점유한 초음파 진단기 핵심기술 및 영업상 비밀자료 등 1,800개 파일을 CD/USB메모리에 무단 복사하여 빼낸 후 S社의 국내연구소에서 K社와 동일한 제품을 만들어 영업에 활용타 적발</li>
+        </ul>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2004년 06월</span> 바이오 환경기술 해외 유출 기도
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>국내 바이오 환경기업인 B社의 前 기술이사 최 아무개는 2003.03 ~ 06간 중국에 음식물 쓰레기 처리기계 하청생산을 추진하는 과정에서 중국지사장 천 아무개와 공모하여 장비 설계도면과 국내에서 출원한 특허서류 등 기술자료 일체를 빼내어 2003.06 최 아무개가 개인적으로 중국에 설립한 K社 명의로 동일 내용의 특허를 本社 몰래 중국정부에 출원하는 한편 K社 홈페이지에 同 제품을 광고하면서 중국 内 대리점을 모집하는 등 사업화를 기도하다 적발</li>
+        </ul>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2004년 05월</span> 첨단 휴대폰 제조기술 해외 유출 기도
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>외국계 회사인 Q코리아社의 부사장인 조아무개는 휴대폰 개발 위장 회사인 C코리아社를 설립한 후 국내 휴대폰 제조업체인 Y社의 연구원 양아무개 등 8명을 각종 인센티브/스톡옵션 제공 등을 제시하면서 포섭하여 양아무개 등 8명은 Y社가 206억원의 연구비를 투입하여 수출용으로 개발한 GSM/GPRS핸드폰 제조기술 자료를 퇴사하면서 무단으로 반출한 후 해외로 유출하려다 적발</li>
+        </ul>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2004년 04월</span> LCD 생산장비 제조기술 해외 유출 기도
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>국내 유일의 LCD(액정표시장치)용 플라즈마 화학증착(PECVD) 장치 제조업체인 H社가 해외 거대 기업과 대만에서 힘겨운 특허분쟁을 진행 중에 있을 때 H社 전직 임원인 서아무개 등 2명은 同社가 약 1,141억원의 연구개발비를 투자하여 개발한 LCD(액정표시장치) 생산장비 제조기술을 경쟁업체인 외국 A社(세계 LCD장비시장 80% 점유)로 전직하면서 유출할 목적으로 3GB에 달하는 방대한 분량의 LCD PECVD 장비 제조관련 기술 자료를 7~8회에 걸쳐 휴대용 USB메모리 스틱에 복제한 후 은닉해 오다 적발</li>
+        </ul>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2004년 01월</span> 메모리 반도체 핵심기술 해외 유출 기도
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>국내 굴지의 반도체 제조업체인 T社 책임연구원인 우 아무개는 회사 경영상태가 악화되자 향후 거취문제로 고심하던 중 해외 경쟁업체인 S社로 전직한 동료 박 아무개 등 4명과 공모하여 재취업 시 활용할 목적으로 P社가 4,070억원을 들여 개발한 반도체 핵심기술 자료 20GB(A4용지 20만매)를 인터넷 사이버폴더를 이용하여 무단 반출 후 해외로 유출하려다 적발</li>
+        </ul>
+    </div>
+    </center>
+
+    <hr class="style3">
+
+    <div class="whence">
+        <img src="{% static 'img/whence_logo.png' %}">
+    </div>
+
+    <div class="move_top">
+        <a id="MOVE_TOP_BTN" href="#"><img src="{% static 'img/Top-Button.png' %}" width="50" height="50"></a>
+    </div>
+
+    <script>
+    $(function() {
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                $('.move_top').fadeIn();
+            } else {
+                $('.move_top').fadeOut();
+            }
+        });
+
+        $("#MOVE_TOP_BTN").click(function() {
+            $('html, body').animate({
+                scrollTop : 0
+            }, 400);
+            return false;
+        });
+    });
+    </script>
+{% endblock %}

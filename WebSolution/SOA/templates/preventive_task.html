@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/guideline.css' %}">
+    <link rel="stylesheet" href="{% static 'css/w3.css' %}">
+
+    <style>
+        .mySlides {display:none}
+        .w3-left, .w3-right, .w3-badge {cursor:pointer}
+        .w3-badge {height:13px;width:13px;padding:0}
+    </style>
+{% endblock %}
+
+{% block content %}
+    <nav class="table-menu">
+        <ul>
+            <li><a href="{% url 'guideline_preventive_spy' %}">산업스파이 식별요령</a></li>
+            <li><a href="{% url 'guideline_preventive_task' %}">업무 시 산업보안 행동수칙</a></li>
+            <li><a href="{% url 'guideline_preventive_overseas' %}">해외출장 시 산업보안 행동수칙</a></li>
+        </ul>
+    </nav>
+
+    <hr class="style3">
+
+    <div class="pre-title">
+        <h5>업무 시 산업보안 행동수칙</h5>
+    </div>
+
+    <div class="w3-content w3-display-container" style="max-width:800px">
+        <center>
+            <img class="mySlides" src="{% static 'img/task/task_1.PNG'%}" style="width:550px; height: 650px">
+            <img class="mySlides" src="{% static 'img/task/task_2.PNG'%}" style="width:550px; height: 650px">
+            <img class="mySlides" src="{% static 'img/task/task_3.PNG' %}" style="width:550px; height: 650px">
+            <img class="mySlides" src="{% static 'img/task/task_4.PNG' %}" style="width:550px; height: 650px">
+            <img class="mySlides" src="{% static 'img/task/task_5.PNG' %}" style="width:550px; height: 650px">
+            <img class="mySlides" src="{% static 'img/task/task_6.PNG' %}" style="width:550px; height: 650px">
+            <img class="mySlides" src="{% static 'img/task/task_7.PNG' %}" style="width:550px; height: 650px">
+            <img class="mySlides" src="{% static 'img/task/task_8.PNG' %}" style="width:550px; height: 650px">
+            <img class="mySlides" src="{% static 'img/task/task_9.PNG' %}" style="width:550px; height: 650px"><br><br>
+        </center>
+        <div class="w3-center w3-section w3-large w3-text-black w3-display-bottomleft" style="width:100%">
+            <div class="w3-left w3-padding-left w3-hover-text-khaki" onclick="plusDivs(-1)">&#10094;</div>
+            <div class="w3-right w3-padding-right w3-hover-text-khaki" onclick="plusDivs(1)">&#10095;</div>
+            <span class="w3-badge demo w3-border w3-transparent w3-hover-black" onclick="currentDiv(1)"></span>
+            <span class="w3-badge demo w3-border w3-transparent w3-hover-black" onclick="currentDiv(2)"></span>
+            <span class="w3-badge demo w3-border w3-transparent w3-hover-black" onclick="currentDiv(3)"></span>
+            <span class="w3-badge demo w3-border w3-transparent w3-hover-black" onclick="currentDiv(4)"></span>
+            <span class="w3-badge demo w3-border w3-transparent w3-hover-black" onclick="currentDiv(5)"></span>
+            <span class="w3-badge demo w3-border w3-transparent w3-hover-black" onclick="currentDiv(6)"></span>
+            <span class="w3-badge demo w3-border w3-transparent w3-hover-black" onclick="currentDiv(7)"></span>
+            <span class="w3-badge demo w3-border w3-transparent w3-hover-black" onclick="currentDiv(8)"></span>
+            <span class="w3-badge demo w3-border w3-transparent w3-hover-black" onclick="currentDiv(9)"></span>
+
+        </div>
+    </div>
+
+    <hr class="style3">
+
+    <div class="whence">
+        <img src="{% static 'img/whence_logo.png' %}">
+    </div>
+
+    <script>
+        var slideIndex = 1;
+        showDivs(slideIndex);
+
+        function plusDivs(n) {
+          showDivs(slideIndex += n);
+        }
+
+        function currentDiv(n) {
+          showDivs(slideIndex = n);
+        }
+
+        function showDivs(n) {
+          var i;
+          var x = document.getElementsByClassName("mySlides");
+          var dots = document.getElementsByClassName("demo");
+          if (n > x.length) {slideIndex = 1}
+          if (n < 1) {slideIndex = x.length} ;
+          for (i = 0; i < x.length; i++) {
+             x[i].style.display = "none";
+          }
+          for (i = 0; i < dots.length; i++) {
+             dots[i].className = dots[i].className.replace(" w3-white", "");
+          }
+          x[slideIndex-1].style.display = "block";
+          dots[slideIndex-1].className += " w3-white";
+        }
+    </script>
+{% endblock %}

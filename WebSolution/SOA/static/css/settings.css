@@ -26,3 +26,25 @@
     /*font-family: Georgia, "Times New Roman", Times, serif;*/
     font-family: 'Open Sans Condensed', sans-serif;
 }
+
+div.account-title {
+  display: block;
+    margin-top: 20px;
+  margin-left: 13px;
+  max-width: 600px;
+  padding:5px;
+  width: 100%;
+}
+
+.account-title h3 {
+   color: #000000;
+   font-size: 22px;
+   font-weight: 700;
+   font-style:normal;
+}
+
+hr.style3{
+	border-top: 1px solid #8c8b8b;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

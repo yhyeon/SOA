@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/guideline.css' %}">{% endblock %}
+{% block js %}<script src={% static 'js/jquery-2.1.4.js' %}></script>{% endblock %}
+
+{% block content %}
+    <nav class="table-menu">
+        <ul>
+            <li><a href="{% url 'guideline_case' '2013' %}">2013</a></li>
+            <li><a href="{% url 'guideline_case' '2012' %}">2012</a></li>
+            <li><a href="{% url 'guideline_case' '2011' %}">2011</a></li>
+            <li><a href="{% url 'guideline_case' '2010' %}">2010</a></li>
+            <li><a href="{% url 'guideline_case' '2009' %}">2009</a></li>
+            <li><a href="{% url 'guideline_case' '2008' %}">2008</a></li>
+            <li><a href="{% url 'guideline_case' '2007' %}">2007</a></li>
+            <li><a href="{% url 'guideline_case' '2006' %}">2006</a></li>
+            <li><a href="{% url 'guideline_case' '2005' %}">2005</a></li>
+            <li><a href="{% url 'guideline_case' '2004' %}">2004</a></li>
+            <li><a href="{% url 'guideline_case' '2003' %}">2003</a></li>
+        </ul>
+    </nav>
+
+    <hr class="style3">
+
+    <center>
+    <div class="case-title">
+        <span>2010년 04월</span> 국내 3D기술 중국 유출 사건
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>국내 3D제초업체 A社 연구소장 서모씨와 동종업체 B社의 대표 곽모씨는 중국 통신장비업체 D社와 함께 중국에 3D입체영상을 만드는 자회사를 설립키로 하고 2009.12 A社의 3D제조기술이 담긴 파일을 빼내 2010.02 기술 일부를 중국의 D社에게 유출하다 적발</li>
+            <li>A社의 3D기술은 특수안경 등 별도의 장비 사용 없이도 화면에 입체감을 구현하는 입체영상 제조기술로 중국으로 유출 시 막대한 국부유출 우려</li>
+        </ul>
+        <center><img src="{% static 'img/case/2010_04.png' %}"></center>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2010년 03월</span> 반도체 핵심기술 해외 유출 사건
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>국내 반도체 제조회사 A社에 반도체 장비를 납품하는 협력업체 B社는 A/S등을 빙자해 영업비밀 서류를 절취하거나 친분을 이용해 A社의 영업기밀을 빼내는 수법으로 국가핵심기술로 지정된 A社의 반도체 핵심기술을 해외로 유출하다 적발</li>
+            <li>이 사건은 전ㆍ현직 직원에 의한 기술유출이 아닌 협력업체 직원에 의해 이뤄졌다는 점에서 협력업체에 대한 보안관리 강화의 필요성을 일깨워준 기술유출 사건임</li>
+        </ul>
+        <center><img src="{% static 'img/case/2010_03.png' %}"></center>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2010년 02월</span> 양문형 냉장고 설계기술 중국 유출 기도
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>국내 전자제품 생산업체 A社의 협력업체인 B社 대표 김모씨는 A社의 양문형 냉장고 설계도면 등 신제품 핵심기술을 중국 H社로 유출을 기도하다 적발</li>
+            <li>B社대표 김모씨는 前 A社 부장이었던 P씨와 A社 과장 L씨에게서 핵심기술 내용이 포함된 양문형 냉장고 기술파일을 전달받는 한편, 업무협력 차원에서 A社에 파견한 인력을 통해 불법 취득한 영업비밀을 2009.08 중국 H사와 기술자문 계약을 체결하고 핵심기술유출을 기도, 유출 시 막대한 국부유출 우려</li>
+        </ul>
+        <center><img src="{% static 'img/case/2010_02.png' %}"></center>
+    </div>
+    </center>
+
+    <hr class="style3">
+
+    <div class="whence">
+        <img src="{% static 'img/whence_logo.png' %}">
+    </div>
+
+    <div class="move_top">
+        <a id="MOVE_TOP_BTN" href="#"><img src="{% static 'img/Top-Button.png' %}" width="50" height="50"></a>
+    </div>
+
+    <script>
+    $(function() {
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                $('.move_top').fadeIn();
+            } else {
+                $('.move_top').fadeOut();
+            }
+        });
+
+        $("#MOVE_TOP_BTN").click(function() {
+            $('html, body').animate({
+                scrollTop : 0
+            }, 400);
+            return false;
+        });
+    });
+    </script>
+{% endblock %}

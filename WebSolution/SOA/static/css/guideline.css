@@ -14,6 +14,14 @@
     margin-top: 10px;
 }
 
+.pre-title h5 {
+    color: #111 !important;
+    font-size: 32px;
+    font-weight: 700;
+    font-style:normal;
+    text-align: center;
+}
+
 .content-title h2 {
     color: #111 !important;
     font-size: 14px;
@@ -78,4 +86,52 @@ hr.style3{
 
 .table-menu li:first-child {
     border-left: none !important;
+}
+
+.case-title {
+    width: 70%;
+    padding-left: 20px;
+    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #000000;
+}
+
+.case-title span {
+    font-size: 22px;
+    font-weight: 600;
+    color: #878787;
+}
+
+.case-content {
+    width: 70%;
+    padding-left: 20px;
+    font-size:16px;
+    font-weight: 400;
+    color: #000000;
+}
+
+.case-content ul {
+    padding-left: 20px;
+    margin-bottom: 20px;
+    line-height: 1.5em;
+    list-style-type: circle;
+    text-align: left;
+}
+
+.whence {
+    width: 100%;
+}
+
+.whence img {
+    margin-right: 20px;
+    margin-bottom: 20px;
+    float: right;
+}
+
+.move_top {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    display: none;
 }

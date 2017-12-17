@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/tablestyle.css' %}">{% endblock %}
+
+{% block content %}
+    <div class="table-title">
+        <h3>Usnjrnl Data Table (Current Page : {{ currentPage }})</h3>
+    </div>
+
+    <nav class="table-menu">
+        <ul>
+            <li><a href="{% url 'b_file_log' %}">File Scan</a></li>
+            <li><a href="{% url 'b_driver' %}">Driver Win7</a></li>
+            <li><a href="{% url 'b_download_chrome' %}">Download Chrom</a></li>
+            <li><a href="{% url 'b_history_chrome' %}">History Chrom</a></li>
+            <li><a href="{% url 'b_history_ie' %}">History IE</a></li>
+            <li><a href="{% url 'b_log_on_off' %}">Log On/Off</a></li>
+            <li><a href="{% url 'b_oa_file' %}">Oa File</a></li>
+            <li><a href="{% url 'b_oa_mtp' %}">Oa Mtp</a></li>
+            <li><a href="{% url 'b_partition_win10' %}">Partition Win10</a></li>
+            <li><a href="{% url 'b_quick_scan' %}">Quick Scan</a></li>
+            <li><a href="{% url 'b_registry' %}">Registry</a></li>
+            <li><a href="{% url 'b_zip_scan' %}">Zip Scan</a></li>
+            <li><a href="{% url 'b_mft' %}">MFT</a></li>
+            <li><a href="{% url 'b_usnjrnl' %}">Usnjrnl</a></li>
+            <li><a href="{% url 'b_archive' %}">Archive</a></li>
+            <li><a href="{% url 'b_rfile' %}">R File</a></li>
+        </ul>
+    </nav>
+
+    <div class="cd-search is-hidden">
+        <form id="search-form" method="post" action=".">{% csrf_token %}
+            {% if search_data %}
+                <input type="search" name="search_data" placeholder="{{ search_data }}" />
+                <select name="col_type">
+                    <option value="id">No</option>
+                    <option value="disksn">Disk Serial Number</option>
+                    <option value="udname">User Domain Name</option>
+                    <option value="cname">Computer Name</option>
+                    <option value="ip">IP</option>
+                    <option value="mac">MAC</option>
+                    <option value="uname">User Name</option>
+                    <option value="vpath">Volume Path</option>
+                    <option value="recordnum">Record Num</option>
+                    <option value="fsequencenum">File Sequence Num</option>
+                    <option value="precordnum">Parent Record Num</option>
+                    <option value="pfsequencenum">Parent File Sequence Num</option>
+                    <option value="usn">USN</option>
+                    <option value="datetime">Date Time</option>
+                    <option value="reason">Reason</option>
+                    <option value="fname">File Name</option>
+                    <option value="fattr">File Attributes</option>
+                </select>
+            {% else %}
+                <input type="search" name="search_data" placeholder="Search..." />
+                <select name="col_type">
+                    <option value="id">No</option>
+                    <option value="disksn">Disk Serial Number</option>
+                    <option value="udname">User Domain Name</option>
+                    <option value="cname">Computer Name</option>
+                    <option value="ip">IP</option>
+                    <option value="mac">MAC</option>
+                    <option value="uname">User Name</option>
+                    <option value="vpath">Volume Path</option>
+                    <option value="recordnum">Record Num</option>
+                    <option value="fsequencenum">File Sequence Num</option>
+                    <option value="precordnum">Parent Record Num</option>
+                    <option value="pfsequencenum">Parent File Sequence Num</option>
+                    <option value="usn">USN</option>
+                    <option value="datetime">Date Time</option>
+                    <option value="reason">Reason</option>
+                    <option value="fname">File Name</option>
+                    <option value="fattr">File Attributes</option>
+                </select>
+            {% endif %}
+        </form>
+    </div> <!-- Search From END -->
+
+    <div class="table-wrapper">
+        <div class="table-content">
+            <table class="table-fill">
+                <thead>
+                    <tr>
+                        <th class="text-left">No</th>
+                        <th class="text-left">Disk Serial Number</th>
+                        <th class="text-left">User Domain Name</th>
+                        <th class="text-left">Computer Name</th>
+                        <th class="text-left">IP</th>
+                        <th class="text-left">MAC</th>
+                        <th class="text-left">User Name</th>
+                        <th class="text-left">Volume Path</th>
+                        <th class="text-left">Record Num</th>
+                        <th class="text-left">File Sequence Num</th>
+                        <th class="text-left">Parent Record Num</th>
+                        <th class="text-left">Parent File Sequence Num</th>
+                        <th class="text-left">USN</th>
+                        <th class="text-left">Date Time</th>
+                        <th class="text-left">Reason</th>
+                        <th class="text-left">File Name</th>
+                        <th class="text-left">File Attributes</th>
+                    </tr>
+                </thead>
+
+                <tbody class="table-hover">
+                    {% if search_data %}
+                        {% if dataList %}
+                            {% for dataRow in dataList %}
+                                <tr>
+                                    <td class="text-left">{{ dataRow.0 }}</td>
+                                    <td class="text-left">{{ dataRow.1 }}</td>
+                                    <td class="text-left">{{ dataRow.2 }}</td>
+                                    <td class="text-left">{{ dataRow.3 }}</td>
+                                    <td class="text-left">{{ dataRow.4 }}</td>
+                                    <td class="text-left">{{ dataRow.5 }}</td>
+                                    <td class="text-left">{{ dataRow.6 }}</td>
+                                    <td class="text-left">{{ dataRow.7 }}</td>
+                                    <td class="text-left">{{ dataRow.8 }}</td>
+                                    <td class="text-left">{{ dataRow.9 }}</td>
+                                    <td class="text-left">{{ dataRow.10 }}</td>
+                                    <td class="text-left">{{ dataRow.11 }}</td>
+                                    <td class="text-left">{{ dataRow.12 }}</td>
+                                    <td class="text-left">{{ dataRow.13 }}</td>
+                                    <td class="text-left">{{ dataRow.14 }}</td>
+                                    <td class="text-left">{{ dataRow.15 }}</td>
+                                    <td class="text-left">{{ dataRow.16 }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <td class="text-center" colspan="17" width="1300">No Data</td>
+                        {% endif %}
+                    {% else %}
+                        {% if dataList %}
+                            {% for dataRow in dataList %}
+                                <tr>
+                                    <td class="text-left">{{ dataRow.pk }}</td>
+                                    <td class="text-left">{{ dataRow.disksn }}</td>
+                                    <td class="text-left">{{ dataRow.udname }}</td>
+                                    <td class="text-left">{{ dataRow.cname }}</td>
+                                    <td class="text-left">{{ dataRow.ip }}</td>
+                                    <td class="text-left">{{ dataRow.mac }}</td>
+                                    <td class="text-left">{{ dataRow.uname }}</td>
+                                    <td class="text-left">{{ dataRow.vpath }}</td>
+                                    <td class="text-left">{{ dataRow.recordnum }}</td>
+                                    <td class="text-left">{{ dataRow.fsequencenum }}</td>
+                                    <td class="text-left">{{ dataRow.precordnum }}</td>
+                                    <td class="text-left">{{ dataRow.pfsequencenum }}</td>
+                                    <td class="text-left">{{ dataRow.usn }}</td>
+                                    <td class="text-left">{{ dataRow.datetime }}</td>
+                                    <td class="text-left">{{ dataRow.reason }}</td>
+                                    <td class="text-left">{{ dataRow.fname }}</td>
+                                    <td class="text-left">{{ dataRow.fattr }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <td class="text-center" colspan="17" width="1300">No Data</td>
+                        {% endif %}
+                    {% endif %}
+                </tbody>
+            </table> <!-- Content Table END -->
+        </div>
+        <hr class="style3">
+
+        <div class="table-number-cover">
+            <span>
+                {% ifequal 1 prev %}
+                    <form class="table-number" method="post" action="./">{% csrf_token %}
+                        {% if search_data %}
+                            <input type="hidden" name="search_data" value={{ search_data }} />
+                            <input type="hidden" name="col_type" value={{ col_type }} />
+                            <input type="hidden" name="prev" value={{ currentPage }} />
+                            <input type="submit" value="<" />
+                        {% else %}
+                            <input type="hidden" name="prev" value={{ currentPage }} />
+                            <input type="submit" value="<" />
+                        {% endif %}
+                    </form>
+                {% endifequal %}
+                {% for page in totalPageList %}
+                    <form class="table-number" method="post" action="./">{% csrf_token %}
+                        {% if search_data %}
+                            <input type="hidden" name="search_data" value={{ search_data }} />
+                            <input type="hidden" name="col_type" value={{ col_type }} />
+                            <input type="hidden" name="page" value={{ page }} />
+                            <input type="submit" value="[{{ page }}]" />
+                        {% else %}
+                            <input type="hidden" name="page" value={{ page }} />
+                            <input type="submit" value="[{{ page }}]" />
+                        {% endif %}
+                    </form>
+                {% endfor %}
+                {% ifequal 1 next %}
+                    <form class="table-number" method="post" action="./">{% csrf_token %}
+                        {% if search_data %}
+                            <input type="hidden" name="search_data" value={{ search_data }} />
+                            <input type="hidden" name="col_type" value={{ col_type }} />
+                            <input type="hidden" name="next" value={{ currentPage }} />
+                            <input type="submit" value=">" />
+                        {% else %}
+                            <input type="hidden" name="next" value={{ currentPage }} />
+                            <input type="submit" value=">" />
+                        {% endif %}
+                    </form>
+                {% endifequal %}
+            </span>
+        </div><!-- Table Number END -->
+    </div>
+{% endblock %}

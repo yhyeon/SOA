@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}SOA WebSolution{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/guideline.css' %}">{% endblock %}
+{% block js %}<script src={% static 'js/jquery-2.1.4.js' %}></script>{% endblock %}
+
+{% block content %}
+    <nav class="table-menu">
+        <ul>
+            <li><a href="{% url 'guideline_case' '2013' %}">2013</a></li>
+            <li><a href="{% url 'guideline_case' '2012' %}">2012</a></li>
+            <li><a href="{% url 'guideline_case' '2011' %}">2011</a></li>
+            <li><a href="{% url 'guideline_case' '2010' %}">2010</a></li>
+            <li><a href="{% url 'guideline_case' '2009' %}">2009</a></li>
+            <li><a href="{% url 'guideline_case' '2008' %}">2008</a></li>
+            <li><a href="{% url 'guideline_case' '2007' %}">2007</a></li>
+            <li><a href="{% url 'guideline_case' '2006' %}">2006</a></li>
+            <li><a href="{% url 'guideline_case' '2005' %}">2005</a></li>
+            <li><a href="{% url 'guideline_case' '2004' %}">2004</a></li>
+            <li><a href="{% url 'guideline_case' '2003' %}">2003</a></li>
+        </ul>
+    </nav>
+
+    <hr class="style3">
+
+    <center>
+    <div class="case-title">
+        <span>2007년 11월</span> H社 자동차 자동변속기기술 중국 유출 사건
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>H社 前직원 윤OO 등 2명은 H社가 개발한 대형 4속 자동변속기 기술과 자동차 부품 설계도면 등을 200만 달러를 받고 중국 T社의 B씨에게 넘기다 적발</li>
+        </ul>
+        <center><img src="{% static 'img/case/2007_11.png' %}"></center>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2007년 07월</span> 수조원 가치의 조선기술, 해외 유출 기도
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>국내 대형 조선업체 D社의 전직 기술팀장으로 근무하던 엄OO씨가 선박조선기술을 통째로 중국에 유출하려다 국정원에 의해 적발</li>
+        </ul>
+        <center><img src="{% static 'img/case/2007_07.png' %}"></center>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2007년 05월</span> 자동차 핵심기술 유출 기도
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>국내 K 자동차의 전직 직원 5명이 자동차 기술컨설팅 회사에 근무하면서 현직 직원 2명으로부터 자동차 생산 핵심기술을 빼낸 후 중국으로 유출하려다 국정원과 검찰에의해 적발</li>
+        </ul>
+        <center><img src="{% static 'img/case/2007_05_1.png' %}"></center>
+        <hr class="style3">
+    </div>
+
+    <div class="case-title">
+        <span>2007년 05월</span> 세계 최초개발 와이브로기술, 해외 유출 기도
+    </div>
+    <div class="case-content">
+        <ul>
+            <li>P社의 미국연구소에서 연구실장으로 근무하던 김OO씨는 P社 측과의 불화로 해임된 것에 불만을 품고, 이전에 한국에서 근무했던 정OO씨와 함께 P社 사무실에서 자신의 노트북, 외장 하드디스크와 e-메일 등을 이용해 와이브로 핵심기술을 빼낸 후 미국업체로 빼돌리려다 국정원과 검찰에 의해 적발</li>
+        </ul>
+        <center><img src="{% static 'img/case/2007_05_2.png' %}"></center>
+    </div>
+    </center>
+
+    <hr class="style3">
+
+    <div class="whence">
+        <img src="{% static 'img/whence_logo.png' %}">
+    </div>
+
+    <div class="move_top">
+        <a id="MOVE_TOP_BTN" href="#"><img src="{% static 'img/Top-Button.png' %}" width="50" height="50"></a>
+    </div>
+
+    <script>
+    $(function() {
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                $('.move_top').fadeIn();
+            } else {
+                $('.move_top').fadeOut();
+            }
+        });
+
+        $("#MOVE_TOP_BTN").click(function() {
+            $('html, body').animate({
+                scrollTop : 0
+            }, 400);
+            return false;
+        });
+    });
+    </script>
+{% endblock %}
