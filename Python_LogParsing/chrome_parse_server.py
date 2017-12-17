@@ -209,9 +209,11 @@ for path, dir, files in os.walk(data_path):
 			Uname = tmp[1]
 			IP = tmp[2]
 			MAC = tmp[3]
+			SN = tmp[4]
+
 			if(tmp[-1] == 'ChromeHistory'):
-				f = open("C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeHistoryb'+'.txt', 'w+', encoding='utf8')
-				f2 = open("C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeDownloadsb'+'.txt', 'w+', encoding='utf8')
+				f = open("C:\\soa\\upload\\" + tmp[4] + '_'+ tmp[5] + '_ChromeHistoryb'+'.txt', 'w+', encoding='utf8')
+				f2 = open("C:\\soa\\upload\\" + tmp[4] + '_'+ tmp[5] + '_ChromeDownloadsb'+'.txt', 'w+', encoding='utf8')
 
 				history_db = os.path.join(data_path, filename)
 				conn = sql.connect(history_db)
@@ -228,11 +230,11 @@ for path, dir, files in os.walk(data_path):
 				rows2 = cur2.fetchall()
 				rows3 = cur3.fetchall()
 
-				nics = getMac()
-				for nic in nics :
-					for k, v in nic.items() :
-					    MAC = v
-					    MAC2 = MAC.replace(':', '-')
+				#nics = getMac()
+				#for nic in nics :
+				#	for k, v in nic.items() :
+				#	    MAC = v
+				#	    MAC2 = MAC.replace(':', '-')
 
 				for num,row in enumerate(rows2):
 					url1 = (match_url(row[0]))
@@ -242,6 +244,8 @@ for path, dir, files in os.walk(data_path):
 					last_visit_time = (Last_Visit_time(row[0]).replace(" ", "T")) + '+09:00'
 					count = str(url_count(row[0]))
 
+					f.write(SN)
+					f.write(':::;')
 					f.write(Cname)
 					f.write(':::;')
 					f.write(Uname)
@@ -271,7 +275,7 @@ for path, dir, files in os.walk(data_path):
 					# file_name.split(".")
 					extent = file_name.split(".")[-1]
 
-					f2.write(Cname + ':::;' + Uname + ':::;' + str(IP) + ':::;' + (MAC) + ':::;' + (row3[1]) + ':::;' + (row3[2])
+					f2.write(SN + ':::;' + Cname + ':::;' + Uname + ':::;' + str(IP) + ':::;' + (MAC) + ':::;' + (row3[1]) + ':::;' + (row3[2])
 					 + ':::;' + (row3[3]) + ':::;' + (getFiletime((row3[4])).replace(" ", "T"))+ '+09:00' + ':::;' + str(row3[5]) + ':::;' + str(row3[6]) + ':::;' + State((row3[7])) + ':::;' + Danger_Type(row3[8])
 					 + ':::;' + str(Interrupt_Reason((row3[9]))) + ':::;' + (uri) + ':::;' + (row3[15])  + ':::;' + (file_name) + ':::;' + '.'+(extent) + ':::;')
 					f2.write('\n')
@@ -280,8 +284,8 @@ for path, dir, files in os.walk(data_path):
 				f.close()
 				f2.close()
 				time.sleep(5)
-				os.rename("C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeHistoryb'+'.txt', "C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeHistoryc'+'.txt')
-				os.rename("C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeDownloadsb'+'.txt', "C:\\soa\\upload\\" + tmp[3] + '_'+ tmp[4] + '_ChromeDownloadc'+'.txt')
+				os.rename("C:\\soa\\upload\\" + tmp[4] + '_'+ tmp[5] + '_ChromeHistoryb'+'.txt', "C:\\soa\\upload\\" + tmp[4] + '_'+ tmp[5] + '_ChromeHistory'+'.txt')
+				os.rename("C:\\soa\\upload\\" + tmp[4] + '_'+ tmp[5] + '_ChromeDownloadsb'+'.txt', "C:\\soa\\upload\\" + tmp[4] + '_'+ tmp[5] + '_ChromeDownload'+'.txt')
 				time.sleep(3)
 
 				if os.path.exists("C:\\backlog"):

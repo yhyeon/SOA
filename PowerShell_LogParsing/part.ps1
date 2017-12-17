@@ -132,6 +132,7 @@ $driverlog.Dispose()
 $sn.Dispose()
 $MAC.Dispose()
 $IP.Dispose()
+}
 
 elseif ($osversion -match "Windows 10") # if the client is Windows 10
 {
@@ -161,7 +162,7 @@ else
 $sn = $sn
 }
 }
-}
+
 
 #Get-ChildItem -path "C:\Windows\System32\winevt\Logs\*Partition*" | copy-Item -Destination C:\ProgramData\soalog\${sn}_$(get-date -f yyyyMMddHHmmss)_Microsoft-Windows-Partition%4Diagnostic.evtx
 #$events = get-winevent -path C:\ProgramData\soalog\*partition*.evtx | foreach {$_.toxml()}
@@ -238,7 +239,7 @@ $partitionlog.Dispose()
 $sn.Dispose()
 $MAC.Dispose()
 $IP.Dispose()
-
+}
 
 Import-Module bitstransfer
 $enc = Get-Content C:\Windows\soa\enp.txt | ConvertTo-SecureString # specify the directory where the encrypted password file is located
@@ -281,7 +282,7 @@ $enc.Dispose()
 $user.Dispose()
 $cred.Dispose()
 $src.Dispose()
-}
+
 
 #Clear-Variable driver, eventid, partition, compare
 $sw.stop()
